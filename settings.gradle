@@ -1,0 +1,3 @@
+include ':app', ':CalligraphySample', ':calligraphy'
+project(':CalligraphySample').projectDir = new File('Calligraphy-master/CalligraphySample')
+project(':calligraphy').projectDir = new File('Calligraphy-master/calligraphy')

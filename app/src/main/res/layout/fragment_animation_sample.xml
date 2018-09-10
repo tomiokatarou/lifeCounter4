@@ -1,0 +1,736 @@
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDarkBlue"
+    tools:context="com.websarva.wings.android.animationsample.AnimationSampleFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <com.websarva.wings.android.animationsample.Circle
+        android:id="@+id/circle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:translationZ="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/obj1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:alpha="0"
+        android:text="obj1" />
+
+    <TextView
+        android:id="@+id/obj2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:alpha="0"
+        android:text="obj2" />
+
+    <TextView
+        android:id="@+id/obj3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:alpha="0"
+        android:text="obj3" />
+
+    <TextView
+        android:id="@+id/obj4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:alpha="0"
+        android:text="obj4" />
+
+    <TextView
+        android:id="@+id/obj5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:alpha="0"
+        android:text="obj5" />
+
+    <!--
+    0はmatchConstraintになるが、0dpと明記しないといけない
+    startは左上、右下がend
+    startToStartOfとEndToEndOfはParentになりがち
+    これを設定しておくと高さと幅がコンストレイントに依存するようになる
+    -->
+    <android.support.constraint.Guideline
+        android:id="@+id/halfLine1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.44"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/halfLine2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.56"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/resetBtn"
+        android:layout_width="76dp"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="16dp"
+        android:background="#00ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/halfLine1" />
+
+    <ImageView
+        android:id="@+id/resetBtnImg"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:src="@drawable/ic_baseline_reset_24px"
+        android:translationZ="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/resetBtn"
+        app:layout_constraintEnd_toEndOf="@+id/resetBtn"
+        app:layout_constraintStart_toStartOf="@+id/resetBtn"
+        app:layout_constraintTop_toTopOf="@+id/resetBtn" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/p1lifeHistoryGuideLineV2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/p1Layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorP1main"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/p1lifeHistoryGuideLineV2"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/p1minus5UpArrow"
+            android:layout_width="55dp"
+            android:layout_height="54dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24px"
+            android:translationZ="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/p1minus5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/p1minus1"
+            app:layout_constraintTop_toBottomOf="@+id/p1plus5"
+            app:layout_constraintVertical_bias="1" />
+
+        <ImageView
+            android:id="@+id/p1plus1UpArrow"
+            android:layout_width="55dp"
+            android:layout_height="54dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_baseline_keyboard_arrow_up_24px"
+            android:translationZ="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1minus1"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintStart_toStartOf="@+id/p1plus1"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintVertical_bias="0" />
+
+        <ImageView
+            android:id="@+id/p1minus1UpArrow"
+            android:layout_width="55dp"
+            android:layout_height="54dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_baseline_keyboard_arrow_down_24px"
+            android:translationZ="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/p1minus1"
+            app:layout_constraintEnd_toEndOf="@+id/p1minus1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1minus1"
+            app:layout_constraintVertical_bias="1" />
+
+        <ImageView
+            android:id="@+id/p1plus5UpArrow"
+            android:layout_width="55dp"
+            android:layout_height="54dp"
+            android:adjustViewBounds="false"
+            android:src="@drawable/ic_baseline_keyboard_arrow_up_24px"
+            android:translationZ="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/p1plus5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plus5"
+            app:layout_constraintVertical_bias="0" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1plusminusBtnLine2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.65"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1plusminusBtnLine3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1plusminusBtnLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/p1plus1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#3BBEC0"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine2"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine" />
+
+        <Button
+            android:id="@+id/p1minus5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#3BBEC0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine2" />
+
+        <Button
+            android:id="@+id/p1minus1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#3BBEC0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine2" />
+
+        <Button
+            android:id="@+id/p1plus5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#3BBEC0"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1lifeGuideLineH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.25"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--gravityをrightに設定すると、ドロップシャドーが切れる-->
+
+        <TextView
+            android:id="@+id/p1Life_txt"
+            style="@style/lifeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:text="p1Life"
+            android:translationZ="10dp"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- biasとpaddingの組み合わせ -->
+
+        <TextView
+            android:id="@+id/p1Life_txt1"
+            style="@style/lifeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/p1Life_txt"
+            android:layout_alignStart="@+id/p1Life_txt"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:text="p1Life1"
+            android:translationZ="10dp"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1Life_txt2"
+            style="@style/lifeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/p1Life_txt"
+            android:layout_alignStart="@+id/p1Life_txt"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:text="p1Life2"
+            android:translationZ="10dp"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1Life_txt3"
+            style="@style/lifeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/p1Life_txt"
+            android:layout_alignStart="@+id/p1Life_txt"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:text="p1Life3"
+            android:translationZ="10dp"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1Life_txt4"
+            style="@style/lifeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/p1Life_txt"
+            android:layout_alignStart="@+id/p1Life_txt"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:text="p1Life4"
+            android:translationZ="10dp"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1Life_txt5"
+            style="@style/lifeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/p1Life_txt"
+            android:layout_alignStart="@+id/p1Life_txt"
+
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:clickable="false"
+            android:text="p1Life5"
+            android:translationZ="10dp"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/p1HisLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine1"
+        app:layout_constraintEnd_toStartOf="@+id/p1lifeHistoryGuideLineV2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1lifeHistoryGuideLineH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.05"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1lifeHistoryGuideLineV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.95"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory1"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his1"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+        <!-- horizontal_biasは0に近づけると右に行く　グラビティが右側にあるので -->
+
+        <TextView
+            android:id="@+id/p1lifeHistory2"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his2"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory3"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his3"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory4"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his4"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory5"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his5"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory6"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his6"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory7"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his7"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory8"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his8"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory9"
+            style="@style/lifeHisTxt"
+            android:gravity="right"
+            android:paddingRight="20dp"
+            android:text="his9"
+            android:textColor="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintRight_toRightOf="@+id/p1lifeHistoryGuideLineV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1lifeHistoryGuideLineH"
+            app:layout_constraintVertical_bias="0" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/p2Layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/halfLine2">
+
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/p1textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/halfLine2"
+        app:layout_constraintVertical_bias="0" />
+
+    <!-- package名 -->
+
+    <TextView
+        android:id="@+id/p1textView2"
+        android:layout_width="110dp"
+        android:layout_height="21dp"
+        android:layout_alignBottom="@+id/p1textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/halfLine2" />
+
+    <TextView
+        android:id="@+id/p2Life_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="p2Life_txt"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/p2Layout"
+        app:layout_constraintTop_toTopOf="@+id/halfLine2" />
+
+    <TextView
+        android:id="@+id/p2textView"
+        android:layout_width="199dp"
+        android:layout_height="55dp"
+        android:layout_alignLeft="@+id/p2Life_txt"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/p2Life_txt"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/p2Layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/p1textView" />
+
+    <TextView
+        android:id="@+id/p2LifeHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/p2Life_txt"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_toLeftOf="@+id/p2textView"
+        android:layout_toStartOf="@+id/p2textView"
+        android:text="p1LifeHistory"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/p2Layout"
+        app:layout_constraintTop_toTopOf="@+id/halfLine2" />
+
+
+</android.support.constraint.ConstraintLayout>
+
+    <!--
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:alpha="0.5"
+            android:scaleType="center"
+            android:src="@drawable/bg"
+            app:layout_constraintBottom_toBottomOf="@id/halfGuideLine"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+
+
+
+        <TextView
+            android:id="@+id/p1lifeHistory7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="p1lifeHistory7"
+            app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
+            app:layout_constraintTop_toBottomOf="@+id/p1lifeHistory6" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="p1lifeHistory8"
+            app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
+            app:layout_constraintTop_toBottomOf="@+id/p1lifeHistory7" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="p1lifeHistory9"
+            app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
+            app:layout_constraintTop_toBottomOf="@+id/p1lifeHistory8" />
+
+        <TextView
+            android:id="@+id/p1lifeHistory10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="p1lifeHistory10"
+            app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
+            app:layout_constraintTop_toBottomOf="@+id/p1lifeHistory9"
+            />
+            -->
