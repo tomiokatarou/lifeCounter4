@@ -6,6 +6,9 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.Fragment;
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Handler;
@@ -20,13 +23,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.os.Bundle;
+
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
@@ -62,10 +70,15 @@ public class MainActivity extends Activity {
     TextView p1txt;
     TextView obj1;
     Button p1plus1,p1plus5,p1minus1,p1minus5;
-    Button resetButtonbg;
     Button resetBtn;
+
+    //counterFragment------------------------------------------------
+    Button fragmentTestBtn;
+    public ArrayList<Integer> p1CounterArr;
+
+
     int p1LifeInt = 20;
-    int p1BtnClickCnt=0;//距離/100してる数字を入れる変数のかわり 押した回数
+
     //historyDriver
     int p1LifeDriver = 0;//-1
     int p1LifeHisDriver = -1;//どのテキストを動かすかというためだけの循環する変数　にしたい
@@ -142,6 +155,11 @@ public class MainActivity extends Activity {
 
         //デバッグ用
 
+        fragmentTestBtn = (Button) this.findViewById(R.id.button);
+
+        //counterFragment-----------------------------------------------
+        final ConstraintLayout container = (ConstraintLayout) findViewById(R.id.container);
+
 
         //ボタンの矢印
         int color = getResources().getColor(R.color.colorGray);
@@ -177,6 +195,8 @@ public class MainActivity extends Activity {
         fn_translation(p1lifeHistory8, 0, 0, 0, "invisible");
         fn_translation(p1lifeHistory9, 0, 0, 0, "invisible");
 
+        scaleAnimatorToXY(container,0,0,1000);
+
         p1LifeList = new ArrayList<>();
         p1LifeListTmp = new ArrayList<>();
 
@@ -187,6 +207,30 @@ public class MainActivity extends Activity {
         circ = (Circle) findViewById(R.id.circle);
         //----------------------------------------------------------------------------------------------
 
+        if(savedInstanceState == null) {
+            fragmentTestBtn.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                    //BackStackを設定
+                    fragmentTransaction.addToBackStack("p1CntFragment");
+
+                    //パラメータを設定
+                    fragmentTransaction.replace(R.id.container, p1CounterFragment.newInstance(1));
+
+                    //fragmentManager.popBackStack("p1CntFragment",0);
+                    fragmentTransaction.commit();
+
+                    translateAnimatorToXY(container,500,500,1000);
+
+                    return false;
+                }
+            });
+        }
+
+        //----------------------------------------------------------------------------------------------
         p1Layout_o.setOnTouchListener(new View.OnTouchListener() {
             float firstTouch = 0;
             int p1LifeIntTemp = 0;//指を動かしている間の値
@@ -203,7 +247,6 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                //p1BtnClickCnt=-999;
                 switch (motionEvent.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_POINTER_DOWN: {
@@ -358,7 +401,6 @@ public class MainActivity extends Activity {
                                 p1LifeInt = 20;
                                 p1LifeDriver = 0;
                                 p1LifeHisDriver = -1;
-                                p1BtnClickCnt=0;
                                 isP1LifeHisMax = false;
                                 p1LifeList = new ArrayList<>();
 
@@ -372,6 +414,10 @@ public class MainActivity extends Activity {
                                 p1lifeHistory7.setText( "" );
                                 p1lifeHistory8.setText( "" );
                                 p1lifeHistory9.setText( "" );
+
+                                //指定したタグに戻る操作
+                                FragmentManager fragmentManager = getSupportFragmentManager();
+                                fragmentManager.popBackStack("p1CntFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             }
                         };
                         mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
@@ -398,7 +444,6 @@ public class MainActivity extends Activity {
 
                                 fn_lifeDriver(p1GlobalTmp, plusminus);
                                 p1GlobalTmp=0;
-                                p1BtnClickCnt=0;
                                 tmpState="";
                                 System.out.println("p1plus1 p1GlobalTmp " + p1GlobalTmp);
                             }
@@ -533,7 +578,6 @@ public class MainActivity extends Activity {
 
                                 fn_lifeDriver(p1GlobalTmp, plusminus);
                                 p1GlobalTmp=0;
-                                p1BtnClickCnt=0;
                                 tmpState="";
                                 System.out.println("p1plus5 p1GlobalTmp " + p1GlobalTmp);
                             }
@@ -662,7 +706,6 @@ public class MainActivity extends Activity {
 
                                 fn_lifeDriver(p1GlobalTmp, plusminus);
                                 p1GlobalTmp=0;
-                                p1BtnClickCnt=0;
                                 tmpState="";
                                 System.out.println("p1minus1 p1GlobalTmp " + p1GlobalTmp);
                             }
@@ -801,7 +844,6 @@ public class MainActivity extends Activity {
 
                                 fn_lifeDriver(p1GlobalTmp, plusminus);
                                 p1GlobalTmp=0;
-                                p1BtnClickCnt=0;
                                 tmpState="";
                                 System.out.println("p1minus5 p1GlobalTmp " + p1GlobalTmp);
                             }
@@ -863,7 +905,6 @@ public class MainActivity extends Activity {
             int p1LifeIntTemp = 0;//指を動かしている間の値
             int plusminus = 1;
             int distTmp=0;
-            int p1BtnClickCnt =0;//距離/100してる数字を入れる変数のかわり 押した回数
             float sx = 10f,sy=10f;
 
             ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
@@ -872,7 +913,6 @@ public class MainActivity extends Activity {
                 System.out.println("p1plus1");
 
                 p1LifeIntTemp = p1LifeInt;//値を渡す
-                p1BtnClickCnt++;
 
                 //最初にクリックされた時間を取得し、そこから何秒か以内に再びクリックされた場合は
                 //その回数を数えておく
@@ -934,7 +974,6 @@ public class MainActivity extends Activity {
                 switch (motionEvent.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                     case MotionEvent.ACTION_POINTER_DOWN: {
-                        p1BtnClickCnt = 0;
                         p1LifeIntTemp = p1LifeInt;//値を渡す
                         break;
                     }
@@ -1266,6 +1305,8 @@ public class MainActivity extends Activity {
 
         return anim;
     }
+
+
     class buttonListener implements View.OnTouchListener {
         //View.OnTouchListener buttonListener = new View.OnTouchListener(){
         float firstTouch = 0;
@@ -1289,7 +1330,6 @@ public class MainActivity extends Activity {
         public boolean onTouch(View view, MotionEvent motionEvent) {
             p1LifeIntTemp2 = p1LifeIntTemp;
             setVariables();
-            //p1BtnClickCnt=-999;
             switch (motionEvent.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
@@ -1368,7 +1408,6 @@ public class MainActivity extends Activity {
                     if(p1GlobalTmp!=0) {
                         fn_lifeDriver(p1GlobalTmp, plusminus);
                         p1GlobalTmp = 0;
-                        p1BtnClickCnt = 0;
                         tmpState = "";
                     }
                 }

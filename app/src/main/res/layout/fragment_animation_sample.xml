@@ -682,6 +682,35 @@
         app:layout_constraintStart_toStartOf="@+id/p2Layout"
         app:layout_constraintTop_toTopOf="@+id/halfLine2" />
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine2"
+        app:layout_constraintEnd_toEndOf="@+id/circle"
+        app:layout_constraintStart_toEndOf="@+id/resetBtnImg"
+        app:layout_constraintTop_toTopOf="@+id/halfLine1" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="113dp"
+        android:layout_height="99dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.968"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/halfLine2"
+        app:layout_constraintVertical_bias="0.94"></android.support.constraint.ConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>
 
