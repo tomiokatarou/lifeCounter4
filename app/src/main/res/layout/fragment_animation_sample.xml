@@ -191,6 +191,18 @@
             app:layout_constraintVertical_bias="0" />
 
         <android.support.constraint.Guideline
+            android:id="@+id/p1plusminusBtnLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
             android:id="@+id/p1plusminusBtnLine2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -214,43 +226,21 @@
             app:layout_constraintGuide_percent="0.5"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.constraint.Guideline
-            android:id="@+id/p1plusminusBtnLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.3"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <Button
             android:id="@+id/p1plus1"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#3BBEC0"
+            android:background="@color/colorP1main"
             app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine2"
             app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine" />
 
         <Button
-            android:id="@+id/p1minus5"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="#3BBEC0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
-            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine2" />
-
-        <Button
             android:id="@+id/p1minus1"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#3BBEC0"
+            android:background="@color/colorP1main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
@@ -260,11 +250,31 @@
             android:id="@+id/p1plus5"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="#3BBEC0"
+            android:background="@color/colorP1main"
             app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine" />
+
+        <Button
+            android:id="@+id/p1minus5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine2" />
+
+        <com.websarva.wings.android.animationsample.effectCircle
+            android:id="@+id/circP1Plus1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:translationZ="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.Guideline
             android:id="@+id/p1lifeGuideLineH"
@@ -391,6 +401,83 @@
             app:layout_constraintHorizontal_bias="0.7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1plusminusBtnLine4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.15"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/p1plusminusBtnLine5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.75"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/p1psnPlus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine5"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/p1psnMinus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine5"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <Button
+            android:id="@+id/p1engPlus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine5"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/p1engMinus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine5"
+            app:layout_constraintTop_toBottomOf="@+id/p1engPlus" />
+
+        <Button
+            android:id="@+id/p1blank"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            android:clickable="false"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -681,20 +768,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/p2Layout"
         app:layout_constraintTop_toTopOf="@+id/halfLine2" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/halfLine2"
-        app:layout_constraintEnd_toEndOf="@+id/circle"
-        app:layout_constraintStart_toEndOf="@+id/resetBtnImg"
-        app:layout_constraintTop_toTopOf="@+id/halfLine1" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/container"

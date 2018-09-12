@@ -64,7 +64,6 @@ public class AnimationCircle extends Animation {
         float radius = (float) (initRadius + (canvasRadius*60) * interpolatedTime);//interpolatedTimeは0.0～1.0に変化する値
         float hollowRadius = initRadius + (80) * interpolatedTime;
 
-
         if( time > interpolatedTime){
             //前半
             circle.setRadius2(radius);
@@ -74,7 +73,6 @@ public class AnimationCircle extends Animation {
             //circle.setRadius2(radius);
             circle.setHollowRadius((float) (0 + (canvasRadius*60.1) * (interpolatedTime-time)));
         }
-
 
         circle.requestLayout();
 

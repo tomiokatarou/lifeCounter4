@@ -5,12 +5,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.app.Fragment;
 //import android.app.FragmentManager;
 //import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.graphics.RectF;
 import android.os.Handler;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -23,9 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -69,15 +65,10 @@ public class MainActivity extends AppCompatActivity {
     TextView p1Life_txt5;
     TextView p1txt;
     TextView obj1;
-    Button p1plus1,p1plus5,p1minus1,p1minus5;
+    Button p1plus1,p1plus5,p1minus1,p1minus5,p1psnPlus,p1psnMinus,p1engPlus,p1engMinus;
     Button resetBtn;
 
-    //counterFragment------------------------------------------------
-    Button fragmentTestBtn;
-    public ArrayList<Integer> p1CounterArr;
-
-
-    int p1LifeInt = 20;
+    int p1LifeInt = 20,p1psnInt = 0,p1engInt = 0;
 
     //historyDriver
     int p1LifeDriver = 0;//-1
@@ -101,14 +92,13 @@ public class MainActivity extends AppCompatActivity {
 
     long lifeScaleDuration=200;
     long lifeHisTransDuration=700;
-    String white      = "#FFFFFF";
-    String blue     = "#2196F3";
-    String yellow   = "#FFEB3B";
-
     //----------------------------------------------------------------------------------------------
     private Circle circ;
+    private effectCircle circP1Plus1;
     private int endAngle = 0;
     private int animationPeriod = 2000;
+
+    public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1psnPlus,rectP1psnMinus,rectP1engPlus,rectP1engMinus;
     //----------------------------------------------------------------------------------------------
 
 
@@ -151,11 +141,13 @@ public class MainActivity extends AppCompatActivity {
         p1plus5 = (Button) this.findViewById(R.id.p1plus5);
         p1minus1 = (Button) this.findViewById(R.id.p1minus1);
         p1minus5 = (Button) this.findViewById(R.id.p1minus5);
+        p1psnPlus = (Button) this.findViewById(R.id.p1psnPlus);
+        p1psnMinus = (Button) this.findViewById(R.id.p1psnMinus);
+        p1engPlus = (Button) this.findViewById(R.id.p1engPlus);
+        p1engMinus = (Button) this.findViewById(R.id.p1engMinus);
         resetBtn = (Button) this.findViewById(R.id.resetBtn);
 
         //デバッグ用
-
-        fragmentTestBtn = (Button) this.findViewById(R.id.button);
 
         //counterFragment-----------------------------------------------
         final ConstraintLayout container = (ConstraintLayout) findViewById(R.id.container);
@@ -201,34 +193,11 @@ public class MainActivity extends AppCompatActivity {
         p1LifeListTmp = new ArrayList<>();
 
         //----------------------------------------------------------------------------------------------
-        // 88%に角度を合わせる
-        endAngle = 88*360/100;
 
         circ = (Circle) findViewById(R.id.circle);
+        circP1Plus1 = (effectCircle) findViewById(R.id.circP1Plus1);
         //----------------------------------------------------------------------------------------------
 
-        if(savedInstanceState == null) {
-            fragmentTestBtn.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                    //BackStackを設定
-                    fragmentTransaction.addToBackStack("p1CntFragment");
-
-                    //パラメータを設定
-                    fragmentTransaction.replace(R.id.container, p1CounterFragment.newInstance(1));
-
-                    //fragmentManager.popBackStack("p1CntFragment",0);
-                    fragmentTransaction.commit();
-
-                    translateAnimatorToXY(container,500,500,1000);
-
-                    return false;
-                }
-            });
-        }
 
         //----------------------------------------------------------------------------------------------
         p1Layout_o.setOnTouchListener(new View.OnTouchListener() {
@@ -257,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                         p1LifeDistInt = 0;
                         p1LifeIntTemp = p1LifeInt;//値を渡す
                         p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouch " + firstTouch
+                        p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouchY " + firstTouch
                                 + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
                                 + " \n p1LifeHisDriver: " + p1LifeHisDriver
                                 + " \n p1LifeDistance: " + p1LifeDistance
@@ -271,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                         //タッチが離れた場合の処理
                         //int pointerIndex = motionEvent.getActionIndex();
                         p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouch " + firstTouch
+                        p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouchY " + firstTouch
                                 + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
                                 + " \n p1LifeHisDriver: " + p1LifeHisDriver
                                 + " \n p1LifeDistance: " + p1LifeDistance
@@ -353,6 +322,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void setVariables(){
                 creaseNum = 1;
+                clipRect = rectP1Plus1;
+
             }
         };
         p1plus1.setOnTouchListener(p1plus1TouchListener);
@@ -360,6 +331,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void setVariables(){
                 creaseNum = 5;
+                clipRect = rectP1Plus5;
+
             }
         };
         p1plus5.setOnTouchListener(p1plus5TouchListener);
@@ -367,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void setVariables(){
                 creaseNum = -1;
+                clipRect = rectP1Minus1;
             }
         };
         p1minus1.setOnTouchListener(p1minus1TouchListener);
@@ -374,9 +348,48 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void setVariables(){
                 creaseNum = -5;
+                clipRect = rectP1Minus5;
             }
         };
         p1minus5.setOnTouchListener(p1minus5TouchListener);
+        //poison
+        buttonListener p1psnPlusTouchListener = new buttonListener() {
+            @Override
+            public void setVariables(){
+                creaseNum = 1;
+                clipRect = rectP1psnPlus;
+
+            }
+        };
+        p1psnPlus.setOnTouchListener(p1psnPlusTouchListener);
+        buttonListener p1psnMinusTouchListener = new buttonListener() {
+            @Override
+            public void setVariables(){
+                creaseNum = 1;
+                clipRect = rectP1psnMinus;
+
+            }
+        };
+        p1psnMinus.setOnTouchListener(p1psnMinusTouchListener);
+        //energy
+        buttonListener p1engPlusTouchListener = new buttonListener() {
+            @Override
+            public void setVariables(){
+                creaseNum = 1;
+                clipRect = rectP1engPlus;
+
+            }
+        };
+        p1engPlus.setOnTouchListener(p1engPlusTouchListener);
+        buttonListener p1engMinusTouchListener = new buttonListener() {
+            @Override
+            public void setVariables(){
+                creaseNum = 1;
+                clipRect = rectP1engMinus;
+
+            }
+        };
+        p1engMinus.setOnTouchListener(p1engMinusTouchListener);
 
         resetBtn.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -414,10 +427,6 @@ public class MainActivity extends AppCompatActivity {
                                 p1lifeHistory7.setText( "" );
                                 p1lifeHistory8.setText( "" );
                                 p1lifeHistory9.setText( "" );
-
-                                //指定したタグに戻る操作
-                                FragmentManager fragmentManager = getSupportFragmentManager();
-                                fragmentManager.popBackStack("p1CntFragment",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                             }
                         };
                         mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
@@ -458,7 +467,7 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_MOVE: {
                         System.out.println("move");
                         tmpState="move";
-                        p1LifeDistance = firstTouch - motionEvent.getY(0);//距離
+                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
                         p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
                         System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
 
@@ -502,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
 
 /*
         p1plus5.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouch = 0;
+            float firstTouchY = 0;
             int p1LifeIntTemp = 0;//指を動かしている間の値
             int p1LifeIntTemp2 = p1LifeInt;//最初の値
             int p1LifeDistInt;//距離を整数にしたもので、ライフの増減の値としても使っている
@@ -525,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
                         //p1txt.setText("p1plus5 ACTION_POINTER_DOWN \n");//テキストの編集
                         //画面がタッチされた場合の処理
                         int pointerIndex = motionEvent.getActionIndex();
-                        firstTouch = motionEvent.getY(pointerIndex);
+                        firstTouchY = motionEvent.getY(pointerIndex);
                         p1LifeDistance = 0;
                         p1LifeDistInt = 0;//距離を整数にしたもので、ライフの増減の値としても使っている
                         p1LifeIntTemp = p1LifeInt;//値を渡す
@@ -590,7 +599,7 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_MOVE: {
                         System.out.println("move");
                         tmpState="move";
-                        p1LifeDistance = firstTouch - motionEvent.getY(0);//距離
+                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
                         p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
                         System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
 
@@ -632,7 +641,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         p1minus1.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouch = 0;
+            float firstTouchY = 0;
             int p1LifeIntTemp = 0;//指を動かしている間の値
             int p1LifeIntTemp2 = p1LifeInt;//最初の値
             int p1LifeDistInt;//距離を整数にしたもので、ライフの増減の値としても使っている
@@ -653,7 +662,7 @@ public class MainActivity extends AppCompatActivity {
                         //p1txt.setText("p1minus1 ACTION_POINTER_DOWN \n");//テキストの編集
                         //画面がタッチされた場合の処理
                         int pointerIndex = motionEvent.getActionIndex();
-                        firstTouch = motionEvent.getY(pointerIndex);
+                        firstTouchY = motionEvent.getY(pointerIndex);
                         p1LifeDistance = 0;
                         p1LifeDistInt = 0;//距離を整数にしたもので、ライフの増減の値としても使っている
                         p1LifeIntTemp = p1LifeInt;//値を渡す
@@ -719,7 +728,7 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_MOVE: {
                         System.out.println("move");
                         tmpState="move";
-                        p1LifeDistance = firstTouch - motionEvent.getY(0);//距離
+                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
                         p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
                         System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
 
@@ -761,7 +770,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         p1minus5.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouch = 0;
+            float firstTouchY = 0;
             int p1LifeIntTemp = 0;//指を動かしている間の値
             int p1LifeIntTemp2 = p1LifeInt;//最初の値
             int p1LifeDistInt;//距離を整数にしたもので、ライフの増減の値としても使っている
@@ -782,7 +791,7 @@ public class MainActivity extends AppCompatActivity {
                         //p1txt.setText("p1minus5 ACTION_POINTER_DOWN \n");//テキストの編集
                         //画面がタッチされた場合の処理
                         int pointerIndex = motionEvent.getActionIndex();
-                        firstTouch = motionEvent.getY(pointerIndex);
+                        firstTouchY = motionEvent.getY(pointerIndex);
                         p1LifeDistance = 0;
                         p1LifeDistInt = 0;//距離を整数にしたもので、ライフの増減の値としても使っている
                         p1LifeIntTemp = p1LifeInt;//値を渡す
@@ -857,7 +866,7 @@ public class MainActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_MOVE: {
                         System.out.println("move");
                         tmpState="move";
-                        p1LifeDistance = firstTouch - motionEvent.getY(0);//距離
+                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
                         p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
                         System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
 
@@ -1043,7 +1052,7 @@ public class MainActivity extends AppCompatActivity {
                         p1LifeDistIntArr
                          */
                         /*
-                        p1txt.setText("p1txt ACTION_POINTER_DOWN \n"+" firstTouch "+firstTouch
+                        p1txt.setText("p1txt ACTION_POINTER_DOWN \n"+" firstTouchY "+firstTouchY
                                 +"\n p1LifeInt:"+p1LifeInt+"  p1LifeIntTemp: " + p1LifeIntTemp
                                 +" \n p1LifeDistance: "+p1LifeDistance
                                 +" \n p1LifeDistInt: "+p1LifeDistInt
@@ -1309,7 +1318,7 @@ public class MainActivity extends AppCompatActivity {
 
     class buttonListener implements View.OnTouchListener {
         //View.OnTouchListener buttonListener = new View.OnTouchListener(){
-        float firstTouch = 0;
+        float firstTouchX=0,firstTouchY = 0,releaseX,releaseY;
         int p1LifeIntTemp = 0;//指を動かしている間の値
         int p1LifeIntTemp2 = p1LifeInt;//最初の値
         int p1LifeDistInt;
@@ -1320,6 +1329,8 @@ public class MainActivity extends AppCompatActivity {
         String tmpState="";
 
         int creaseNum;
+        RectF clipRect;
+        effectCircle circ;
 
         ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
 
@@ -1334,7 +1345,7 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
                 case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(); break;
+                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent); break;
                 case MotionEvent.ACTION_MOVE: actionMove(motionEvent); break;
                 case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
             }
@@ -1343,12 +1354,13 @@ public class MainActivity extends AppCompatActivity {
         public void actionPointerDown(MotionEvent motionEvent){
             //画面がタッチされた場合の処理
             int pointerIndex = motionEvent.getActionIndex();
-            firstTouch = motionEvent.getY(pointerIndex);
+            firstTouchY = motionEvent.getY(pointerIndex);
+            firstTouchX = motionEvent.getX(pointerIndex);
             p1LifeDistance = 0;
             p1LifeDistInt = 0;
             p1LifeIntTemp = p1LifeInt;//値を渡す
             p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-            p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouch " + firstTouch
+            p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouchY " + firstTouchY
                     + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
                     + " \n p1LifeHisDriver: " + p1LifeHisDriver
                     + " \n p1LifeDistance: " + p1LifeDistance
@@ -1356,9 +1368,21 @@ public class MainActivity extends AppCompatActivity {
                     + " \n p1LifeList.size() " + p1LifeList.size()
                     + " \n p1LifeDistIntArr.size " + p1LifeDistIntArr.size());//テキストの編集
         }
-        public void actionPointerUp(){
-            System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
+        public void actionPointerUp(MotionEvent motionEvent){
+            releaseX = motionEvent.getX();
+            releaseY = motionEvent.getY();
+            //System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
+            System.out.println("releaseX:" + releaseX + " releaseY:"+releaseY);
+            System.out.println("clipRect.left:" + clipRect.left + " clipRect.top:"+clipRect.top);
             //タッチが離れた場合の処理
+            AnimationEffectCircle animation = new AnimationEffectCircle(circP1Plus1,releaseX+clipRect.left,releaseY+clipRect.top, clipRect);
+            // アニメーションの起動期間を設定
+            animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+            animationPeriod = 800;
+            animation.setDuration(animationPeriod);
+            circP1Plus1.startAnimation(animation);
+            Animator alpha = alphaAnimator(circP1Plus1,200,"fadeout2");
+            alpha.start();
 
             if (p1LifeDistIntArr.size() == 0) {
                 //初回
@@ -1394,7 +1418,7 @@ public class MainActivity extends AppCompatActivity {
             p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
 
             System.out.println("iffff     p1GlobalTmp " + p1GlobalTmp);
-            p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouch " + firstTouch
+            p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouchY " + firstTouchY
                     + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
                     + " \n p1LifeHisDriver: " + p1LifeHisDriver
                     + " \n p1LifeDistance: " + p1LifeDistance
@@ -1418,7 +1442,7 @@ public class MainActivity extends AppCompatActivity {
         }
         public void actionMove(MotionEvent motionEvent){
             System.out.println("actionMove \n");
-            p1LifeDistance = firstTouch - motionEvent.getY(0);//距離
+            p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
             p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
 
             if (p1LifeDistIntArr.size() == 0) {
@@ -2104,4 +2128,19 @@ public class MainActivity extends AppCompatActivity {
 + OvershootInterpolator
 目標の値を一旦オーバーしてから目的の値に到達する
  */
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        rectP1Plus1 = new RectF(p1plus1.getLeft(),p1plus1.getTop(),p1plus1.getRight(),p1plus1.getBottom());
+        rectP1Plus5 = new RectF(p1plus5.getLeft(),p1plus5.getTop(),p1plus5.getRight(),p1plus5.getBottom());
+        rectP1Minus1 = new RectF(p1minus1.getLeft(),p1minus1.getTop(),p1minus1.getRight(),p1minus1.getBottom());
+        rectP1Minus5 = new RectF(p1minus5.getLeft(),p1minus5.getTop(),p1minus5.getRight(),p1minus5.getBottom());
+
+        rectP1psnPlus = new RectF(p1psnPlus.getLeft(),p1psnPlus.getTop(),p1psnPlus.getRight(),p1psnPlus.getBottom());
+        rectP1psnMinus = new RectF(p1psnMinus.getLeft(),p1psnMinus.getTop(),p1psnMinus.getRight(),p1psnMinus.getBottom());
+        rectP1engPlus = new RectF(p1engPlus.getLeft(),p1engPlus.getTop(),p1engPlus.getRight(),p1engPlus.getBottom());
+        rectP1engMinus = new RectF(p1engMinus.getLeft(),p1engMinus.getTop(),p1engMinus.getRight(),p1engMinus.getBottom());
+    }
 }
