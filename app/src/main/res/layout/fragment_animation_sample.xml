@@ -429,7 +429,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/p1psnPlus"
+            android:id="@+id/p1PsnPlus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
@@ -439,18 +439,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/p1psnMinus"
+            android:id="@+id/p1PsnMinus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
-            android:text="0"
             app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
             app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine5"
             app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
         <Button
-            android:id="@+id/p1engPlus"
+            android:id="@+id/p1EngPlus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
@@ -460,15 +459,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/p1engMinus"
+            android:id="@+id/p1EngMinus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
-            android:text="0"
             app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine5"
-            app:layout_constraintTop_toBottomOf="@+id/p1engPlus" />
+            app:layout_constraintTop_toBottomOf="@+id/p1EngPlus" />
 
         <Button
             android:id="@+id/p1blank"
@@ -480,6 +478,104 @@
             app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/p1Psn_txt"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="TextView"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Psn_txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Psn_txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Psn_txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Eng_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textColor="@color/colorWhite"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Eng_txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Eng_txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
+
+        <TextView
+            android:id="@+id/p1Eng_txt3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="10dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1EngMinus"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
     </android.support.constraint.ConstraintLayout>
 

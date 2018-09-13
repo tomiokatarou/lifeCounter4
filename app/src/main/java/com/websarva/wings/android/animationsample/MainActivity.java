@@ -64,14 +64,16 @@ public class MainActivity extends AppCompatActivity {
     TextView p1Life_txt4;
     TextView p1Life_txt5;
     TextView p1txt;
+    TextView p1Psn_txt,p1Psn_txt1,p1Psn_txt2,p1Psn_txt3;
+    TextView p1Eng_txt,p1Eng_txt1,p1Eng_txt2,p1Eng_txt3;
     TextView obj1;
-    Button p1plus1,p1plus5,p1minus1,p1minus5,p1psnPlus,p1psnMinus,p1engPlus,p1engMinus;
+    Button p1plus1,p1plus5,p1minus1,p1minus5,p1PsnPlus,p1PsnMinus,p1EngPlus,p1EngMinus;
     Button resetBtn;
 
-    int p1LifeInt = 20,p1psnInt = 0,p1engInt = 0;
+    int p1LifeInt = 20,p1PsnInt = 0,p1EngInt = 0;
 
     //historyDriver
-    int p1LifeDriver = 0;//-1
+    int p1LifeDriver = 0,p1PsnDriver = 0,p1EngDriver = 0;//-1
     int p1LifeHisDriver = -1;//どのテキストを動かすかというためだけの循環する変数　にしたい
     boolean isP1LifeHisMax = false;//ヒストリーがマックスになってるかどうか
 
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private int endAngle = 0;
     private int animationPeriod = 2000;
 
-    public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1psnPlus,rectP1psnMinus,rectP1engPlus,rectP1engMinus;
+    public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1PsnPlus,rectP1PsnMinus,rectP1EngPlus,rectP1EngMinus;
     //----------------------------------------------------------------------------------------------
 
 
@@ -136,16 +138,39 @@ public class MainActivity extends AppCompatActivity {
         p1lifeHistory7 = (TextView) this.findViewById(R.id.p1lifeHistory7);
         p1lifeHistory8 = (TextView) this.findViewById(R.id.p1lifeHistory8);
         p1lifeHistory9 = (TextView) this.findViewById(R.id.p1lifeHistory9);
+
+        p1Psn_txt = (TextView) this.findViewById(R.id.p1Psn_txt);
+        p1Psn_txt.setText(p1PsnInt+"");
+        p1Psn_txt1 = (TextView) this.findViewById(R.id.p1Psn_txt1);
+        p1Psn_txt2 = (TextView) this.findViewById(R.id.p1Psn_txt2);
+        p1Psn_txt3 = (TextView) this.findViewById(R.id.p1Psn_txt3);
+
+        p1Eng_txt = (TextView) this.findViewById(R.id.p1Eng_txt);
+        p1Eng_txt.setText(p1EngInt+"");
+        p1Eng_txt1 = (TextView) this.findViewById(R.id.p1Eng_txt1);
+        p1Eng_txt2 = (TextView) this.findViewById(R.id.p1Eng_txt2);
+        p1Eng_txt3 = (TextView) this.findViewById(R.id.p1Eng_txt3);
+
         //ボタンの生成
         p1plus1 = (Button) this.findViewById(R.id.p1plus1);
         p1plus5 = (Button) this.findViewById(R.id.p1plus5);
         p1minus1 = (Button) this.findViewById(R.id.p1minus1);
         p1minus5 = (Button) this.findViewById(R.id.p1minus5);
-        p1psnPlus = (Button) this.findViewById(R.id.p1psnPlus);
-        p1psnMinus = (Button) this.findViewById(R.id.p1psnMinus);
-        p1engPlus = (Button) this.findViewById(R.id.p1engPlus);
-        p1engMinus = (Button) this.findViewById(R.id.p1engMinus);
+        p1PsnPlus = (Button) this.findViewById(R.id.p1PsnPlus);
+        p1PsnMinus = (Button) this.findViewById(R.id.p1PsnMinus);
+        p1EngPlus = (Button) this.findViewById(R.id.p1EngPlus);
+        p1EngMinus = (Button) this.findViewById(R.id.p1EngMinus);
         resetBtn = (Button) this.findViewById(R.id.resetBtn);
+
+        //rect
+        rectP1Plus1 = new RectF(0,0,0,0);
+        rectP1Plus5 = new RectF(0,0,0,0);
+        rectP1Minus1 = new RectF(0,0,0,0);
+        rectP1Minus5 = new RectF(0,0,0,0);
+        rectP1PsnPlus = new RectF(0,0,0,0);
+        rectP1PsnMinus = new RectF(0,0,0,0);
+        rectP1EngPlus = new RectF(0,0,0,0);
+        rectP1EngMinus = new RectF(0,0,0,0);
 
         //デバッグ用
 
@@ -187,6 +212,12 @@ public class MainActivity extends AppCompatActivity {
         fn_translation(p1lifeHistory8, 0, 0, 0, "invisible");
         fn_translation(p1lifeHistory9, 0, 0, 0, "invisible");
 
+        fn_translation(p1Psn_txt1, 0, 0, 1, "invisible");
+        fn_translation(p1Psn_txt2, 0, 0, 1, "invisible");
+        fn_translation(p1Psn_txt3, 0, 0, 1, "invisible");
+        fn_translation(p1Eng_txt1, 0, 0, 1, "invisible");
+        fn_translation(p1Eng_txt2, 0, 0, 1, "invisible");
+        fn_translation(p1Eng_txt3, 0, 0, 1, "invisible");
         scaleAnimatorToXY(container,0,0,1000);
 
         p1LifeList = new ArrayList<>();
@@ -353,43 +384,43 @@ public class MainActivity extends AppCompatActivity {
         };
         p1minus5.setOnTouchListener(p1minus5TouchListener);
         //poison
-        buttonListener p1psnPlusTouchListener = new buttonListener() {
+        buttonCounterListener p1PsnPlusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creaseNum = 1;
-                clipRect = rectP1psnPlus;
+                creasePsnNum = 1;creaseEngNum = 0;
+                clipRect = rectP1PsnPlus;
 
             }
         };
-        p1psnPlus.setOnTouchListener(p1psnPlusTouchListener);
-        buttonListener p1psnMinusTouchListener = new buttonListener() {
+        p1PsnPlus.setOnTouchListener(p1PsnPlusTouchListener);
+        buttonCounterListener p1PsnMinusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creaseNum = 1;
-                clipRect = rectP1psnMinus;
+                creasePsnNum = -1;creaseEngNum = 0;
+                clipRect = rectP1PsnMinus;
 
             }
         };
-        p1psnMinus.setOnTouchListener(p1psnMinusTouchListener);
+        p1PsnMinus.setOnTouchListener(p1PsnMinusTouchListener);
         //energy
-        buttonListener p1engPlusTouchListener = new buttonListener() {
+        buttonCounterListener p1EngPlusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creaseNum = 1;
-                clipRect = rectP1engPlus;
+                creasePsnNum = 0;creaseEngNum = 1;
+                clipRect = rectP1EngPlus;
 
             }
         };
-        p1engPlus.setOnTouchListener(p1engPlusTouchListener);
-        buttonListener p1engMinusTouchListener = new buttonListener() {
+        p1EngPlus.setOnTouchListener(p1EngPlusTouchListener);
+        buttonCounterListener p1EngMinusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creaseNum = 1;
-                clipRect = rectP1engMinus;
+                creasePsnNum = 0;creaseEngNum = -1;
+                clipRect = rectP1EngMinus;
 
             }
         };
-        p1engMinus.setOnTouchListener(p1engMinusTouchListener);
+        p1EngMinus.setOnTouchListener(p1EngMinusTouchListener);
 
         resetBtn.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -438,6 +469,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
             }
         });
+    }
 
                         /*
                         間違えて触ってしまった場合　値が変化してない場合は何も起こさないようにしたいけど
@@ -448,806 +480,6 @@ public class MainActivity extends AppCompatActivity {
 
                         moveで値を変化させて離した時だけフェードが起こらないようにしないといけない
                          */
-/*                                if(p1LifeDistInt > 0)plusminus=1;
-                                else plusminus=-1;
-
-                                fn_lifeDriver(p1GlobalTmp, plusminus);
-                                p1GlobalTmp=0;
-                                tmpState="";
-                                System.out.println("p1plus1 p1GlobalTmp " + p1GlobalTmp);
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        //これ意味ある？
-                        p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        System.out.println("move");
-                        tmpState="move";
-                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
-                        p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
-                        System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
-
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            distTmp = p1LifeDistInt;
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-                        //配列の中身が一つ以上あり、distTmpに値が入っている状態
-                        //tmpの値と違う時＝値が変化した時
-                        if (p1LifeDistInt != distTmp) {
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            System.out.println("p1LifeDistInt " + p1LifeDistInt);
-                            if (p1LifeDriver < 3) {
-                                p1LifeDriver++;
-                            } else {
-                                p1LifeDriver = 0;
-                            }
-                            //省略できそうだけどめんどそう
-                            fn_p1LifeFade(p1LifeIntTemp);
-                            //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                            //p1countの扱いと動作の整理しないといかんなこれは
-                            distTmp = p1LifeDistInt;
-                        }
-                    }
-                    //値が違った場合、違い続けるってことか
-                    if (p1LifeDistIntArr.size() > 2) {
-                        //2より大きくなったらリムーブ
-                        p1LifeDistIntArr.remove(0);
-                    }
-
-                    p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-                    p1LifeIntTemp = p1LifeInt + p1LifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
-
-                    break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
-            }
-            */
-
-/*
-        p1plus5.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouchY = 0;
-            int p1LifeIntTemp = 0;//指を動かしている間の値
-            int p1LifeIntTemp2 = p1LifeInt;//最初の値
-            int p1LifeDistInt;//距離を整数にしたもので、ライフの増減の値としても使っている
-            float p1LifeDistance;//finalは変更を許可しない
-            float s = 3f;
-            int plusminus = 1;
-            int distTmp=0;
-            String tmpState="";
-
-            ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                System.out.println("onTouch lifeDistInt " + p1LifeDistInt);
-                p1LifeIntTemp2 = p1LifeIntTemp;
-
-                //p1txt.setText("p1plus5 onTouch \n");//テキストの編集
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN:{
-                        //p1txt.setText("p1plus5 ACTION_POINTER_DOWN \n");//テキストの編集
-                        //画面がタッチされた場合の処理
-                        int pointerIndex = motionEvent.getActionIndex();
-                        firstTouchY = motionEvent.getY(pointerIndex);
-                        p1LifeDistance = 0;
-                        p1LifeDistInt = 0;//距離を整数にしたもので、ライフの増減の値としても使っている
-                        p1LifeIntTemp = p1LifeInt;//値を渡す
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-
-                        //もしDistIntが０（移動してない）場合は変わりに-5を入れる
-                        if(p1LifeDistInt==0){
-                            p1LifeIntTemp+=5;
-                            p1LifeDistInt=+5;
-                            p1GlobalTmp+=5;
-                        }else{
-                            p1GlobalTmp+=p1LifeDistInt;
-                        }
-                        p1LifeDistIntArr.add(p1LifeDistInt);
-                        //省略できそうだけどめんどそう
-                        //値が変わってるときだけ
-
-                        //値が最初と変わってない限り
-                        if(p1LifeIntTemp!=p1LifeIntTemp2){
-                            fn_p1LifeFade(p1LifeIntTemp);
-                        }
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        //ライフ変動
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        if (p1LifeDriver < 3) {
-                            p1LifeDriver++;
-                        } else {
-                            p1LifeDriver = 0;
-                        }
-                        //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                        //p1countの扱いと動作の整理しないといかんなこれは
-                        distTmp = p1LifeDistInt;
-
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                        //一定時間経ってから実行される　ライフの増減、ヒストリーのアニメーションなどを実行する
-                        delayedUpdate = new Runnable() {
-                            public void run() {
-                                if(p1LifeDistInt > 0)plusminus=1;
-                                else plusminus=-1;
-
-                                fn_lifeDriver(p1GlobalTmp, plusminus);
-                                p1GlobalTmp=0;
-                                tmpState="";
-                                System.out.println("p1plus5 p1GlobalTmp " + p1GlobalTmp);
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        //これ意味ある？
-                        p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        System.out.println("move");
-                        tmpState="move";
-                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
-                        p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
-                        System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
-
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            distTmp = p1LifeDistInt;
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-                        //配列の中身が一つ以上あり、distTmpに値が入っている状態
-                        //tmpの値と違う時＝値が変化した時
-                        if (p1LifeDistInt != distTmp) {
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            System.out.println("p1LifeDistInt " + p1LifeDistInt);
-                            if (p1LifeDriver < 3) {
-                                p1LifeDriver++;
-                            } else {
-                                p1LifeDriver = 0;
-                            }
-                            //省略できそうだけどめんどそう
-                            fn_p1LifeFade(p1LifeIntTemp);
-                            //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                            //p1countの扱いと動作の整理しないといかんなこれは
-                            distTmp = p1LifeDistInt;
-                        }
-                    }
-                    //値が違った場合、違い続けるってことか
-                    if (p1LifeDistIntArr.size() > 2) {
-                        //2より大きくなったらリムーブ
-                        p1LifeDistIntArr.remove(0);
-                    }
-
-                    p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-                    p1LifeIntTemp = p1LifeInt + p1LifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
-
-                    break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
-            }
-        });
-        p1minus1.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouchY = 0;
-            int p1LifeIntTemp = 0;//指を動かしている間の値
-            int p1LifeIntTemp2 = p1LifeInt;//最初の値
-            int p1LifeDistInt;//距離を整数にしたもので、ライフの増減の値としても使っている
-            float p1LifeDistance;//finalは変更を許可しない
-            float s = 3f;
-            int plusminus = 1;
-            int distTmp=0;
-            String tmpState="";
-
-            ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                System.out.println("onTouch lifeDistInt " + p1LifeDistInt);
-                p1LifeIntTemp2 = p1LifeIntTemp;
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN:{
-                        //p1txt.setText("p1minus1 ACTION_POINTER_DOWN \n");//テキストの編集
-                        //画面がタッチされた場合の処理
-                        int pointerIndex = motionEvent.getActionIndex();
-                        firstTouchY = motionEvent.getY(pointerIndex);
-                        p1LifeDistance = 0;
-                        p1LifeDistInt = 0;//距離を整数にしたもので、ライフの増減の値としても使っている
-                        p1LifeIntTemp = p1LifeInt;//値を渡す
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-
-                        //もしDistIntが０（移動してない）場合は変わりに-5を入れる
-                        if(p1LifeDistInt==0){
-                            p1LifeIntTemp-=1;
-                            p1LifeDistInt=-1;
-                            p1GlobalTmp-=1;
-                        }else{
-                            p1GlobalTmp+=p1LifeDistInt;
-                        }
-                        p1LifeDistIntArr.add(p1LifeDistInt);
-                        //省略できそうだけどめんどそう
-                        //値が変わってるときだけ
-
-                        //値が最初と変わってない限り
-                        if(p1LifeIntTemp!=p1LifeIntTemp2){
-                            fn_p1LifeFade(p1LifeIntTemp);
-                        }
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        //ライフ変動
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        if (p1LifeDriver < 3) {
-                            p1LifeDriver++;
-                        } else {
-                            p1LifeDriver = 0;
-                        }
-                        //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                        //p1countの扱いと動作の整理しないといかんなこれは
-                        distTmp = p1LifeDistInt;
-
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                        //一定時間経ってから実行される　ライフの増減、ヒストリーのアニメーションなどを実行する
-                        delayedUpdate = new Runnable() {
-                            public void run() {
-                                if(p1LifeDistInt > 0)plusminus=1;
-                                else plusminus=-1;
-
-                                fn_lifeDriver(p1GlobalTmp, plusminus);
-                                p1GlobalTmp=0;
-                                tmpState="";
-                                System.out.println("p1minus1 p1GlobalTmp " + p1GlobalTmp);
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        //これ意味ある？
-                        p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        System.out.println("move");
-                        tmpState="move";
-                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
-                        p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
-                        System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
-
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            distTmp = p1LifeDistInt;
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-                        //配列の中身が一つ以上あり、distTmpに値が入っている状態
-                        //tmpの値と違う時＝値が変化した時
-                        if (p1LifeDistInt != distTmp) {
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            System.out.println("p1LifeDistInt " + p1LifeDistInt);
-                            if (p1LifeDriver < 3) {
-                                p1LifeDriver++;
-                            } else {
-                                p1LifeDriver = 0;
-                            }
-                            //省略できそうだけどめんどそう
-                            fn_p1LifeFade(p1LifeIntTemp);
-                            //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                            //p1countの扱いと動作の整理しないといかんなこれは
-                            distTmp = p1LifeDistInt;
-                        }
-                    }
-                    //値が違った場合、違い続けるってことか
-                    if (p1LifeDistIntArr.size() > 2) {
-                        //2より大きくなったらリムーブ
-                        p1LifeDistIntArr.remove(0);
-                    }
-
-                    p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-                    p1LifeIntTemp = p1LifeInt + p1LifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
-
-                    break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
-            }
-        });
-        p1minus5.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouchY = 0;
-            int p1LifeIntTemp = 0;//指を動かしている間の値
-            int p1LifeIntTemp2 = p1LifeInt;//最初の値
-            int p1LifeDistInt;//距離を整数にしたもので、ライフの増減の値としても使っている
-            float p1LifeDistance;//finalは変更を許可しない
-            float s = 10f;
-            int plusminus = 1;
-            int distTmp=0;
-            String tmpState="";
-
-            ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                System.out.println("onTouch lifeDistInt " + p1LifeDistInt);
-                p1LifeIntTemp2 = p1LifeIntTemp;
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN:{
-                        //p1txt.setText("p1minus5 ACTION_POINTER_DOWN \n");//テキストの編集
-                        //画面がタッチされた場合の処理
-                        int pointerIndex = motionEvent.getActionIndex();
-                        firstTouchY = motionEvent.getY(pointerIndex);
-                        p1LifeDistance = 0;
-                        p1LifeDistInt = 0;//距離を整数にしたもので、ライフの増減の値としても使っている
-                        p1LifeIntTemp = p1LifeInt;//値を渡す
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        distTmp=0;
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        //タッチが離れた場合の処理
-                        //int pointerIndex = motionEvent.getActionIndex();
-
-
-                        //tmpの値と違う時＝値が変化した時
-                        //値が同じ＝移動してないとき
-                        //if (p1LifeDistInt == 0) {
-
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-
-                        //もしDistIntが０（移動してない）場合は変わりに-5を入れる
-                        if(p1LifeDistInt==0){
-                            p1LifeIntTemp-=5;
-                            p1LifeDistInt=-5;
-                            p1GlobalTmp-=5;
-                        }else{
-                            p1GlobalTmp+=p1LifeDistInt;
-                        }
-                        p1LifeDistIntArr.add(p1LifeDistInt);
-                        //省略できそうだけどめんどそう
-                        //値が変わってるときだけ
-
-                        //値が最初と変わってない限り
-                        if(p1LifeIntTemp!=p1LifeIntTemp2){
-                            fn_p1LifeFade(p1LifeIntTemp);
-                        }
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        //ライフ変動
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        if (p1LifeDriver < 3) {
-                            p1LifeDriver++;
-                        } else {
-                            p1LifeDriver = 0;
-                        }
-                        //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                        //p1countの扱いと動作の整理しないといかんなこれは
-                        distTmp = p1LifeDistInt;
-
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                        //一定時間経ってから実行される　ライフの増減、ヒストリーのアニメーションなどを実行する
-                        delayedUpdate = new Runnable() {
-                            public void run() {
-                                if(p1LifeDistInt > 0)plusminus=1;
-                                else plusminus=-1;
-
-                                fn_lifeDriver(p1GlobalTmp, plusminus);
-                                p1GlobalTmp=0;
-                                tmpState="";
-                                System.out.println("p1minus5 p1GlobalTmp " + p1GlobalTmp);
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        //これ意味ある？
-                        p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        System.out.println("move");
-                        tmpState="move";
-                        p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
-                        p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
-                        System.out.println("ACTION_MOVE p1LifeDistInt " + p1LifeDistInt);
-
-                        if (p1LifeDistIntArr.size() == 0) {
-                            //初回
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            distTmp = p1LifeDistInt;
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-                        //配列の中身が一つ以上あり、distTmpに値が入っている状態
-                        //tmpの値と違う時＝値が変化した時
-                        if (p1LifeDistInt != distTmp) {
-                            p1LifeDistIntArr.add(p1LifeDistInt);
-                            System.out.println("p1LifeDistInt " + p1LifeDistInt);
-                            if (p1LifeDriver < 3) {
-                                p1LifeDriver++;
-                            } else {
-                                p1LifeDriver = 0;
-                            }
-                            //省略できそうだけどめんどそう
-                            fn_p1LifeFade(p1LifeIntTemp);
-                            //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                            //p1countの扱いと動作の整理しないといかんなこれは
-                            distTmp = p1LifeDistInt;
-                        }
-                    }
-                    //値が違った場合、違い続けるってことか
-                    if (p1LifeDistIntArr.size() > 2) {
-                        //2より大きくなったらリムーブ
-                        p1LifeDistIntArr.remove(0);
-                    }
-
-                    p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-                    p1LifeIntTemp = p1LifeInt + p1LifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
-
-                    break;
-                }
-                return false ;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
-            }
-        });
-
-*/
-        /*
-        p1plus1.setOnClickListener(new View.OnClickListener() {
-            int p1LifeIntTemp = 0;//指を動かしている間の値
-            int plusminus = 1;
-            int distTmp=0;
-            float sx = 10f,sy=10f;
-
-            ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-            @Override
-            public void onClick(View view) {
-                System.out.println("p1plus1");
-
-                p1LifeIntTemp = p1LifeInt;//値を渡す
-
-                //最初にクリックされた時間を取得し、そこから何秒か以内に再びクリックされた場合は
-                //その回数を数えておく
-
-                p1LifeIntTemp = p1LifeInt + 1;//一時的なライフの数値。基本的にライフの数値と同じであるべきなはず
-                p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-                //距離は測ってないのでif文は不要・・・のはず
-                //if (p1BtnClickCnt != distTmp) {
-                p1LifeDistIntArr.add(p1BtnClickCnt);
-                if (p1LifeDriver < 4) {
-                    p1LifeDriver++;
-                } else {
-                    p1LifeDriver = 0;
-                }
-                switch (p1LifeDriver) {
-                    case 0:
-                        fn_translation(p1Life_txt1, 0, 0, sx, sy, 800, "fadeout2");
-                        p1Life_txt1.setText("" + (p1LifeIntTemp));//ここは関係ないはず
-                        break;
-                    case 1:
-                        fn_translation(p1Life_txt2, 0, 0, sx, sy, 800, "fadeout2");
-                        p1Life_txt2.setText("" + (p1LifeIntTemp));//p1LifeInt + p1LifeDistIntArr.get(0)
-                        break;
-                    case 2:
-                        fn_translation(p1Life_txt3, 0, 0, sx, sy, 800, "fadeout2");
-                        p1Life_txt3.setText("" + (p1LifeIntTemp));
-                        break;
-                    case 3:
-                        fn_translation(p1Life_txt4, 0, 0, sx, sy, 800, "fadeout2");
-                        p1Life_txt4.setText("" + (p1LifeIntTemp));
-                        break;
-                    case 4:
-                        fn_translation(p1Life_txt5, 0, 0, sx, sy, 800, "fadeout2");
-                        p1Life_txt5.setText("" + (p1LifeIntTemp));
-                        break;
-                }
-                //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                //p1countの扱いと動作の整理しないといかんなこれは
-                distTmp = p1BtnClickCnt;
-                //}
-
-
-                //タッチが離れた場合の処理
-                p1LifeInt += 1;//値を渡し返す　ここに入れないと値が巻き戻る
-                mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                delayedUpdate = new Runnable() {
-                    public void run(){
-                        fn_lifeDriver(p1BtnClickCnt,plusminus);
-                        p1BtnClickCnt =0;
-                    }
-                };
-                mHandler.postDelayed(delayedUpdate, 1000);
-
-            }
-        });
-*/
-
-                /*
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: {
-                        p1LifeIntTemp = p1LifeInt;//値を渡す
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        //タッチが離れた場合の処理
-                        p1LifeInt = p1LifeIntTemp+1;//値を渡し返す　ここに入れないと値が巻き戻るmHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                        delayedUpdate = new Runnable() {
-                            public void run(){
-                                fn_lifeDriver(p1BtnClickCnt,plusminus);
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        break;
-                    }
-                }
-                return true;
-            */
-
-/*
-        p1plus1.setOnTouchListener(new View.OnTouchListener() {
-            int p1LifeIntTemp = 0;//指を動かしている間の値
-            int plusminus = 1;
-            int distTmp=0;
-            int p1LifeDistInt=100;
-
-            ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: {
-                        p1LifeDistInt = 0;
-                        p1LifeIntTemp = p1LifeInt;//値を渡す
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        //タッチが離れた場合の処理
-                        p1LifeInt = p1LifeIntTemp+1;//値を渡し返す　ここに入れないと値が巻き戻るmHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                        delayedUpdate = new Runnable() {
-                            public void run(){
-                                fn_lifeDriver(p1LifeDistInt,plusminus);
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-        */
-
-                        /*
-                        p1LifeDistance
-                        p1LifeDistInt
-                        p1LifeIntTemp
-                        p1LifeDistIntArr
-                         */
-                        /*
-                        p1txt.setText("p1txt ACTION_POINTER_DOWN \n"+" firstTouchY "+firstTouchY
-                                +"\n p1LifeInt:"+p1LifeInt+"  p1LifeIntTemp: " + p1LifeIntTemp
-                                +" \n p1LifeDistance: "+p1LifeDistance
-                                +" \n p1LifeDistInt: "+p1LifeDistInt
-                                +" \n p1LifeList.size() "+p1LifeList.size()
-                                +" \n p1LifeDistIntArr.size "+p1LifeDistIntArr.size());//テキストの編集
-                                */
-                        /*
-                        p1LifeDistIntArr.add(p1LifeDistInt);
-                        if(p1LifeDistIntArr.size()>4) {
-                            //p1txt.setText("p1LifeDistInt "+p1LifeDistInt+" (0) "+p1LifeDistIntArr.get(0) +" (1) " +p1LifeDistIntArr.get(1)  +" (2): " +p1LifeDistIntArr.get(2)  +" (3): " +p1LifeDistIntArr.get(3) );//テキストの編集
-                            p1LifeDistIntArr.remove(0);
-                            if(p1LifeDistIntArr.get(0)!=p1LifeDistIntArr.get(1)){
-                                if(p1LifeDistIntArr.get(0)<p1LifeDistIntArr.get(1)){plusminus = -1;}else{plusminus=1;}
-                                if (p1countLife < 5) {
-                                    p1countLife++;
-                                } else {
-                                    p1countLife = 0;
-                                }
-                                switch (p1countLife) {
-                                    case 0:
-                                        fn_translation(p1Life_txt1, 0, plusminus*800, sx, sy, 800, "fadeout2");
-                                        p1Life_txt1.setText(""+(p1LifeInt));//ここは関係ないはず
-                                        break;
-                                    case 1:
-                                        fn_translation(p1Life_txt2, 0, plusminus*800, sx, sy, 800, "fadeout2");
-                                        p1Life_txt2.setText(""+(p1LifeInt));//p1LifeInt + p1LifeDistIntArr.get(0)
-                                        break;
-                                    case 2:
-                                        fn_translation(p1Life_txt3, 0, plusminus*800, sx, sy, 800, "fadeout2");
-                                        p1Life_txt3.setText(""+(p1LifeInt));
-                                        break;
-                                    case 3:
-                                        fn_translation(p1Life_txt4, 0, plusminus*800, sx, sy, 800, "fadeout2");
-                                        p1Life_txt4.setText(""+(p1LifeInt));
-                                        break;
-                                    case 4:
-                                        fn_translation(p1Life_txt5, 0, plusminus*800, sx, sy, 800, "fadeout2");
-                                        p1Life_txt5.setText(""+(p1LifeInt));
-                                        break;
-                                }
-                                break;
-
-                            }
-                        }
-                                */
-                              /*
-                                if(p1LifeDistInt==0){
-                                }else if(plusminus==1){
-                                    //p1LifeList.add(String.format(Locale.US, p1LifeInt + "", number + 1));
-                                    p1LifeList.add( p1LifeInt + " (" + p1LifeDistInt + ")" );
-                                    if (p1LifeHisDriver < 4) {
-                                        p1LifeHisDriver++;
-                                    } else {
-                                        p1LifeHisDriver = 0;
-                                    }
-                                    //リストに突っ込んだ状態で動かす
-                                    if (isP1LifeHisMax) {
-                                        fn_p1LifeHisMove2(p1LifeList);
-                                    } else {
-                                        fn_p1LifeHisMove1(p1LifeList);
-                                    }
-                                }else{
-                                    //p1LifeList.add(String.format(Locale.US, p1LifeInt + "", number + 1));
-                                    p1LifeList.add( p1LifeInt + " (+" + p1LifeDistInt + ")" );
-                                    if (p1LifeHisDriver < 4) {
-                                        p1LifeHisDriver++;
-                                    } else {
-                                        p1LifeHisDriver = 0;
-                                    }
-                                    //リストに突っ込んだ状態で動かす
-                                    if (isP1LifeHisMax) {
-                                        fn_p1LifeHisMove2(p1LifeList);
-                                    } else {
-                                        fn_p1LifeHisMove1(p1LifeList);
-                                    }
-                                }*/
-        //p1txt.setText("number " + number);//テキストの編集
-        //p1txt.setText("arr.get(0) " + p1LifeList.get(0));//テキストの編集
-                                /*
-                                if (p1LifeHisDriver < 4) {
-                                    p1LifeHisDriver++;
-                                    p1txt.setText("p1LifeHisDriver "+p1LifeHisDriver
-                                            +"\n isP1LifeHisMax " +isP1LifeHisMax
-                                            +"\n p1LifeList.size() "+p1LifeList.size()
-                                    );
-                                } else {
-                                    p1LifeHisDriver = 0;
-                                    p1txt.setText("p1LifeHisDriver "+p1LifeHisDriver
-                                            +"\n isP1LifeHisMax " +isP1LifeHisMax
-                                            +"\n p1LifeList.size() "+p1LifeList.size()
-                                    );
-                                }*/
-                                /*
-                                if (!isP1LifeHisMax && p1LifeHisDriver == 4) {
-                                    isP1LifeHisMax = true;
-                                    p1txt.setText("p1LifeHisDriver "+p1LifeHisDriver
-                                            +"\n isP1LifeHisMax " +isP1LifeHisMax
-                                            +"\n p1LifeList.size() "+p1LifeList.size()
-                                    );
-                                }
-                                */
-        /*
-        p1plus1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: {
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        break;
-                    }
-                }
-                return true;
-            }
-        });
-        */
-    }
-
-
-/*
-        mButton = (Button) this.findViewById(R.id.obj6);
-        mButton.setText("open");
-
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            //最大数できるまでの動き
-
-            //3のときにボタンをおすと、カウントが４になってopenMenuにはいり
-            //４だったときカウントが０になってclosemenuにはいる
-            //カウントが４のときのopenmenuの動作はない
-
-
-            if(p1LifeHisDriver <4){
-                p1LifeHisDriver++;
-            }else{
-                p1LifeHisDriver =0;
-            }
-            if(!isP1LifeHisMax&&p1LifeHisDriver==4){
-                isP1LifeHisMax=true;
-            }
-
-            if(isP1LifeHisMax){
-                fn_p1LifeHisMove2();
-            }else{
-                fn_p1LifeHisMove1();
-            }
-
-            if( p1countLife <4){
-                p1countLife++;
-            }else{
-                p1countLife=0;
-            }
-      //  private ValueAnimator fn_translation(View target, float toTX, float toTY, float toSX, float toSY, long duration, String fade) {
-            switch(p1countLife){
-                case 0:fn_translation(p1Life_txt1,0,800,0.8f,1,800,"fadeout");
-                    break;
-                case 1:fn_translation(p1Life_txt2,100,800,0.8f,1,800,"fadeout");
-                    break;
-                case 2:fn_translation(p1Life_txt3,200,800,0.8f,1,800,"fadeout");
-                    break;
-                case 3:fn_translation(p1Life_txt4,300,800,0.8f,1,800,"fadeout");
-                    break;
-                case 4:fn_translation(p1Life_txt5,400,800,0.8f,1,800,"fadeout");
-                    break;
-            }
-
-            }
-        });
-
-/*
-        AnimationSampleFragment f = new AnimationSampleFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,f).commit();
-        */
-/*
-    // TextViewを追加するメソッド
-    //リスナーの中ではthisは使えないので、クリックしたときにボタンを生成するのはできないのでは
-    //リスナーの中でメソッドを使いたい場合は、その中にあるものしか使えない感 privateだからかな？
-    //結局contextという謎の存在を解決できないのでどうしようもない
-    public void addTextView(String message) {
-        // TextViewを作成してテキストを設定
-        TextView tv = new TextView(this);
-        tv.setText(message);
-
-        // 親のViewGroupを取得して、Viewを追加
-        RelativeLayout lay = (RelativeLayout)this.findViewById(R.id.linearlayout01);
-        lay.addView(tv);
-    }
-    */
 
     //p1Life_txt p1LifeInt lifeDistInt plusminus p1LifeHisDriver isP1LifeHisMax
     public void fn_lifeDriver(int lifeDistInt,int plusminus) {
@@ -1330,7 +562,6 @@ public class MainActivity extends AppCompatActivity {
 
         int creaseNum;
         RectF clipRect;
-        effectCircle circ;
 
         ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
 
@@ -1493,7 +724,196 @@ public class MainActivity extends AppCompatActivity {
             creaseNum = 1;
         }
     }
+    //カウンター用のボタンリスナー
+    class buttonCounterListener implements View.OnTouchListener {
+        float firstTouchX=0,firstTouchY = 0,releaseX,releaseY;
+        int p1LifeIntTemp = 0;//指を動かしている間の値
+        int p1LifeIntTemp2 = p1LifeInt;//最初の値
+        int p1LifeDistInt;
+        float p1LifeDistance;//finalは変更を許可しない
+        float s = 3f;
+        int plusminus = 1;
+        int distTmp=0;
+        String tmpState="";
 
+        int creasePsnNum,creaseEngNum;
+        RectF clipRect;
+
+        ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
+
+        TextView p1txt = (TextView) findViewById(R.id.p1textView);//debug用
+        TextView p1txt2 = (TextView) findViewById(R.id.p1textView2);//debug用
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            setVariables();
+            switch (motionEvent.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent); break;
+                case MotionEvent.ACTION_MOVE: actionMove(motionEvent); break;
+                case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
+            }
+            return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
+        }
+        public void actionPointerDown(MotionEvent motionEvent){
+            //画面がタッチされた場合の処理
+            int pointerIndex = motionEvent.getActionIndex();
+            firstTouchY = motionEvent.getY(pointerIndex);
+            firstTouchX = motionEvent.getX(pointerIndex);
+            p1LifeDistance = 0;
+            p1LifeDistInt = 0;
+            p1LifeIntTemp = p1LifeInt;//値を渡す
+            p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+            p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
+        }
+        public void actionPointerUp(MotionEvent motionEvent){
+            releaseX = motionEvent.getX();
+            releaseY = motionEvent.getY();
+            //System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
+            System.out.println("releaseX:" + releaseX + " releaseY:"+releaseY);
+            System.out.println("clipRect.left:" + clipRect.left + " clipRect.top:"+clipRect.top);
+            //タッチが離れた場合の処理
+            AnimationEffectCircle animation = new AnimationEffectCircle(circP1Plus1,releaseX+clipRect.left,releaseY+clipRect.top, clipRect);
+            // アニメーションの起動期間を設定
+            animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+            animationPeriod = 800;
+            animation.setDuration(animationPeriod);
+            circP1Plus1.startAnimation(animation);
+            Animator alpha = alphaAnimator(circP1Plus1,200,"fadeout2");
+            alpha.start();
+
+            //ライフ変動
+            p1PsnInt += creasePsnNum;
+            p1EngInt += creaseEngNum;
+            p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+            p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
+            if (p1PsnDriver < 2) {
+                p1PsnDriver++;
+            } else {
+                p1PsnDriver = 0;
+            }
+            if (p1EngDriver < 2) {
+                p1EngDriver++;
+            } else {
+                p1EngDriver = 0;
+            }
+            fn_p1PsnFade(p1PsnInt);
+            //fn_p1LifeFade(p1LifeIntTemp);
+            System.out.println("p1PsnInt:" + p1PsnInt);
+
+            /*
+            if (p1LifeDistIntArr.size() == 0) {
+                //初回
+                p1LifeDistIntArr.add(p1LifeDistInt);
+                //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
+            }
+            //もしDistIntが０（移動してない）場合は変わりに-5を入れる
+            if (p1LifeDistInt == 0) {
+                p1LifeIntTemp += creaseNum;
+                p1LifeDistInt = +creaseNum;
+                p1GlobalTmp += creaseNum;
+            } else {
+                p1GlobalTmp += p1LifeDistInt;
+            }
+            p1LifeDistIntArr.add(p1LifeDistInt);
+            //値が最初と変わってない限り
+            if (p1LifeIntTemp != p1LifeIntTemp2) {
+                fn_p1LifeFade(p1LifeIntTemp);
+            }
+
+            p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
+            //ライフ変動
+            p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
+            if (p1LifeDriver < 3) {
+                p1LifeDriver++;
+            } else {
+                p1LifeDriver = 0;
+            }
+            //動くようにはなったけど、今度リストが追加されなくなってしまった。
+            //p1countの扱いと動作の整理しないといかんなこれは
+            distTmp = p1LifeDistInt;
+
+            p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
+
+            System.out.println("iffff     p1GlobalTmp " + p1GlobalTmp);
+            p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouchY " + firstTouchY
+                    + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
+                    + " \n p1LifeHisDriver: " + p1LifeHisDriver
+                    + " \n p1LifeDistance: " + p1LifeDistance
+                    + " \n p1LifeDistInt: " + p1LifeDistInt
+                    + " \n p1LifeList.size() " + p1LifeList.size()
+                    + " \n p1GlobalTmp " + p1GlobalTmp
+                    + " \n p1LifeDistIntArr.size " + p1LifeDistIntArr.size());//テキストの編集
+            mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
+            delayedUpdate = new Runnable() {
+                public void run() {
+                    if(p1GlobalTmp!=0) {
+                        fn_lifeDriver(p1GlobalTmp, plusminus);
+                        p1GlobalTmp = 0;
+                        tmpState = "";
+                    }
+                }
+            };
+            mHandler.postDelayed(delayedUpdate, 1000);
+            //これ意味ある？
+            p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
+            */
+        }
+        public void actionMove(MotionEvent motionEvent){
+            System.out.println("actionMove \n");
+            p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
+            p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
+
+            if (p1LifeDistIntArr.size() == 0) {
+                //初回
+                p1LifeDistIntArr.add(p1LifeDistInt);
+
+                p1txt2.setText("初回 \n distTmp " + distTmp);
+                p1txt.setText("p1LifeDriver \n" + p1LifeDriver
+                        + " \n p1LifeDistInt: " + p1LifeDistInt
+                        + " \n distTmp: " + distTmp
+                        + " \n p1LifeDistIntArr.size() " + p1LifeDistIntArr.size()
+                );
+                distTmp = p1LifeDistInt;
+                //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
+            }
+
+            //配列の中身が一つ以上あり、distTmpに値が入っている状態
+            p1txt.setText("p1LifeDriver \n" + p1LifeDriver
+                    + " \n p1LifeDistInt: " + p1LifeDistInt
+                    + " \n distTmp: " + distTmp
+                    + " \n p1LifeDistIntArr.size() " + p1LifeDistIntArr.size()
+            );
+            if (p1LifeDistInt != distTmp) {
+                p1LifeDistIntArr.add(p1LifeDistInt);
+                if (p1LifeDriver < 3) {
+                    p1LifeDriver++;
+                } else {
+                    p1LifeDriver = 0;
+                }
+                //省略できそうだけどめんどそう
+                fn_p1LifeFade(p1LifeIntTemp);
+                //動くようにはなったけど、今度リストが追加されなくなってしまった。
+                //p1countの扱いと動作の整理しないといかんなこれは
+                distTmp = p1LifeDistInt;
+                p1txt2.setText("p1LifeDistInt!=distTmp \n distTmp " + distTmp);
+            }
+            //値が違った場合、違い続けるってことか
+            if (p1LifeDistIntArr.size() > 2) {
+                //2より大きくなったらリムーブ
+                p1LifeDistIntArr.remove(0);
+                p1txt2.setText("2より大きくなったらリムーブ \n distTmp " + distTmp);
+            }
+
+            p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
+            p1LifeIntTemp = p1LifeInt + p1LifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
+        }
+        public void setVariables(){
+            creasePsnNum = 1;creaseEngNum = 0;
+        }
+    }
     //ライフが変動した時の半透明な文字
     public void fn_p1LifeFade(int lifeIntTemp){
         float toTY = -30;
@@ -1520,6 +940,24 @@ public class MainActivity extends AppCompatActivity {
                 p1Life_txt5.setText("" + (lifeIntTemp));
                 break;
                 */
+        }
+    }
+    //ライフが変動した時の半透明な文字
+    public void fn_p1PsnFade(int lifeIntTemp){
+        float toTY = -30;
+        switch (p1PsnDriver) {
+            case 0:
+                fn_translation(p1Psn_txt1, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p1Psn_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                break;
+            case 1:
+                fn_translation(p1Psn_txt2, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p1Psn_txt2.setText(""+lifeIntTemp);//p1LifeInt + p1LifeDistIntArr.get(0)
+                break;
+            case 2:
+                fn_translation(p1Psn_txt3, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p1Psn_txt3.setText(""+lifeIntTemp);
+                break;
         }
     }
     private void fn_p1LifeHisMove1(ArrayList<String> arr) {
@@ -1598,57 +1036,7 @@ public class MainActivity extends AppCompatActivity {
                 p1lifeHistory9.setText( arr.get(8) );
                 break;
         }
-/*
-    private void fn_p1LifeHisMove1(ArrayList<String> arr) {
-        int baseNum=0;
-        switch(p1LifeHisDriver){
-            case 0:
-                baseNum=8;
-                fn_translation(p1lifeHistory1,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*0),lifeHisTransDuration,"fadein");
-                p1lifeHistory1.setText( arr.get(0) );
-                break;
-            case 1:
-                num=7;
-                fn_translation(p1lifeHistory2,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory2.setText( arr.get(1) );
-                break;
-            case 2:
-                num=6;
-                fn_translation(p1lifeHistory3,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory3.setText( arr.get(2) );
-                break;
-            case 3:
-                num=5;
-                fn_translation(p1lifeHistory4,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory4.setText( arr.get(3) );
-                break;
-            case 4:
-                num=4;
-                fn_translation(p1lifeHistory5,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory5.setText( arr.get(4) );
-                break;
-            case 5:
-                num=3;
-                fn_translation(p1lifeHistory6,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory6.setText( arr.get(5) );
-                break;
-            case 6:
-                num=2;
-                fn_translation(p1lifeHistory7,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory7.setText( arr.get(6) );
-                break;
-            case 7:
-                num=1;
-                fn_translation(p1lifeHistory8,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory8.setText( arr.get(7) );
-                break;
-            case 8:
-                num=0;
-                fn_translation(p1lifeHistory9,hisTxtMove*(num+1),hisTxtMove*num,lifeHisTransDuration,"fadein");
-                p1lifeHistory9.setText( arr.get(8) );
-                break;
-        }
-        */
+
         Animator animator = rotateAnimator(mButton);
         animator.setInterpolator(new DecelerateInterpolator());
         animator.start();
@@ -2138,9 +1526,9 @@ public class MainActivity extends AppCompatActivity {
         rectP1Minus1 = new RectF(p1minus1.getLeft(),p1minus1.getTop(),p1minus1.getRight(),p1minus1.getBottom());
         rectP1Minus5 = new RectF(p1minus5.getLeft(),p1minus5.getTop(),p1minus5.getRight(),p1minus5.getBottom());
 
-        rectP1psnPlus = new RectF(p1psnPlus.getLeft(),p1psnPlus.getTop(),p1psnPlus.getRight(),p1psnPlus.getBottom());
-        rectP1psnMinus = new RectF(p1psnMinus.getLeft(),p1psnMinus.getTop(),p1psnMinus.getRight(),p1psnMinus.getBottom());
-        rectP1engPlus = new RectF(p1engPlus.getLeft(),p1engPlus.getTop(),p1engPlus.getRight(),p1engPlus.getBottom());
-        rectP1engMinus = new RectF(p1engMinus.getLeft(),p1engMinus.getTop(),p1engMinus.getRight(),p1engMinus.getBottom());
+        rectP1PsnPlus = new RectF(p1PsnPlus.getLeft(),p1PsnPlus.getTop(),p1PsnPlus.getRight(),p1PsnPlus.getBottom());
+        rectP1PsnMinus = new RectF(p1PsnMinus.getLeft(),p1PsnMinus.getTop(),p1PsnMinus.getRight(),p1PsnMinus.getBottom());
+        rectP1EngPlus = new RectF(p1EngPlus.getLeft(),p1EngPlus.getTop(),p1EngPlus.getRight(),p1EngPlus.getBottom());
+        rectP1EngMinus = new RectF(p1EngMinus.getLeft(),p1EngMinus.getTop(),p1EngMinus.getRight(),p1EngMinus.getBottom());
     }
 }
