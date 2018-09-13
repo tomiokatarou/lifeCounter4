@@ -79,12 +79,13 @@ public class MainActivity extends AppCompatActivity {
     private Runnable delayedUpdate;
 
     //フォントサイズ style.xmlで定義してる
-    final int hisTxtMove = 110;//移動量 110
+    final int hisTxtMove = 90;//移動量 110
     float fadeFontScale = 1.2f;//3
     float fadeCounterFontScale = 2.0f;//カウンターの数字の1フェードのスケール
 
     //グローバルな増減値
-    final int p1GlobalTmp=0,p2GlobalTmp=0;
+    int p1GlobalTmp=0;
+    int p2GlobalTmp=0;
 
     long lifeScaleDuration=200;
     long lifeHisTransDuration=700;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private effectCircle circP1Plus1;
     private int animationPeriod = 2000;
 
+    ConstraintLayout p2Layout;
     public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1PsnPlus,rectP1PsnMinus,rectP1EngPlus,rectP1EngMinus;
     public RectF rectP2Plus1,rectP2Plus5,rectP2Minus1,rectP2Minus5,rectP2PsnPlus,rectP2PsnMinus,rectP2EngPlus,rectP2EngMinus;
     //debug----------------------------------------------------------------------------------------------
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         //final ConstraintLayout relativeLayout_o = (ConstraintLayout) findViewById(R.id.fragment_animation_sample);
         final ConstraintLayout p1Layout_o = (ConstraintLayout) findViewById(R.id.p1Layout);
         final ConstraintLayout p2Layout_o = (ConstraintLayout) findViewById(R.id.p2Layout);
+        p2Layout = (ConstraintLayout) findViewById(R.id.p2Layout);
 
         //オブジェクトの生成
         p1Life_txt = (TextView) this.findViewById(R.id.p1Life_txt);
@@ -268,6 +271,17 @@ public class MainActivity extends AppCompatActivity {
         p2EngUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p2EngDownArrow = (ImageView) findViewById(R.id.p2EngDownArrow);
         p2EngDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
+        //counter
+        int colorWhite = getResources().getColor(R.color.colorWhite);
+        ImageView p1EngImg = (ImageView) findViewById(R.id.p1EngImg);
+        p1EngImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        ImageView p1PsnImg = (ImageView) findViewById(R.id.p1PsnImg);
+        p1PsnImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        ImageView p2EngImg = (ImageView) findViewById(R.id.p2EngImg);
+        p2EngImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        ImageView p2PsnImg = (ImageView) findViewById(R.id.p2PsnImg);
+        p2PsnImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
         //リセットボタン
         int colorPink = getResources().getColor(R.color.colorPink);
         ImageView resetBtnImg = (ImageView) findViewById(R.id.resetBtnImg);
@@ -330,6 +344,8 @@ public class MainActivity extends AppCompatActivity {
 
         circ = (Circle) findViewById(R.id.circle);
         circP1Plus1 = (effectCircle) findViewById(R.id.circP1Plus1);
+        Animator alpha = alphaAnimator(circP1Plus1,1,"Visible");
+        alpha.start();
         //----------------------------------------------------------------------------------------------
 
 
@@ -456,81 +472,41 @@ public class MainActivity extends AppCompatActivity {
 
         buttonListener p1plus1TouchListener = new buttonListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void setVariables(){
                 creaseNum = 1;
                 clipRect = rectP1Plus1;
                 lifeInt = p1LifeInt;
-                life_txt = p1Life_txt;
-                lifeIntTemp2 = lifeIntTemp;
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,p1LifeDriver,p1GlobalTmp); break;
-                    case MotionEvent.ACTION_MOVE: actionMove(motionEvent,p1LifeDriver); break;
-                    case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
+                p="p1";
             }
         };
         p1plus1.setOnTouchListener(p1plus1TouchListener);
         buttonListener p1plus5TouchListener = new buttonListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void setVariables(){
                 creaseNum = 5;
                 clipRect = rectP1Plus5;
                 lifeInt = p1LifeInt;
-                life_txt = p1Life_txt;
-                lifeIntTemp2 = lifeIntTemp;
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,p1LifeDriver,p1GlobalTmp; break;
-                    case MotionEvent.ACTION_MOVE: actionMove(motionEvent,p1LifeDriver); break;
-                    case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
+                p="p1";
             }
         };
         p1plus5.setOnTouchListener(p1plus5TouchListener);
         buttonListener p1minus1TouchListener = new buttonListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void setVariables(){
                 creaseNum = -1;
                 clipRect = rectP1Minus1;
                 lifeInt = p1LifeInt;
-                life_txt = p1Life_txt;
-                lifeIntTemp2 = lifeIntTemp;
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,p1LifeDriver,p1GlobalTmp); break;
-                    case MotionEvent.ACTION_MOVE: actionMove(motionEvent,p1LifeDriver); break;
-                    case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
+                p="p1";
             }
         };
         p1minus1.setOnTouchListener(p1minus1TouchListener);
         buttonListener p1minus5TouchListener = new buttonListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
+            public void setVariables(){
                 creaseNum = -5;
                 clipRect = rectP1Minus5;
                 lifeInt = p1LifeInt;
-                life_txt = p1Life_txt;
-                lifeIntTemp2 = lifeIntTemp;
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,p1LifeDriver,p1GlobalTmp); break;
-                    case MotionEvent.ACTION_MOVE: actionMove(motionEvent,p1LifeDriver); break;
-                    case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
+                p="p1";
             }
         };
         p1minus5.setOnTouchListener(p1minus5TouchListener);
@@ -540,7 +516,7 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = 1;creaseEngNum = 0;
                 clipRect = rectP1PsnPlus;
-
+                p="p1";
             }
         };
         p1PsnPlus.setOnTouchListener(p1PsnPlusTouchListener);
@@ -549,7 +525,7 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = -1;creaseEngNum = 0;
                 clipRect = rectP1PsnMinus;
-
+                p="p1";
             }
         };
         p1PsnMinus.setOnTouchListener(p1PsnMinusTouchListener);
@@ -559,7 +535,7 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = 0;creaseEngNum = 1;
                 clipRect = rectP1EngPlus;
-
+                p="p1";
             }
         };
         p1EngPlus.setOnTouchListener(p1EngPlusTouchListener);
@@ -568,12 +544,11 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = 0;creaseEngNum = -1;
                 clipRect = rectP1EngMinus;
-
+                p="p1";
             }
         };
         p1EngMinus.setOnTouchListener(p1EngMinusTouchListener);
 
-        /*
         //-----------------------------------
         buttonListener p2plus1TouchListener = new buttonListener() {
             @Override
@@ -581,9 +556,7 @@ public class MainActivity extends AppCompatActivity {
                 creaseNum = 1;
                 clipRect = rectP2Plus1;
                 lifeInt = p2LifeInt;
-                life_txt = p2Life_txt;
-                globalTmp = p2GlobalTmp;
-                lifeDriver = p2LifeDriver;
+                p="p2";
             }
         };
         p2plus1.setOnTouchListener(p2plus1TouchListener);
@@ -593,10 +566,7 @@ public class MainActivity extends AppCompatActivity {
                 creaseNum = 5;
                 clipRect = rectP2Plus5;
                 lifeInt = p2LifeInt;
-                life_txt = p2Life_txt;
-                globalTmp = p2GlobalTmp;
-                lifeDriver = p2LifeDriver;
-
+                p="p2";
             }
         };
         p2plus5.setOnTouchListener(p2plus5TouchListener);
@@ -606,9 +576,7 @@ public class MainActivity extends AppCompatActivity {
                 creaseNum = -1;
                 clipRect = rectP2Minus1;
                 lifeInt = p2LifeInt;
-                life_txt = p2Life_txt;
-                globalTmp = p2GlobalTmp;
-                lifeDriver = p2LifeDriver;
+                p="p2";
             }
         };
         p2minus1.setOnTouchListener(p2minus1TouchListener);
@@ -618,9 +586,7 @@ public class MainActivity extends AppCompatActivity {
                 creaseNum = -5;
                 clipRect = rectP2Minus5;
                 lifeInt = p2LifeInt;
-                life_txt = p2Life_txt;
-                globalTmp = p2GlobalTmp;
-                lifeDriver = p2LifeDriver;
+                p="p2";
             }
         };
         p2minus5.setOnTouchListener(p2minus5TouchListener);
@@ -630,7 +596,7 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = 1;creaseEngNum = 0;
                 clipRect = rectP2PsnPlus;
-
+                p="p2";
             }
         };
         p2PsnPlus.setOnTouchListener(p2PsnPlusTouchListener);
@@ -639,7 +605,7 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = -1;creaseEngNum = 0;
                 clipRect = rectP2PsnMinus;
-
+                p="p2";
             }
         };
         p2PsnMinus.setOnTouchListener(p2PsnMinusTouchListener);
@@ -649,20 +615,19 @@ public class MainActivity extends AppCompatActivity {
             public void setVariables(){
                 creasePsnNum = 0;creaseEngNum = 1;
                 clipRect = rectP2EngPlus;
-
+                p="p2";
             }
         };
         p2EngPlus.setOnTouchListener(p2EngPlusTouchListener);
         buttonCounterListener p2EngMinusTouchListener = new buttonCounterListener() {
             @Override
-            public void setVariables(float lifeDriver){
+            public void setVariables(){
                 creasePsnNum = 0;creaseEngNum = -1;
                 clipRect = rectP2EngMinus;
-
+                p="p2";
             }
         };
         p2EngMinus.setOnTouchListener(p2EngMinusTouchListener);
-        */
 
         resetBtn.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -690,6 +655,8 @@ public class MainActivity extends AppCompatActivity {
                                 isP1LifeHisMax = false;
                                 p1LifeList = new ArrayList<>();
                                 p1PsnInt=0;p1EngInt=0;
+                                p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+                                p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
                                 p1PsnDriver=0;p1EngDriver=0;
 
                                 p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
@@ -702,6 +669,27 @@ public class MainActivity extends AppCompatActivity {
                                 p1lifeHistory7.setText( "" );
                                 p1lifeHistory8.setText( "" );
                                 p1lifeHistory9.setText( "" );
+                                
+                                p2LifeInt = 20;
+                                p2LifeDriver = 0;
+                                p2LifeHisDriver = -1;
+                                isp2LifeHisMax = false;
+                                p2LifeList = new ArrayList<>();
+                                p2PsnInt=0;p2EngInt=0;
+                                p2Psn_txt.setText(String.valueOf(p2PsnInt));//ライフ
+                                p2Eng_txt.setText(String.valueOf(p2EngInt));//ライフ
+                                p2PsnDriver=0;p2EngDriver=0;
+
+                                p2Life_txt.setText(String.valueOf(p2LifeInt));//ライフ
+                                p2lifeHistory1.setText( "" );
+                                p2lifeHistory2.setText( "" );
+                                p2lifeHistory3.setText( "" );
+                                p2lifeHistory4.setText( "" );
+                                p2lifeHistory5.setText( "" );
+                                p2lifeHistory6.setText( "" );
+                                p2lifeHistory7.setText( "" );
+                                p2lifeHistory8.setText( "" );
+                                p2lifeHistory9.setText( "" );
                             }
                         };
                         mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
@@ -729,8 +717,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         p1LifeInt p1Life_txt p1GlobalTmp p1LifeDriver
          */
-        int lifeInt,globalTmp__,lifeDriver__;
-        TextView life_txt;
+        int lifeInt;
 
         float firstTouchX=0,firstTouchY = 0,releaseX,releaseY;
         int lifeIntTemp = 0;//指を動かしている間の値
@@ -740,8 +727,7 @@ public class MainActivity extends AppCompatActivity {
         float s = 3f;
         int distTmp=0;
         String tmpState="";
-
-        
+        String p;
 
         int creaseNum;
         RectF clipRect;
@@ -754,12 +740,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             lifeIntTemp2 = lifeIntTemp;
+            setVariables();
             switch (motionEvent.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
                 case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,lifeDriver__,globalTmp__); break;
-                case MotionEvent.ACTION_MOVE: actionMove(motionEvent,lifeDriver__); break;
+                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,p); break;
+                case MotionEvent.ACTION_MOVE: actionMove(motionEvent,p); break;
                 case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
             }
             return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
@@ -772,7 +759,8 @@ public class MainActivity extends AppCompatActivity {
             lifeDistance = 0;
             lifeDistInt = 0;
             lifeIntTemp = lifeInt;//値を渡す
-            life_txt.setText(String.valueOf(p1LifeInt));//ライフ
+            if(p=="p1") p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
+            else p2Life_txt.setText(String.valueOf(p2LifeInt));//ライフ
             p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouchY " + firstTouchY
                     + "\n p1LifeInt:" + p1LifeInt + "  lifeIntTemp: " + lifeIntTemp
                     + " \n p1LifeHisDriver: " + p1LifeHisDriver
@@ -781,12 +769,13 @@ public class MainActivity extends AppCompatActivity {
                     + " \n p1LifeList.size() " + p1LifeList.size()
                     + " \n lifeDistIntArr.size " + lifeDistIntArr.size());//テキストの編集
         }
-        public void actionPointerUp(MotionEvent motionEvent,int lifeDriver,int globalTmp){
+        public void actionPointerUp(MotionEvent motionEvent, final String p){
             releaseX = motionEvent.getX();
             releaseY = motionEvent.getY();
             //System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
             System.out.println("releaseX:" + releaseX + " releaseY:"+releaseY);
-            System.out.println("clipRect.left:" + clipRect.left + " clipRect.top:"+clipRect.top);
+            System.out.println("p2Layout.getTop():" + p2Layout.getTop());
+            System.out.println("clipRect.left:" + clipRect.left + " top:"+clipRect.top);
             //タッチが離れた場合の処理
             AnimationEffectCircle animation = new AnimationEffectCircle(circP1Plus1,releaseX+clipRect.left,releaseY+clipRect.top, clipRect);
             // アニメーションの起動期間を設定
@@ -803,59 +792,85 @@ public class MainActivity extends AppCompatActivity {
                 //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
             }
             //もしDistIntが０（移動してない）場合は変わりに-5を入れる
-            if (lifeDistInt == 0) {
-                lifeIntTemp += creaseNum;
-                lifeDistInt = +creaseNum;
-                globalTmp += creaseNum;
-            } else {
-                globalTmp += lifeDistInt;
+            if(p=="p1") {
+                if (lifeDistInt == 0) {
+                    lifeIntTemp += creaseNum;
+                    lifeDistInt = +creaseNum;
+                    p1GlobalTmp += creaseNum;
+                } else {
+                    p1GlobalTmp += lifeDistInt;
+                }
+            }else{
+                if (lifeDistInt == 0) {
+                    lifeIntTemp += creaseNum;
+                    lifeDistInt = +creaseNum;
+                    p2GlobalTmp += creaseNum;
+                } else {
+                    p2GlobalTmp += lifeDistInt;
+                }
             }
             lifeDistIntArr.add(lifeDistInt);
             //値が最初と変わってない限り
-            if (lifeIntTemp != lifeIntTemp2) {
-                fn_p1LifeFade(lifeIntTemp);
-            }
 
-            p1LifeInt = lifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-            //ライフ変動
-            life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-            if (lifeDriver < 3) {
-                lifeDriver++;
-            } else {
-                lifeDriver = 0;
+            if(p=="p1") {
+                if (lifeIntTemp != lifeIntTemp2) {
+                    fn_p1LifeFade(lifeIntTemp);
+                }
+                p1LifeInt = lifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
+                p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
+                if (p1LifeDriver < 3) {
+                    p1LifeDriver++;
+                } else {
+                    p1LifeDriver = 0;
+                }
+            }else{
+                if (lifeIntTemp != lifeIntTemp2) {
+                    fn_p2LifeFade(lifeIntTemp);
+                }
+                p2LifeInt = lifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
+                p2Life_txt.setText(String.valueOf(p2LifeInt));//ライフ
+                if (p2LifeDriver < 3) {
+                    p2LifeDriver++;
+                } else {
+                    p2LifeDriver = 0;
+                }
             }
             //動くようにはなったけど、今度リストが追加されなくなってしまった。
             //p1countの扱いと動作の整理しないといかんなこれは
             distTmp = lifeDistInt;
 
-            p1LifeInt = lifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-
-            System.out.println("iffff     globalTmp " + globalTmp);
+            System.out.println("iffff     p1GlobalTmp " + p1GlobalTmp);
             p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouchY " + firstTouchY
                     + "\n p1LifeInt:" + p1LifeInt + "  lifeIntTemp: " + lifeIntTemp
                     + " \n p1LifeHisDriver: " + p1LifeHisDriver
                     + " \n lifeDistance: " + lifeDistance
                     + " \n lifeDistInt: " + lifeDistInt
                     + " \n p1LifeList.size() " + p1LifeList.size()
-                    + " \n globalTmp " + globalTmp
+                    + " \n p1GlobalTmp " + p1GlobalTmp
                     + " \n lifeDistIntArr.size " + lifeDistIntArr.size());//テキストの編集
             mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
             delayedUpdate = new Runnable() {
                 public void run() {
-                    /*
-                    if(globalTmp!=0) {
-                        fn_p1LifeDriver(globalTmp);
-                        globalTmp = 0;
-                        tmpState = "";
+                    if(p=="p1") {
+                        if (p1GlobalTmp != 0) {
+                            fn_p1LifeDriver(p1GlobalTmp);
+                            p1GlobalTmp = 0;
+                            tmpState = "";
+                        }
+                    }else{
+                        if (p2GlobalTmp != 0) {
+                            fn_p2LifeDriver(p2GlobalTmp);
+                            p2GlobalTmp = 0;
+                            tmpState = "";
+                        }
                     }
-                    */
                 }
             };
             mHandler.postDelayed(delayedUpdate, 1000);
             //これ意味ある？
             lifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
         }
-        public void actionMove(MotionEvent motionEvent,int lifeDriver){
+        public void actionMove(MotionEvent motionEvent,final String p){
             System.out.println("actionMove \n");
             lifeDistance = firstTouchY - motionEvent.getY(0);//距離
             lifeDistInt = (int) lifeDistance / 100;//整数で
@@ -882,13 +897,23 @@ public class MainActivity extends AppCompatActivity {
             );
             if (lifeDistInt != distTmp) {
                 lifeDistIntArr.add(lifeDistInt);
-                if (lifeDriver < 3) {
-                    lifeDriver++;
-                } else {
-                    lifeDriver = 0;
+                if(p=="p1") {
+                    if (p1LifeDriver < 3) {
+                        p1LifeDriver++;
+                    } else {
+                        p1LifeDriver = 0;
+                    }
+                    //省略できそうだけどめんどそう
+                    fn_p1LifeFade(lifeIntTemp);
+                }else{
+                    if (p2LifeDriver < 3) {
+                        p2LifeDriver++;
+                    } else {
+                        p2LifeDriver = 0;
+                    }
+                    //省略できそうだけどめんどそう
+                    fn_p2LifeFade(lifeIntTemp);
                 }
-                //省略できそうだけどめんどそう
-                fn_p1LifeFade(lifeIntTemp);
                 //動くようにはなったけど、今度リストが追加されなくなってしまった。
                 //p1countの扱いと動作の整理しないといかんなこれは
                 distTmp = lifeDistInt;
@@ -898,11 +923,23 @@ public class MainActivity extends AppCompatActivity {
             if (lifeDistIntArr.size() > 2) {
                 //2より大きくなったらリムーブ
                 lifeDistIntArr.remove(0);
-                p1txt2.setText("2より大きくなったらリムーブ \n distTmp " + distTmp);
             }
 
-            life_txt.setText(String.valueOf(lifeIntTemp));//テキストの編集
-            lifeIntTemp = p1LifeInt + lifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
+            if(p=="p1"){
+                p1Life_txt.setText(String.valueOf(lifeIntTemp));//ライフ
+                //life_txt.setText(String.valueOf(lifeIntTemp));//テキストの編集
+                lifeIntTemp = p1LifeInt + lifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
+            }
+            else{
+                p2Life_txt.setText(String.valueOf(lifeIntTemp));//ライフ
+                //life_txt.setText(String.valueOf(lifeIntTemp));//テキストの編集
+                lifeIntTemp = p2LifeInt + lifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
+            }
+        }
+        public void setVariables(){
+            creaseNum = 1;
+            clipRect = rectP1Plus1;
+            p="p1";
         }
     }
 
@@ -913,26 +950,27 @@ public class MainActivity extends AppCompatActivity {
 
         int creasePsnNum,creaseEngNum;
         RectF clipRect;
+        String p;
 
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             setVariables();
             switch (motionEvent.getActionMasked()) {
                 case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
+                case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(); break;
                 case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent); break;
+                case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent,p); break;
                 case MotionEvent.ACTION_MOVE: break;
                 case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
             }
             return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
         }
-        public void actionPointerDown(MotionEvent motionEvent){
+        public void actionPointerDown(){
             //画面がタッチされた場合の処理
             p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
             p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
         }
-        public void actionPointerUp(MotionEvent motionEvent){
+        public void actionPointerUp(MotionEvent motionEvent,String p){
             releaseX = motionEvent.getX();
             releaseY = motionEvent.getY();
             //System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
@@ -948,25 +986,48 @@ public class MainActivity extends AppCompatActivity {
             Animator alpha = alphaAnimator(circP1Plus1,200,"fadeout2");
             alpha.start();
 
-            //ライフ変動
-            p1PsnInt += creasePsnNum;
-            p1EngInt += creaseEngNum;
-            p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
-            p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
-            if (p1PsnDriver < 2) {
-                p1PsnDriver++;
-            } else {
-                p1PsnDriver = 0;
-            }
-            if (p1EngDriver < 2) {
-                p1EngDriver++;
-            } else {
-                p1EngDriver = 0;
-            }
-            if(creasePsnNum!=0){
-                fn_p1PsnFade(p1PsnInt);
-            }else {
-                fn_p1EngFade(p1EngInt);
+            if(p=="p1") {
+                //ライフ変動
+                p1PsnInt += creasePsnNum;
+                p1EngInt += creaseEngNum;
+                p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+                p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
+                if (p1PsnDriver < 2) {
+                    p1PsnDriver++;
+                } else {
+                    p1PsnDriver = 0;
+                }
+                if (p1EngDriver < 2) {
+                    p1EngDriver++;
+                } else {
+                    p1EngDriver = 0;
+                }
+                if (creasePsnNum != 0) {
+                    fn_p1PsnFade(p1PsnInt);
+                } else {
+                    fn_p1EngFade(p1EngInt);
+                }
+            }else{
+                //ライフ変動
+                p2PsnInt += creasePsnNum;
+                p2EngInt += creaseEngNum;
+                p2Psn_txt.setText(String.valueOf(p2PsnInt));//ライフ
+                p2Eng_txt.setText(String.valueOf(p2EngInt));//ライフ
+                if (p2PsnDriver < 2) {
+                    p2PsnDriver++;
+                } else {
+                    p2PsnDriver = 0;
+                }
+                if (p2EngDriver < 2) {
+                    p2EngDriver++;
+                } else {
+                    p2EngDriver = 0;
+                }
+                if (creasePsnNum != 0) {
+                    fn_p2PsnFade(p2PsnInt);
+                } else {
+                    fn_p2EngFade(p2EngInt);
+                }                
             }
 
             p1txt.setText("p1PsnDriver \n" + p1PsnDriver
@@ -2064,5 +2125,15 @@ public class MainActivity extends AppCompatActivity {
         rectP1PsnMinus = new RectF(p1PsnMinus.getLeft(),p1PsnMinus.getTop(),p1PsnMinus.getRight(),p1PsnMinus.getBottom());
         rectP1EngPlus = new RectF(p1EngPlus.getLeft(),p1EngPlus.getTop(),p1EngPlus.getRight(),p1EngPlus.getBottom());
         rectP1EngMinus = new RectF(p1EngMinus.getLeft(),p1EngMinus.getTop(),p1EngMinus.getRight(),p1EngMinus.getBottom());
+
+        rectP2Plus1 = new RectF(p2plus1.getLeft(),p2plus1.getTop()+p2Layout.getTop(),p2plus1.getRight(),p2plus1.getBottom()+p2Layout.getTop());
+        rectP2Plus5 = new RectF(p2plus5.getLeft(),p2plus5.getTop()+p2Layout.getTop(),p2plus5.getRight(),p2plus5.getBottom()+p2Layout.getTop());
+        rectP2Minus1 = new RectF(p2minus1.getLeft(),p2minus1.getTop()+p2Layout.getTop(),p2minus1.getRight(),p2minus1.getBottom()+p2Layout.getTop());
+        rectP2Minus5 = new RectF(p2minus5.getLeft(),p2minus5.getTop()+p2Layout.getTop(),p2minus5.getRight(),p2minus5.getBottom()+p2Layout.getTop());
+
+        rectP2PsnPlus = new RectF(p2PsnPlus.getLeft(),p2PsnPlus.getTop()+p2Layout.getTop(),p2PsnPlus.getRight(),p2PsnPlus.getBottom()+p2Layout.getTop());
+        rectP2PsnMinus = new RectF(p2PsnMinus.getLeft(),p2PsnMinus.getTop()+p2Layout.getTop(),p2PsnMinus.getRight(),p2PsnMinus.getBottom()+p2Layout.getTop());
+        rectP2EngPlus = new RectF(p2EngPlus.getLeft(),p2EngPlus.getTop()+p2Layout.getTop(),p2EngPlus.getRight(),p2EngPlus.getBottom()+p2Layout.getTop());
+        rectP2EngMinus = new RectF(p2EngMinus.getLeft(),p2EngMinus.getTop()+p2Layout.getTop(),p2EngMinus.getRight(),p2EngMinus.getBottom()+p2Layout.getTop());
     }
 }

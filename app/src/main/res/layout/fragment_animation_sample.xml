@@ -12,56 +12,11 @@
         android:id="@+id/circle"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:translationZ="14dp"
+        android:translationZ="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/obj1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="30dp"
-        android:alpha="0"
-        android:text="obj1" />
-
-    <TextView
-        android:id="@+id/obj2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="30dp"
-        android:alpha="0"
-        android:text="obj2" />
-
-    <TextView
-        android:id="@+id/obj3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="30dp"
-        android:alpha="0"
-        android:text="obj3" />
-
-    <TextView
-        android:id="@+id/obj4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="30dp"
-        android:alpha="0"
-        android:text="obj4" />
-
-    <TextView
-        android:id="@+id/obj5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="30dp"
-        android:alpha="0"
-        android:text="obj5" />
 
     <!--
     0はmatchConstraintになるが、0dpと明記しないといけない
@@ -69,6 +24,16 @@
     startToStartOfとEndToEndOfはParentになりがち
     これを設定しておくと高さと幅がコンストレイントに依存するようになる
     -->
+    <com.websarva.wings.android.animationsample.effectCircle
+        android:id="@+id/circP1Plus1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:translationZ="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/circle"
+        app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.constraint.Guideline
         android:id="@+id/halfLine1"
         android:layout_width="wrap_content"
@@ -99,9 +64,11 @@
         android:layout_width="76dp"
         android:layout_height="0dp"
         android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:background="#00ffffff"
         app:layout_constraintBottom_toTopOf="@+id/halfLine2"
+        app:layout_constraintEnd_toStartOf="@+id/lifeHistoryGuideLineV"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/halfLine1" />
 
@@ -125,7 +92,7 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_begin="115dp"
+        app:layout_constraintGuide_begin="130dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.constraint.ConstraintLayout
@@ -266,16 +233,6 @@
             app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine2" />
 
-        <com.websarva.wings.android.animationsample.effectCircle
-            android:id="@+id/circP1Plus1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:translationZ="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <android.support.constraint.Guideline
             android:id="@+id/p1lifeGuideLineH"
             android:layout_width="wrap_content"
@@ -285,7 +242,7 @@
             android:layout_alignParentTop="true"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.25"
+            app:layout_constraintGuide_percent="0.252"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--gravityをrightに設定すると、ドロップシャドーが切れる-->
@@ -413,7 +370,7 @@
             android:layout_alignParentTop="true"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.15"
+            app:layout_constraintGuide_percent="0.152"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.constraint.Guideline
@@ -611,6 +568,32 @@
             app:layout_constraintStart_toStartOf="@+id/p1EngMinus"
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
+        <ImageView
+            android:id="@+id/p1EngImg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_flash_on_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
+        <ImageView
+            android:id="@+id/p1PsnImg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_baseline_phimark_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine5"
+            app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -805,6 +788,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
         app:layout_constraintTop_toBottomOf="@id/halfLine2">
+
+        <ImageView
+            android:id="@+id/p2EngImg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_flash_on_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/p2plusminusBtnLine5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1" />
+
+        <ImageView
+            android:id="@+id/p2PsnImg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_phimark_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
+            app:layout_constraintEnd_toStartOf="@+id/p2plusminusBtnLine5"
+            app:layout_constraintStart_toStartOf="@+id/p2plusminusBtnLine3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1" />
 
         <ImageView
             android:id="@+id/p2plus1UpArrow"
@@ -1471,6 +1478,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:alpha="0"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -1489,10 +1497,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -1500,7 +1507,7 @@
         app:layout_constraintTop_toTopOf="@+id/halfLine2" />
 
     <TextView
-        android:id="@+id/p2Life_txt"
+        android:id="@+id/p2Life_txt_debug"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -1508,6 +1515,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0"
         android:fontFamily="sans-serif"
         android:text="p2Life_txt"
         android:textSize="50dp"
@@ -1519,41 +1527,19 @@
         android:id="@+id/p2textView"
         android:layout_width="199dp"
         android:layout_height="55dp"
-        android:layout_alignLeft="@+id/p2Life_txt"
+        android:layout_alignLeft="@+id/p2Life_txt_debug"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/p2Life_txt"
+        android:layout_alignStart="@+id/p2Life_txt_debug"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/p2Layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/p1textView" />
-
-    <TextView
-        android:id="@+id/p2LifeHistory"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/p2Life_txt"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@+id/p2textView"
-        android:layout_toStartOf="@+id/p2textView"
-        android:text="p1LifeHistory"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/p2Layout"
-        app:layout_constraintTop_toTopOf="@+id/halfLine2" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/container"

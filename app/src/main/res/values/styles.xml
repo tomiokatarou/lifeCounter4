@@ -12,7 +12,7 @@
         <item name="fontPath">fonts/georgia.ttf</item>
         <item name="android:layout_width">200dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">30dp</item>
+        <item name="android:textSize">25dp</item>
         <item name="android:shadowColor">#30000000</item>
         <item name="android:shadowDx">10.0</item>
         <item name="android:shadowDy">10.0</item>

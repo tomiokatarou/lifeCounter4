@@ -22,11 +22,6 @@ import android.widget.TextView;
  */
 public class AnimationSampleFragment extends Fragment {
 
-    TextView mObj1;
-    TextView mObj2;
-    TextView mObj3;
-    TextView mObj4;
-    TextView mObj5;
     Button mButton;
 
     public AnimationSampleFragment() {  }
@@ -36,14 +31,10 @@ public class AnimationSampleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_animation_sample, container, false);
-        mObj1 = (TextView) view.findViewById(R.id.obj1);
-        mObj2 = (TextView) view.findViewById(R.id.obj2);
-        mObj3 = (TextView) view.findViewById(R.id.obj3);
-        mObj4 = (TextView) view.findViewById(R.id.obj4);
-        mObj5 = (TextView) view.findViewById(R.id.obj5);
 
        // mButton = (Button) view.findViewById(R.id.p1plus5);
         mButton.setText("open");
+        /*
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,6 +47,7 @@ public class AnimationSampleFragment extends Fragment {
                 }
             }
         });
+        */
         return view;
     }
 
@@ -127,7 +119,7 @@ public class AnimationSampleFragment extends Fragment {
 
         set.start();
     }
-
+/*
     private void openMenu() {
         alphaTranslateRotateAnimation(mObj1,-300,0,200,true);
         alphaTranslateRotateAnimation(mObj2,-300,22,150,true);
@@ -151,4 +143,5 @@ public class AnimationSampleFragment extends Fragment {
         animator.setInterpolator(new DecelerateInterpolator());
         animator.start();
     }
+    */
 }
