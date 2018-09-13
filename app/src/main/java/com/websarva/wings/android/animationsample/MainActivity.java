@@ -41,44 +41,38 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         Log.d(tag, msg);
     }
-
-    TextView mObj1;
-    TextView mObj2;
-    TextView mObj3;
-    TextView mObj4;
-    TextView mObj5;
     Button mButton;
-    TextView p1lifeHistory1;
-    TextView p1lifeHistory2;
-    TextView p1lifeHistory3;
-    TextView p1lifeHistory4;
-    TextView p1lifeHistory5;
-    TextView p1lifeHistory6;
-    TextView p1lifeHistory7;
-    TextView p1lifeHistory8;
-    TextView p1lifeHistory9;
-    TextView p1Life_txt;
-    TextView p1Life_txt1;
-    TextView p1Life_txt2;
-    TextView p1Life_txt3;
-    TextView p1Life_txt4;
-    TextView p1Life_txt5;
-    TextView p1txt;
+    //p1
+    TextView p1lifeHistory1,p1lifeHistory2,p1lifeHistory3,p1lifeHistory4,p1lifeHistory5,p1lifeHistory6,p1lifeHistory7,p1lifeHistory8,p1lifeHistory9;
+    TextView p1Life_txt,p1Life_txt1,p1Life_txt2,p1Life_txt3,p1Life_txt4,p1Life_txt5;
     TextView p1Psn_txt,p1Psn_txt1,p1Psn_txt2,p1Psn_txt3;
     TextView p1Eng_txt,p1Eng_txt1,p1Eng_txt2,p1Eng_txt3;
-    TextView obj1;
     Button p1plus1,p1plus5,p1minus1,p1minus5,p1PsnPlus,p1PsnMinus,p1EngPlus,p1EngMinus;
+    //p2
+    TextView p2lifeHistory1,p2lifeHistory2,p2lifeHistory3,p2lifeHistory4,p2lifeHistory5,p2lifeHistory6,p2lifeHistory7,p2lifeHistory8,p2lifeHistory9;
+    TextView p2Life_txt,p2Life_txt1,p2Life_txt2,p2Life_txt3,p2Life_txt4,p2Life_txt5;
+    TextView p2Psn_txt,p2Psn_txt1,p2Psn_txt2,p2Psn_txt3;
+    TextView p2Eng_txt,p2Eng_txt1,p2Eng_txt2,p2Eng_txt3;
+    Button p2plus1,p2plus5,p2minus1,p2minus5,p2PsnPlus,p2PsnMinus,p2EngPlus,p2EngMinus;
     Button resetBtn;
 
+    //p1
     int p1LifeInt = 20,p1PsnInt = 0,p1EngInt = 0;
+    //p2
+    int p2LifeInt = 20,p2PsnInt = 0,p2EngInt = 0;
 
-    //historyDriver
+    //lifeDriver
     int p1LifeDriver = 0,p1PsnDriver = 0,p1EngDriver = 0;//-1
     int p1LifeHisDriver = -1;//どのテキストを動かすかというためだけの循環する変数　にしたい
     boolean isP1LifeHisMax = false;//ヒストリーがマックスになってるかどうか
+    int p2LifeDriver = 0,p2PsnDriver = 0,p2EngDriver = 0;//-1
+    int p2LifeHisDriver = -1;//どのテキストを動かすかというためだけの循環する変数　にしたい
+    boolean isp2LifeHisMax = false;//ヒストリーがマックスになってるかどうか
 
     public ArrayList<String> p1LifeList;
     public ArrayList<String> p1LifeListTmp;
+    public ArrayList<String> p2LifeList;
+    public ArrayList<String> p2LifeListTmp;
 
     //遅らせるやつ
     private Handler mHandler = new Handler();
@@ -87,20 +81,23 @@ public class MainActivity extends AppCompatActivity {
     //フォントサイズ style.xmlで定義してる
     final int hisTxtMove = 110;//移動量 110
     float fadeFontScale = 1.2f;//3
-    int lifeFontSize = 250;
+    float fadeCounterFontScale = 2.0f;//カウンターの数字の1フェードのスケール
 
     //グローバルな増減値
-    int p1GlobalTmp;
+    int p1GlobalTmp,p2GlobalTmp;
 
     long lifeScaleDuration=200;
     long lifeHisTransDuration=700;
     //----------------------------------------------------------------------------------------------
     private Circle circ;
     private effectCircle circP1Plus1;
-    private int endAngle = 0;
     private int animationPeriod = 2000;
 
     public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1PsnPlus,rectP1PsnMinus,rectP1EngPlus,rectP1EngMinus;
+    public RectF rectp2Plus1,rectp2Plus5,rectp2Minus1,rectp2Minus5,rectp2PsnPlus,rectp2PsnMinus,rectp2EngPlus,rectp2EngMinus;
+    //debug----------------------------------------------------------------------------------------------
+
+    TextView p1txt;
     //----------------------------------------------------------------------------------------------
 
 
@@ -115,11 +112,6 @@ public class MainActivity extends AppCompatActivity {
         final ConstraintLayout p1Layout_o = (ConstraintLayout) findViewById(R.id.p1Layout);
         final ConstraintLayout p2Layout_o = (ConstraintLayout) findViewById(R.id.p2Layout);
 
-        mObj1 = (TextView) this.findViewById(R.id.obj1);
-        mObj2 = (TextView) this.findViewById(R.id.obj2);
-        mObj3 = (TextView) this.findViewById(R.id.obj3);
-        mObj4 = (TextView) this.findViewById(R.id.obj4);
-        mObj5 = (TextView) this.findViewById(R.id.obj5);
         //オブジェクトの生成
         p1Life_txt = (TextView) this.findViewById(R.id.p1Life_txt);
         p1Life_txt.setText(p1LifeInt+"");
@@ -139,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         p1lifeHistory8 = (TextView) this.findViewById(R.id.p1lifeHistory8);
         p1lifeHistory9 = (TextView) this.findViewById(R.id.p1lifeHistory9);
 
+        //カウンターのテキストとフェードテキスト
         p1Psn_txt = (TextView) this.findViewById(R.id.p1Psn_txt);
         p1Psn_txt.setText(p1PsnInt+"");
         p1Psn_txt1 = (TextView) this.findViewById(R.id.p1Psn_txt1);
@@ -156,13 +149,13 @@ public class MainActivity extends AppCompatActivity {
         p1plus5 = (Button) this.findViewById(R.id.p1plus5);
         p1minus1 = (Button) this.findViewById(R.id.p1minus1);
         p1minus5 = (Button) this.findViewById(R.id.p1minus5);
+        //カウンターのボタン
         p1PsnPlus = (Button) this.findViewById(R.id.p1PsnPlus);
         p1PsnMinus = (Button) this.findViewById(R.id.p1PsnMinus);
         p1EngPlus = (Button) this.findViewById(R.id.p1EngPlus);
         p1EngMinus = (Button) this.findViewById(R.id.p1EngMinus);
-        resetBtn = (Button) this.findViewById(R.id.resetBtn);
 
-        //rect
+        //エフェクトクリップ用矩形
         rectP1Plus1 = new RectF(0,0,0,0);
         rectP1Plus5 = new RectF(0,0,0,0);
         rectP1Minus1 = new RectF(0,0,0,0);
@@ -172,14 +165,74 @@ public class MainActivity extends AppCompatActivity {
         rectP1EngPlus = new RectF(0,0,0,0);
         rectP1EngMinus = new RectF(0,0,0,0);
 
+        //p2オブジェクトの生成
+        p2Life_txt = (TextView) this.findViewById(R.id.p2Life_txt);
+        p2Life_txt.setText(p2LifeInt+"");
+        p2Life_txt1 = (TextView) this.findViewById(R.id.p2Life_txt1);
+        p2Life_txt2 = (TextView) this.findViewById(R.id.p2Life_txt2);
+        p2Life_txt3 = (TextView) this.findViewById(R.id.p2Life_txt3);
+        p2Life_txt4 = (TextView) this.findViewById(R.id.p2Life_txt4);
+        p2Life_txt5 = (TextView) this.findViewById(R.id.p2Life_txt5);
+        //オブジェクトの生成
+        p2lifeHistory1 = (TextView) this.findViewById(R.id.p2lifeHistory1);
+        p2lifeHistory2 = (TextView) this.findViewById(R.id.p2lifeHistory2);
+        p2lifeHistory3 = (TextView) this.findViewById(R.id.p2lifeHistory3);
+        p2lifeHistory4 = (TextView) this.findViewById(R.id.p2lifeHistory4);
+        p2lifeHistory5 = (TextView) this.findViewById(R.id.p2lifeHistory5);
+        p2lifeHistory6 = (TextView) this.findViewById(R.id.p2lifeHistory6);
+        p2lifeHistory7 = (TextView) this.findViewById(R.id.p2lifeHistory7);
+        p2lifeHistory8 = (TextView) this.findViewById(R.id.p2lifeHistory8);
+        p2lifeHistory9 = (TextView) this.findViewById(R.id.p2lifeHistory9);
+
+        //カウンターのテキストとフェードテキスト
+        p2Psn_txt = (TextView) this.findViewById(R.id.p2Psn_txt);
+        p2Psn_txt.setText(p2PsnInt+"");
+        p2Psn_txt1 = (TextView) this.findViewById(R.id.p2Psn_txt1);
+        p2Psn_txt2 = (TextView) this.findViewById(R.id.p2Psn_txt2);
+        p2Psn_txt3 = (TextView) this.findViewById(R.id.p2Psn_txt3);
+
+        p2Eng_txt = (TextView) this.findViewById(R.id.p2Eng_txt);
+        p2Eng_txt.setText(p2EngInt+"");
+        p2Eng_txt1 = (TextView) this.findViewById(R.id.p2Eng_txt1);
+        p2Eng_txt2 = (TextView) this.findViewById(R.id.p2Eng_txt2);
+        p2Eng_txt3 = (TextView) this.findViewById(R.id.p2Eng_txt3);
+
+        //ボタンの生成
+        p2plus1 = (Button) this.findViewById(R.id.p2plus1);
+        p2plus5 = (Button) this.findViewById(R.id.p2plus5);
+        p2minus1 = (Button) this.findViewById(R.id.p2minus1);
+        p2minus5 = (Button) this.findViewById(R.id.p2minus5);
+        //カウンターのボタン
+        p2PsnPlus = (Button) this.findViewById(R.id.p2PsnPlus);
+        p2PsnMinus = (Button) this.findViewById(R.id.p2PsnMinus);
+        p2EngPlus = (Button) this.findViewById(R.id.p2EngPlus);
+        p2EngMinus = (Button) this.findViewById(R.id.p2EngMinus);
+
+        //エフェクトクリップ用矩形
+        rectP1Plus1 = new RectF(0,0,0,0);
+        rectP1Plus5 = new RectF(0,0,0,0);
+        rectP1Minus1 = new RectF(0,0,0,0);
+        rectP1Minus5 = new RectF(0,0,0,0);
+        rectP1PsnPlus = new RectF(0,0,0,0);
+        rectP1PsnMinus = new RectF(0,0,0,0);
+        rectP1EngPlus = new RectF(0,0,0,0);
+        rectP1EngMinus = new RectF(0,0,0,0);
+        rectp2Plus1 = new RectF(0,0,0,0);
+        rectp2Plus5 = new RectF(0,0,0,0);
+        rectp2Minus1 = new RectF(0,0,0,0);
+        rectp2Minus5 = new RectF(0,0,0,0);
+        rectp2PsnPlus = new RectF(0,0,0,0);
+        rectp2PsnMinus = new RectF(0,0,0,0);
+        rectp2EngPlus = new RectF(0,0,0,0);
+        rectp2EngMinus = new RectF(0,0,0,0);
+        //リセット
+        resetBtn = (Button) this.findViewById(R.id.resetBtn);
         //デバッグ用
 
-        //counterFragment-----------------------------------------------
-        final ConstraintLayout container = (ConstraintLayout) findViewById(R.id.container);
-
-
+        //着色
         //ボタンの矢印
         int color = getResources().getColor(R.color.colorGray);
+        //p1
         ImageView p1plus1UpArrow = (ImageView) findViewById(R.id.p1plus1UpArrow);
         p1plus1UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p1plus5UpArrow = (ImageView) findViewById(R.id.p1plus5UpArrow);
@@ -188,13 +241,39 @@ public class MainActivity extends AppCompatActivity {
         p1minus1UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p1minus5UpArrow = (ImageView) findViewById(R.id.p1minus5UpArrow);
         p1minus5UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
+        ImageView p1PsnUpArrow = (ImageView) findViewById(R.id.p1PsnUpArrow);
+        p1PsnUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p1PsnDownArrow = (ImageView) findViewById(R.id.p1PsnDownArrow);
+        p1PsnDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p1EngUpArrow = (ImageView) findViewById(R.id.p1EngUpArrow);
+        p1EngUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p1EngDownArrow = (ImageView) findViewById(R.id.p1EngDownArrow);
+        p1EngDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        //p2
+        ImageView p2plus1UpArrow = (ImageView) findViewById(R.id.p2plus1UpArrow);
+        p2plus1UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2plus5UpArrow = (ImageView) findViewById(R.id.p2plus5UpArrow);
+        p2plus5UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2minus1UpArrow = (ImageView) findViewById(R.id.p2minus1UpArrow);
+        p2minus1UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2minus5UpArrow = (ImageView) findViewById(R.id.p2minus5UpArrow);
+        p2minus5UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
+        ImageView p2PsnUpArrow = (ImageView) findViewById(R.id.p2PsnUpArrow);
+        p2PsnUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2PsnDownArrow = (ImageView) findViewById(R.id.p2PsnDownArrow);
+        p2PsnDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2EngUpArrow = (ImageView) findViewById(R.id.p2EngUpArrow);
+        p2EngUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2EngDownArrow = (ImageView) findViewById(R.id.p2EngDownArrow);
+        p2EngDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         //リセットボタン
         int colorPink = getResources().getColor(R.color.colorPink);
         ImageView resetBtnImg = (ImageView) findViewById(R.id.resetBtnImg);
         resetBtnImg.setColorFilter(colorPink, PorterDuff.Mode.SRC_IN);
 
         p1txt = (TextView) this.findViewById(R.id.p1textView);
-        //p1txt.setText("p1LifeHisDriver :" + p1LifeHisDriver);
         //初期配置
         fn_translation(p1Life_txt1, 0, 0, 1, "invisible");
         fn_translation(p1Life_txt2, 0, 0, 1, "invisible");
@@ -218,10 +297,34 @@ public class MainActivity extends AppCompatActivity {
         fn_translation(p1Eng_txt1, 0, 0, 1, "invisible");
         fn_translation(p1Eng_txt2, 0, 0, 1, "invisible");
         fn_translation(p1Eng_txt3, 0, 0, 1, "invisible");
-        scaleAnimatorToXY(container,0,0,1000);
+        //p2初期配置
+        fn_translation(p2Life_txt1, 0, 0, 1, "invisible");
+        fn_translation(p2Life_txt2, 0, 0, 1, "invisible");
+        fn_translation(p2Life_txt3, 0, 0, 1, "invisible");
+        fn_translation(p2Life_txt4, 0, 0, 1, "invisible");
+        fn_translation(p2Life_txt5, 0, 0, 1, "invisible");
+
+        fn_translation(p2lifeHistory1, 0, 0, 0, "invisible");//visible
+        fn_translation(p2lifeHistory2, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory3, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory4, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory5, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory6, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory7, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory8, 0, 0, 0, "invisible");
+        fn_translation(p2lifeHistory9, 0, 0, 0, "invisible");
+
+        fn_translation(p2Psn_txt1, 0, 0, 1, "invisible");
+        fn_translation(p2Psn_txt2, 0, 0, 1, "invisible");
+        fn_translation(p2Psn_txt3, 0, 0, 1, "invisible");
+        fn_translation(p2Eng_txt1, 0, 0, 1, "invisible");
+        fn_translation(p2Eng_txt2, 0, 0, 1, "invisible");
+        fn_translation(p2Eng_txt3, 0, 0, 1, "invisible");
 
         p1LifeList = new ArrayList<>();
         p1LifeListTmp = new ArrayList<>();
+        p2LifeList = new ArrayList<>();
+        p2LifeListTmp = new ArrayList<>();
 
         //----------------------------------------------------------------------------------------------
 
@@ -230,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
         //----------------------------------------------------------------------------------------------
 
 
-        //----------------------------------------------------------------------------------------------
+        /*
         p1Layout_o.setOnTouchListener(new View.OnTouchListener() {
             float firstTouch = 0;
             int p1LifeIntTemp = 0;//指を動かしている間の値
@@ -283,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
                         delayedUpdate = new Runnable() {
                             public void run() {
                                 if (p1LifeDistInt != 0) {
-                                    fn_lifeDriver(p1GlobalTmp, plusminus);
+                                    fn_p1LifeDriver(p1GlobalTmp, plusminus);
                                     System.out.println("p1Layout_o p1GlobalTmp " + p1GlobalTmp);
                                     p1GlobalTmp=0;
                                 }
@@ -348,6 +451,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
             }
         });
+        */
+        //----------------------------------------------------------------------------------------------
 
         buttonListener p1plus1TouchListener = new buttonListener() {
             @Override
@@ -447,6 +552,8 @@ public class MainActivity extends AppCompatActivity {
                                 p1LifeHisDriver = -1;
                                 isP1LifeHisMax = false;
                                 p1LifeList = new ArrayList<>();
+                                p1PsnInt=0;p1EngInt=0;
+                                p1PsnDriver=0;p1EngDriver=0;
 
                                 p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
                                 p1lifeHistory1.setText( "" );
@@ -480,73 +587,6 @@ public class MainActivity extends AppCompatActivity {
 
                         moveで値を変化させて離した時だけフェードが起こらないようにしないといけない
                          */
-
-    //p1Life_txt p1LifeInt lifeDistInt plusminus p1LifeHisDriver isP1LifeHisMax
-    public void fn_lifeDriver(int lifeDistInt,int plusminus) {
-        mHandler.removeCallbacks(delayedUpdate);
-        //p1LifeDistIntが０のときは何も起きてはいけない
-        //ただ、ボタンから来た場合はDistIntが０でもOK
-
-        //p1txt.setText("fn_lifeDriver \n");//テキストの編集
-
-        if(lifeDistInt > 0){
-            p1LifeList.add(p1LifeInt + " (+" + lifeDistInt + ")");
-        } else {
-            p1LifeList.add(p1LifeInt + " (" + lifeDistInt + ")");//マイナスは自動でつく
-        }
-        System.out.println("fn_lifeDriver lifeDistInt " + lifeDistInt);
-        //p1Life_txt4の場合<4
-        if (p1LifeHisDriver < 9) {
-            p1LifeHisDriver++;
-        } else {
-            p1LifeHisDriver = 0;
-        }
-        //p1Life_txt4の場合>5
-        if (p1LifeList.size() > 10) {
-            p1LifeList.remove(0);
-        }
-        //p1Life_txt4の場合==4
-        if (!isP1LifeHisMax && (p1LifeList.size() - 1) == 9) {
-            isP1LifeHisMax = true;
-            /*
-            p1txt.setText("p1LifeHisDriver " + p1LifeHisDriver
-                    + "\n isP1LifeHisMax " + isP1LifeHisMax
-                    + "\n p1LifeList.size() " + p1LifeList.size()
-            );
-            */
-        }
-        //9だったとき
-        //リストに突っ込んだ状態で動かす
-        if (isP1LifeHisMax) {
-            fn_p1LifeHisMove2(p1LifeList);
-        } else {
-            fn_p1LifeHisMove1(p1LifeList);
-        }
-    }
-    private ValueAnimator fn_translation(View target, float toTX, float toTY, float toSX, float toSY, long duration, String fade) {
-
-        Animator alpha = alphaAnimator(target,duration,fade);
-        alpha.setInterpolator(new DecelerateInterpolator());
-
-        Animator translate = translateAnimatorToXY(target,toTX,toTY,duration);
-        translate.setInterpolator(new DecelerateInterpolator());
-
-        Animator scale = scaleAnimatorToXY(target,toSX,toSY,duration);
-        scale.setInterpolator(new DecelerateInterpolator());
-
-        AnimatorSet set = new AnimatorSet();
-        //set.setStartDelay(delay);
-        set.playTogether(alpha,translate,scale);
-        set.start();
-
-        ValueAnimator anim = ValueAnimator.ofFloat(0.f, 100.f);
-// アニメーションの時間(3秒)を設定する
-        anim.setDuration(duration);
-        anim.start();
-
-        return anim;
-    }
-
 
     class buttonListener implements View.OnTouchListener {
         //View.OnTouchListener buttonListener = new View.OnTouchListener(){
@@ -661,7 +701,7 @@ public class MainActivity extends AppCompatActivity {
             delayedUpdate = new Runnable() {
                 public void run() {
                     if(p1GlobalTmp!=0) {
-                        fn_lifeDriver(p1GlobalTmp, plusminus);
+                        fn_p1LifeDriver(p1GlobalTmp, plusminus);
                         p1GlobalTmp = 0;
                         tmpState = "";
                     }
@@ -726,23 +766,11 @@ public class MainActivity extends AppCompatActivity {
     }
     //カウンター用のボタンリスナー
     class buttonCounterListener implements View.OnTouchListener {
-        float firstTouchX=0,firstTouchY = 0,releaseX,releaseY;
-        int p1LifeIntTemp = 0;//指を動かしている間の値
-        int p1LifeIntTemp2 = p1LifeInt;//最初の値
-        int p1LifeDistInt;
-        float p1LifeDistance;//finalは変更を許可しない
+        float releaseX,releaseY;
         float s = 3f;
-        int plusminus = 1;
-        int distTmp=0;
-        String tmpState="";
 
         int creasePsnNum,creaseEngNum;
         RectF clipRect;
-
-        ArrayList<Integer> p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-
-        TextView p1txt = (TextView) findViewById(R.id.p1textView);//debug用
-        TextView p1txt2 = (TextView) findViewById(R.id.p1textView2);//debug用
 
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -752,19 +780,13 @@ public class MainActivity extends AppCompatActivity {
                 case MotionEvent.ACTION_POINTER_DOWN: actionPointerDown(motionEvent); break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_POINTER_UP: actionPointerUp(motionEvent); break;
-                case MotionEvent.ACTION_MOVE: actionMove(motionEvent); break;
+                case MotionEvent.ACTION_MOVE: break;
                 case MotionEvent.ACTION_CANCEL: System.out.println("ACTION_CANCEL "); break;
             }
             return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
         }
         public void actionPointerDown(MotionEvent motionEvent){
             //画面がタッチされた場合の処理
-            int pointerIndex = motionEvent.getActionIndex();
-            firstTouchY = motionEvent.getY(pointerIndex);
-            firstTouchX = motionEvent.getX(pointerIndex);
-            p1LifeDistance = 0;
-            p1LifeDistInt = 0;
-            p1LifeIntTemp = p1LifeInt;//値を渡す
             p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
             p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
         }
@@ -799,116 +821,18 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 p1EngDriver = 0;
             }
-            fn_p1PsnFade(p1PsnInt);
-            //fn_p1LifeFade(p1LifeIntTemp);
-            System.out.println("p1PsnInt:" + p1PsnInt);
-
-            /*
-            if (p1LifeDistIntArr.size() == 0) {
-                //初回
-                p1LifeDistIntArr.add(p1LifeDistInt);
-                //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-            }
-            //もしDistIntが０（移動してない）場合は変わりに-5を入れる
-            if (p1LifeDistInt == 0) {
-                p1LifeIntTemp += creaseNum;
-                p1LifeDistInt = +creaseNum;
-                p1GlobalTmp += creaseNum;
-            } else {
-                p1GlobalTmp += p1LifeDistInt;
-            }
-            p1LifeDistIntArr.add(p1LifeDistInt);
-            //値が最初と変わってない限り
-            if (p1LifeIntTemp != p1LifeIntTemp2) {
-                fn_p1LifeFade(p1LifeIntTemp);
+            if(creasePsnNum!=0){
+                fn_p1PsnFade(p1PsnInt);
+            }else {
+                fn_p1EngFade(p1EngInt);
             }
 
-            p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-            //ライフ変動
-            p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-            if (p1LifeDriver < 3) {
-                p1LifeDriver++;
-            } else {
-                p1LifeDriver = 0;
-            }
-            //動くようにはなったけど、今度リストが追加されなくなってしまった。
-            //p1countの扱いと動作の整理しないといかんなこれは
-            distTmp = p1LifeDistInt;
-
-            p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-
-            System.out.println("iffff     p1GlobalTmp " + p1GlobalTmp);
-            p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouchY " + firstTouchY
-                    + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
-                    + " \n p1LifeHisDriver: " + p1LifeHisDriver
-                    + " \n p1LifeDistance: " + p1LifeDistance
-                    + " \n p1LifeDistInt: " + p1LifeDistInt
-                    + " \n p1LifeList.size() " + p1LifeList.size()
-                    + " \n p1GlobalTmp " + p1GlobalTmp
-                    + " \n p1LifeDistIntArr.size " + p1LifeDistIntArr.size());//テキストの編集
-            mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-            delayedUpdate = new Runnable() {
-                public void run() {
-                    if(p1GlobalTmp!=0) {
-                        fn_lifeDriver(p1GlobalTmp, plusminus);
-                        p1GlobalTmp = 0;
-                        tmpState = "";
-                    }
-                }
-            };
-            mHandler.postDelayed(delayedUpdate, 1000);
-            //これ意味ある？
-            p1LifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-            */
-        }
-        public void actionMove(MotionEvent motionEvent){
-            System.out.println("actionMove \n");
-            p1LifeDistance = firstTouchY - motionEvent.getY(0);//距離
-            p1LifeDistInt = (int) p1LifeDistance / 100;//整数で
-
-            if (p1LifeDistIntArr.size() == 0) {
-                //初回
-                p1LifeDistIntArr.add(p1LifeDistInt);
-
-                p1txt2.setText("初回 \n distTmp " + distTmp);
-                p1txt.setText("p1LifeDriver \n" + p1LifeDriver
-                        + " \n p1LifeDistInt: " + p1LifeDistInt
-                        + " \n distTmp: " + distTmp
-                        + " \n p1LifeDistIntArr.size() " + p1LifeDistIntArr.size()
-                );
-                distTmp = p1LifeDistInt;
-                //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-            }
-
-            //配列の中身が一つ以上あり、distTmpに値が入っている状態
-            p1txt.setText("p1LifeDriver \n" + p1LifeDriver
-                    + " \n p1LifeDistInt: " + p1LifeDistInt
-                    + " \n distTmp: " + distTmp
-                    + " \n p1LifeDistIntArr.size() " + p1LifeDistIntArr.size()
+            p1txt.setText("p1PsnDriver \n" + p1PsnDriver
+                    + " \n p1Psn1txt1: " + p1Psn_txt1.getText()
+                    + " \n p1Psn1txt2: " + p1Psn_txt2.getText()
+                    + " \n p1Psn1txt3: " + p1Psn_txt3.getText()
             );
-            if (p1LifeDistInt != distTmp) {
-                p1LifeDistIntArr.add(p1LifeDistInt);
-                if (p1LifeDriver < 3) {
-                    p1LifeDriver++;
-                } else {
-                    p1LifeDriver = 0;
-                }
-                //省略できそうだけどめんどそう
-                fn_p1LifeFade(p1LifeIntTemp);
-                //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                //p1countの扱いと動作の整理しないといかんなこれは
-                distTmp = p1LifeDistInt;
-                p1txt2.setText("p1LifeDistInt!=distTmp \n distTmp " + distTmp);
-            }
-            //値が違った場合、違い続けるってことか
-            if (p1LifeDistIntArr.size() > 2) {
-                //2より大きくなったらリムーブ
-                p1LifeDistIntArr.remove(0);
-                p1txt2.setText("2より大きくなったらリムーブ \n distTmp " + distTmp);
-            }
 
-            p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-            p1LifeIntTemp = p1LifeInt + p1LifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
         }
         public void setVariables(){
             creasePsnNum = 1;creaseEngNum = 0;
@@ -942,26 +866,196 @@ public class MainActivity extends AppCompatActivity {
                 */
         }
     }
-    //ライフが変動した時の半透明な文字
+    //毒カウンターが変動した時の半透明な文字
     public void fn_p1PsnFade(int lifeIntTemp){
-        float toTY = -30;
+        float toTY = -5;
         switch (p1PsnDriver) {
             case 0:
-                fn_translation(p1Psn_txt1, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                fn_translation(p1Psn_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
                 p1Psn_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
                 break;
             case 1:
-                fn_translation(p1Psn_txt2, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                fn_translation(p1Psn_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
                 p1Psn_txt2.setText(""+lifeIntTemp);//p1LifeInt + p1LifeDistIntArr.get(0)
                 break;
             case 2:
-                fn_translation(p1Psn_txt3, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                fn_translation(p1Psn_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
                 p1Psn_txt3.setText(""+lifeIntTemp);
                 break;
         }
     }
+    //エネルギーカウンターが変動した時の半透明な文字
+    public void fn_p1EngFade(int lifeIntTemp){
+        float toTY = -5;
+        switch (p1EngDriver) {
+            case 0:
+                fn_translation(p1Eng_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p1Eng_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                break;
+            case 1:
+                fn_translation(p1Eng_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p1Eng_txt2.setText(""+lifeIntTemp);//p1LifeInt + p1LifeDistIntArr.get(0)
+                break;
+            case 2:
+                fn_translation(p1Eng_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p1Eng_txt3.setText(""+lifeIntTemp);
+                break;
+        }
+    }
+    //ライフが変動した時の半透明な文字
+    public void fn_p2LifeFade(int lifeIntTemp){
+        float toTY = -30;
+        switch (p2LifeDriver) {
+            case 0:
+                fn_translation(p2Life_txt1, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p2Life_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                break;
+            case 1:
+                fn_translation(p2Life_txt2, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p2Life_txt2.setText(""+lifeIntTemp);//p2LifeInt + p2LifeDistIntArr.get(0)
+                break;
+            case 2:
+                fn_translation(p2Life_txt3, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p2Life_txt3.setText(""+lifeIntTemp);
+                break;
+            case 3:
+                fn_translation(p2Life_txt4, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p2Life_txt4.setText(""+lifeIntTemp);
+                break;
+                /*
+            case 4:
+                fn_translation(p2Life_txt5, 0, toTY, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                p2Life_txt5.setText("" + (lifeIntTemp));
+                break;
+                */
+        }
+    }
+    //毒カウンターが変動した時の半透明な文字
+    public void fn_p2PsnFade(int lifeIntTemp){
+        float toTY = -5;
+        switch (p2PsnDriver) {
+            case 0:
+                fn_translation(p2Psn_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Psn_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                break;
+            case 1:
+                fn_translation(p2Psn_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Psn_txt2.setText(""+lifeIntTemp);//p2LifeInt + p2LifeDistIntArr.get(0)
+                break;
+            case 2:
+                fn_translation(p2Psn_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Psn_txt3.setText(""+lifeIntTemp);
+                break;
+        }
+    }
+    //エネルギーカウンターが変動した時の半透明な文字
+    public void fn_p2EngFade(int lifeIntTemp){
+        float toTY = -5;
+        switch (p2EngDriver) {
+            case 0:
+                fn_translation(p2Eng_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Eng_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                break;
+            case 1:
+                fn_translation(p2Eng_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Eng_txt2.setText(""+lifeIntTemp);//p2LifeInt + p2LifeDistIntArr.get(0)
+                break;
+            case 2:
+                fn_translation(p2Eng_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Eng_txt3.setText(""+lifeIntTemp);
+                break;
+        }
+    }
+    //p1Life_txt p1LifeInt lifeDistInt plusminus p1LifeHisDriver isP1LifeHisMax
+    public void fn_p1LifeDriver(int lifeDistInt, int plusminus) {
+        mHandler.removeCallbacks(delayedUpdate);
+        //p1LifeDistIntが０のときは何も起きてはいけない
+        //ただ、ボタンから来た場合はDistIntが０でもOK
+        if(lifeDistInt > 0){
+            p1LifeList.add(p1LifeInt + " (+" + lifeDistInt + ")");
+        } else {
+            p1LifeList.add(p1LifeInt + " (" + lifeDistInt + ")");//マイナスは自動でつく
+        }
+        System.out.println("fn_p1LifeDriver lifeDistInt " + lifeDistInt);
+        //p1Life_txt4の場合<4
+        if (p1LifeHisDriver < 9) {
+            p1LifeHisDriver++;
+        } else {
+            p1LifeHisDriver = 0;
+        }
+        //p1Life_txt4の場合>5
+        if (p1LifeList.size() > 10) {
+            p1LifeList.remove(0);
+        }
+        //p1Life_txt4の場合==4
+        if (!isP1LifeHisMax && (p1LifeList.size() - 1) == 9) {
+            isP1LifeHisMax = true;
+        }
+        //9だったとき
+        //リストに突っ込んだ状態で動かす
+        if (isP1LifeHisMax) {
+            fn_p1LifeHisMove2(p1LifeList);
+        } else {
+            fn_p1LifeHisMove1(p1LifeList);
+        }
+    }
+    public void fn_p2LifeDriver(int lifeDistInt, int plusminus) {
+        mHandler.removeCallbacks(delayedUpdate);
+        //p2LifeDistIntが０のときは何も起きてはいけない
+        //ただ、ボタンから来た場合はDistIntが０でもOK
+        if(lifeDistInt > 0){
+            p2LifeList.add(p2LifeInt + " (+" + lifeDistInt + ")");
+        } else {
+            p2LifeList.add(p2LifeInt + " (" + lifeDistInt + ")");//マイナスは自動でつく
+        }
+        System.out.println("fn_p2LifeDriver lifeDistInt " + lifeDistInt);
+        //p2Life_txt4の場合<4
+        if (p2LifeHisDriver < 9) {
+            p2LifeHisDriver++;
+        } else {
+            p2LifeHisDriver = 0;
+        }
+        //p2Life_txt4の場合>5
+        if (p2LifeList.size() > 10) {
+            p2LifeList.remove(0);
+        }
+        //p2Life_txt4の場合==4
+        if (!isp2LifeHisMax && (p2LifeList.size() - 1) == 9) {
+            isp2LifeHisMax = true;
+        }
+        //9だったとき
+        //リストに突っ込んだ状態で動かす
+        if (isp2LifeHisMax) {
+            fn_p2LifeHisMove2(p2LifeList);
+        } else {
+            fn_p2LifeHisMove1(p2LifeList);
+        }
+    }
+    private ValueAnimator fn_translation(View target, float toTX, float toTY, float toSX, float toSY, long duration, String fade) {
+
+        Animator alpha = alphaAnimator(target,duration,fade);
+        alpha.setInterpolator(new DecelerateInterpolator());
+
+        Animator translate = translateAnimatorToXY(target,toTX,toTY,duration);
+        translate.setInterpolator(new DecelerateInterpolator());
+
+        Animator scale = scaleAnimatorToXY(target,toSX,toSY,duration);
+        scale.setInterpolator(new DecelerateInterpolator());
+
+        AnimatorSet set = new AnimatorSet();
+        //set.setStartDelay(delay);
+        set.playTogether(alpha,translate,scale);
+        set.start();
+
+        ValueAnimator anim = ValueAnimator.ofFloat(0.f, 100.f);
+// アニメーションの時間(3秒)を設定する
+        anim.setDuration(duration);
+        anim.start();
+
+        return anim;
+    }
     private void fn_p1LifeHisMove1(ArrayList<String> arr) {
-        int baseNum=+780;
+        int baseNum=80;//780
         switch(p1LifeHisDriver){
             case 0:
                 fn_translation(p1lifeHistory1,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
@@ -1043,7 +1137,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fn_p1LifeHisMove2(ArrayList<String> arr) {
-        int baseNum=+780;
+        int baseNum=80;//780
         switch(p1LifeHisDriver){
             case 9:
                 fn_translation(p1lifeHistory2,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
@@ -1364,6 +1458,303 @@ public class MainActivity extends AppCompatActivity {
                 fn_translation(p1lifeHistory8,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
                 fn_translation(p1lifeHistory9,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadein");
                  */
+        }
+
+        Animator animator = rotateAnimator(mButton);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
+    }
+    private void fn_p2LifeHisMove1(ArrayList<String> arr) {
+        int baseNum=80;//780
+        switch(p2LifeHisDriver){
+            case 0:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory1.setText( arr.get(0) );
+                break;
+            case 1:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory2.setText( arr.get(1) );
+                break;
+            case 2:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory3.setText( arr.get(2) );
+                break;
+            case 3:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory4.setText( arr.get(3) );
+                break;
+            case 4:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory5.setText( arr.get(4) );
+                break;
+            case 5:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory6.setText( arr.get(5) );
+                break;
+            case 6:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory7.setText( arr.get(6) );
+                break;
+            case 7:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory8.setText( arr.get(7) );
+                break;
+            case 8:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory9.setText( arr.get(8) );
+                break;
+        }
+
+        Animator animator = rotateAnimator(mButton);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.start();
+    }
+
+    private void fn_p2LifeHisMove2(ArrayList<String> arr) {
+        int baseNum=80;//780
+        switch(p2LifeHisDriver){
+            case 9:
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+
+                p2lifeHistory2.setText( arr.get(1) );
+                p2lifeHistory3.setText( arr.get(2) );
+                p2lifeHistory4.setText( arr.get(3) );
+                p2lifeHistory5.setText( arr.get(4) );
+                p2lifeHistory6.setText( arr.get(5) );
+                p2lifeHistory7.setText( arr.get(6) );
+                p2lifeHistory8.setText( arr.get(7) );
+                p2lifeHistory9.setText( arr.get(8) );
+                p2lifeHistory1.setText( arr.get(9) );
+                break;
+            case 0:
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory3.setText( arr.get(1) );
+                p2lifeHistory4.setText( arr.get(2) );
+                p2lifeHistory5.setText( arr.get(3) );
+                p2lifeHistory6.setText( arr.get(4) );
+                p2lifeHistory7.setText( arr.get(5) );
+                p2lifeHistory8.setText( arr.get(6) );
+                p2lifeHistory9.setText( arr.get(7) );
+                p2lifeHistory1.setText( arr.get(8) );
+                p2lifeHistory2.setText( arr.get(9) );
+                break;
+            case 1:
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory4.setText( arr.get(1) );
+                p2lifeHistory5.setText( arr.get(2) );
+                p2lifeHistory6.setText( arr.get(3) );
+                p2lifeHistory7.setText( arr.get(4) );
+                p2lifeHistory8.setText( arr.get(5) );
+                p2lifeHistory9.setText( arr.get(6) );
+                p2lifeHistory1.setText( arr.get(7) );
+                p2lifeHistory2.setText( arr.get(8) );
+                p2lifeHistory3.setText( arr.get(9) );
+                break;
+            case 2:
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory5.setText( arr.get(1) );
+                p2lifeHistory6.setText( arr.get(2) );
+                p2lifeHistory7.setText( arr.get(3) );
+                p2lifeHistory8.setText( arr.get(4) );
+                p2lifeHistory9.setText( arr.get(5) );
+                p2lifeHistory1.setText( arr.get(6) );
+                p2lifeHistory2.setText( arr.get(7) );
+                p2lifeHistory3.setText( arr.get(8) );
+                p2lifeHistory4.setText( arr.get(9) );
+                break;
+            case 3:
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+                p2lifeHistory6.setText( arr.get(1) );
+                p2lifeHistory7.setText( arr.get(2) );
+                p2lifeHistory8.setText( arr.get(3) );
+                p2lifeHistory9.setText( arr.get(4) );
+                p2lifeHistory1.setText( arr.get(5) );
+                p2lifeHistory2.setText( arr.get(6) );
+                p2lifeHistory3.setText( arr.get(7) );
+                p2lifeHistory4.setText( arr.get(8) );
+                p2lifeHistory5.setText( arr.get(9) );
+                break;
+            case 4:
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+
+                p2lifeHistory7.setText( arr.get(1) );
+                p2lifeHistory8.setText( arr.get(2) );
+                p2lifeHistory9.setText( arr.get(3) );
+                p2lifeHistory1.setText( arr.get(4) );
+                p2lifeHistory2.setText( arr.get(5) );
+                p2lifeHistory3.setText( arr.get(6) );
+                p2lifeHistory4.setText( arr.get(7) );
+                p2lifeHistory5.setText( arr.get(8) );
+                p2lifeHistory6.setText( arr.get(9) );
+                break;
+            case 5:
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+
+                p2lifeHistory8.setText( arr.get(1) );
+                p2lifeHistory9.setText( arr.get(2) );
+                p2lifeHistory1.setText( arr.get(3) );
+                p2lifeHistory2.setText( arr.get(4) );
+                p2lifeHistory3.setText( arr.get(5) );
+                p2lifeHistory4.setText( arr.get(6) );
+                p2lifeHistory5.setText( arr.get(7) );
+                p2lifeHistory6.setText( arr.get(8) );
+                p2lifeHistory7.setText( arr.get(9) );
+                break;
+            case 6:
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+
+                p2lifeHistory9.setText( arr.get(1) );
+                p2lifeHistory1.setText( arr.get(2) );
+                p2lifeHistory2.setText( arr.get(3) );
+                p2lifeHistory3.setText( arr.get(4) );
+                p2lifeHistory4.setText( arr.get(5) );
+                p2lifeHistory5.setText( arr.get(6) );
+                p2lifeHistory6.setText( arr.get(7) );
+                p2lifeHistory7.setText( arr.get(8) );
+                p2lifeHistory8.setText( arr.get(9) );
+                break;
+            case 7:
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+
+                p2lifeHistory1.setText( arr.get(1) );
+                p2lifeHistory2.setText( arr.get(2) );
+                p2lifeHistory3.setText( arr.get(3) );
+                p2lifeHistory4.setText( arr.get(4) );
+                p2lifeHistory5.setText( arr.get(5) );
+                p2lifeHistory6.setText( arr.get(6) );
+                p2lifeHistory7.setText( arr.get(7) );
+                p2lifeHistory8.setText( arr.get(8) );
+                p2lifeHistory9.setText( arr.get(9) );
+                break;
+            case 8:
+                fn_translation(p2lifeHistory2,baseNum-(hisTxtMove*8),baseNum-(hisTxtMove*9),lifeHisTransDuration,"fadeout");
+                fn_translation(p2lifeHistory3,baseNum-(hisTxtMove*7),baseNum-(hisTxtMove*8),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory4,baseNum-(hisTxtMove*6),baseNum-(hisTxtMove*7),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory5,baseNum-(hisTxtMove*5),baseNum-(hisTxtMove*6),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory6,baseNum-(hisTxtMove*4),baseNum-(hisTxtMove*5),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory7,baseNum-(hisTxtMove*3),baseNum-(hisTxtMove*4),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory8,baseNum-(hisTxtMove*2),baseNum-(hisTxtMove*3),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory9,baseNum-(hisTxtMove*1),baseNum-(hisTxtMove*2),lifeHisTransDuration,"visible");
+                fn_translation(p2lifeHistory1,baseNum-(hisTxtMove*0),baseNum-(hisTxtMove*1),lifeHisTransDuration,"fadein");
+
+                p2lifeHistory2.setText( arr.get(1) );
+                p2lifeHistory3.setText( arr.get(2) );
+                p2lifeHistory4.setText( arr.get(3) );
+                p2lifeHistory5.setText( arr.get(4) );
+                p2lifeHistory6.setText( arr.get(5) );
+                p2lifeHistory7.setText( arr.get(6) );
+                p2lifeHistory8.setText( arr.get(7) );
+                p2lifeHistory9.setText( arr.get(8) );
+                p2lifeHistory1.setText( arr.get(9) );
+                break;
         }
 
         Animator animator = rotateAnimator(mButton);

@@ -41,4 +41,17 @@
         <item name="android:shadowDy">15.0</item>
         <item name="android:shadowRadius">2.0</item>
     </style>
+    <style name="counterTxt">
+        <item name="fontPath">fonts/georgia.ttf</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:gravity">center</item>
+
+        <item name="android:shadowColor">#30000000</item>
+        <item name="android:shadowDx">6.0</item>
+        <item name="android:shadowDy">6.0</item>
+        <item name="android:shadowRadius">2.0</item>
+    </style>
 </resources>
