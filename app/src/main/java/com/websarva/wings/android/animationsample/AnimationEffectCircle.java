@@ -30,6 +30,7 @@ public class AnimationEffectCircle extends Animation {
 
     @Override
     protected void applyTransformation( float interpolatedTime, Transformation transformation) {
+        //30
         float radius = (float) ((canvasRadius*30) * interpolatedTime);//interpolatedTimeは0.0～1.0に変化する値
 
         circle.setRadius2(radius);

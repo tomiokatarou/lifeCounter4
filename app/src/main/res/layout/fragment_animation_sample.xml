@@ -1515,13 +1515,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:alpha="0"
+        android:alpha="1"
         android:fontFamily="sans-serif"
         android:text="p2Life_txt"
-        android:textSize="50dp"
+        android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/p2Layout"
-        app:layout_constraintTop_toTopOf="@+id/halfLine2" />
+        app:layout_constraintTop_toTopOf="@+id/halfLine2"
+        app:layout_constraintVertical_bias="0" />
 
     <TextView
         android:id="@+id/p2textView"
