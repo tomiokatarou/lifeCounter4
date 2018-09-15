@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout p2Layout;
     public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1PsnPlus,rectP1PsnMinus,rectP1EngPlus,rectP1EngMinus;
     public RectF rectP2Plus1,rectP2Plus5,rectP2Minus1,rectP2Minus5,rectP2PsnPlus,rectP2PsnMinus,rectP2EngPlus,rectP2EngMinus;
+    //ボタンサイズを取得
+    float btnSizeX,btnSizeY;
     //debug----------------------------------------------------------------------------------------------
 
     TextView p1txt;
@@ -364,130 +366,13 @@ public class MainActivity extends AppCompatActivity {
 
         circ = (Circle) findViewById(R.id.circle);
         circP1Plus1 = (effectCircle) this.findViewById(R.id.circP1Plus1);
+        /*
         Animator alpha = alphaAnimator(circP1Plus1,1,"Visible");
         alpha.start();
+        */
         //----------------------------------------------------------------------------------------------
 
 
-        /*
-        p1Layout_o.setOnTouchListener(new View.OnTouchListener() {
-            float firstTouch = 0;
-            int p1LifeIntTemp = 0;//指を動かしている間の値
-            int lifeDistInt;
-            float lifeDistance;//finalは変更を許可しない
-            float s = 3f;
-            int plusminus = 1;
-            int distTmp=0;
-
-            ArrayList<Integer> lifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-
-            TextView p1txt = (TextView) findViewById(R.id.p1textView);//debug用
-            TextView p1txt2 = (TextView) findViewById(R.id.p1textView2);//debug用
-
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                switch (motionEvent.getActionMasked()) {
-                    case MotionEvent.ACTION_DOWN:
-                    case MotionEvent.ACTION_POINTER_DOWN: {
-                        //画面がタッチされた場合の処理
-                        int pointerIndex = motionEvent.getActionIndex();
-                        firstTouch = motionEvent.getY(pointerIndex);
-                        lifeDistance = 0;
-                        lifeDistInt = 0;
-                        p1LifeIntTemp = p1LifeInt;//値を渡す
-                        p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
-                        p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouchY " + firstTouch
-                                + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
-                                + " \n p1LifeHisDriver: " + p1LifeHisDriver
-                                + " \n lifeDistance: " + lifeDistance
-                                + " \n lifeDistInt: " + lifeDistInt
-                                + " \n p1LifeList.size() " + p1LifeList.size()
-                                + " \n lifeDistIntArr.size " + lifeDistIntArr.size());//テキストの編集
-                        break;
-                    }
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_POINTER_UP: {
-                        //タッチが離れた場合の処理
-                        //int pointerIndex = motionEvent.getActionIndex();
-                        p1LifeInt = p1LifeIntTemp;//値を渡し返す　ここに入れないと値が巻き戻る
-                        p1txt.setText("p1txt ACTION_POINTER_UP \n" + " firstTouchY " + firstTouch
-                                + "\n p1LifeInt:" + p1LifeInt + "  p1LifeIntTemp: " + p1LifeIntTemp
-                                + " \n p1LifeHisDriver: " + p1LifeHisDriver
-                                + " \n lifeDistance: " + lifeDistance
-                                + " \n lifeDistInt: " + lifeDistInt
-                                + " \n p1LifeList.size() " + p1LifeList.size()
-                                + " \n p1GlobalTmp "+p1GlobalTmp
-                                + " \n lifeDistIntArr.size " + lifeDistIntArr.size());//テキストの編集
-                        mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-                        delayedUpdate = new Runnable() {
-                            public void run() {
-                                if (lifeDistInt != 0) {
-                                    fn_p1LifeDriver(p1GlobalTmp, plusminus);
-                                    System.out.println("p1Layout_o p1GlobalTmp " + p1GlobalTmp);
-                                    p1GlobalTmp=0;
-                                }
-                            }
-                        };
-                        mHandler.postDelayed(delayedUpdate, 1000);
-                        //これ意味ある？
-                        lifeDistIntArr = new ArrayList<>();//finalつけると逆に使えないぞ。理由は不明だ！
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        lifeDistance = firstTouch - motionEvent.getY(0);//距離
-                        lifeDistInt = (int) lifeDistance / 100;//整数で
-
-                        if (lifeDistIntArr.size() == 0) {
-                            //初回
-                            lifeDistIntArr.add(lifeDistInt);
-
-                            p1txt2.setText("初回 \n distTmp " + distTmp);
-                            p1txt.setText("p1LifeDriver \n" + p1LifeDriver
-                                    + " \n lifeDistInt: " + lifeDistInt
-                                    + " \n distTmp: " + distTmp
-                                    + " \n lifeDistIntArr.size() " + lifeDistIntArr.size()
-                            );
-                            distTmp = lifeDistInt;
-                            //この中に入ったあと弄っててもフェードアウトしてるやつが出ない
-                        }
-
-                        //配列の中身が一つ以上あり、distTmpに値が入っている状態
-                        p1txt.setText("p1LifeDriver \n" + p1LifeDriver
-                                + " \n lifeDistInt: " + lifeDistInt
-                                + " \n distTmp: " + distTmp
-                                + " \n lifeDistIntArr.size() " + lifeDistIntArr.size()
-                        );
-                        if (lifeDistInt != distTmp) {
-                            lifeDistIntArr.add(lifeDistInt);
-                            if (p1LifeDriver < 3) {
-                                p1LifeDriver++;
-                            } else {
-                                p1LifeDriver = 0;
-                            }
-                            //省略できそうだけどめんどそう
-                            fn_p1LifeFade(p1LifeIntTemp);
-                            //動くようにはなったけど、今度リストが追加されなくなってしまった。
-                            //p1countの扱いと動作の整理しないといかんなこれは
-                            distTmp = lifeDistInt;
-                            p1txt2.setText("lifeDistInt!=distTmp \n distTmp " + distTmp);
-                        }
-                        //値が違った場合、違い続けるってことか
-                        if (lifeDistIntArr.size() > 2) {
-                            //2より大きくなったらリムーブ
-                            lifeDistIntArr.remove(0);
-                            p1txt2.setText("2より大きくなったらリムーブ \n distTmp " + distTmp);
-                        }
-
-                        p1Life_txt.setText(String.valueOf(p1LifeIntTemp));//テキストの編集
-                        p1LifeIntTemp = p1LifeInt + lifeDistInt;//動かすたびに毎フレーム追加されてる 離した瞬間にもう一度足されてしまうのでこの位置
-
-                        break;
-                    }
-                }
-                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
-            }
-        });
-        */
         //----------------------------------------------------------------------------------------------
 
         buttonListener p1plus1TouchListener = new buttonListener() {
@@ -577,7 +462,6 @@ public class MainActivity extends AppCompatActivity {
                 clipRect = rectP2Plus1;
                 lifeInt = p2LifeInt;
                 p="p2";
-                offsY = p2plus1.getTop();
             }
         };
         p2plus1.setOnTouchListener(p2plus1TouchListener);
@@ -588,7 +472,6 @@ public class MainActivity extends AppCompatActivity {
                 clipRect = rectP2Plus5;
                 lifeInt = p2LifeInt;
                 p="p2";
-                offsY = p2plus1.getTop();
             }
         };
         p2plus5.setOnTouchListener(p2plus5TouchListener);
@@ -599,7 +482,6 @@ public class MainActivity extends AppCompatActivity {
                 clipRect = rectP2Minus1;
                 lifeInt = p2LifeInt;
                 p="p2";
-                offsY = p2plus1.getTop();
             }
         };
         p2minus1.setOnTouchListener(p2minus1TouchListener);
@@ -610,7 +492,6 @@ public class MainActivity extends AppCompatActivity {
                 clipRect = rectP2Minus5;
                 lifeInt = p2LifeInt;
                 p="p2";
-                offsY = p2plus1.getTop();
             }
         };
         p2minus5.setOnTouchListener(p2minus5TouchListener);
@@ -656,6 +537,12 @@ public class MainActivity extends AppCompatActivity {
         resetBtn.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                AnimationCircle animation = new AnimationCircle(circ, (float) 0.5);
+                // アニメーションの起動期間を設定
+                animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+                animationPeriod = 800;
+                animation.setDuration(animationPeriod);
+
                 System.out.print("resetBtn \n");
                 switch (motionEvent.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
@@ -663,12 +550,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_POINTER_UP:{
-                        System.out.print("ACTION_POINTER_UP \n");
-                        AnimationCircle animation = new AnimationCircle(circ, (float) 0.5);
-                        // アニメーションの起動期間を設定
-                        animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
-                        animationPeriod = 800;
-                        animation.setDuration(animationPeriod);
                         circ.startAnimation(animation);
                         mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
                         delayedUpdate = new Runnable() {
@@ -752,8 +633,6 @@ public class MainActivity extends AppCompatActivity {
         String tmpState="";
         String p;
         //場所確認
-        int releaseArea;
-        float offsY=0;
 
         int creaseNum;
         RectF clipRect;
@@ -765,6 +644,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
+            btnSizeX = p1plus1.getRight();
+            btnSizeY = p1plus1.getBottom() - p1plus1.getTop();
             lifeIntTemp2 = lifeIntTemp;
             setVariables();
             switch (motionEvent.getActionMasked()) {
@@ -789,97 +670,46 @@ public class MainActivity extends AppCompatActivity {
             p1txt.setText("p1txt ACTION_POINTER_DOWN \n" + " firstTouchY " + firstTouchY
                     + "\n p1LifeInt:" + p1LifeInt + "  lifeIntTemp: " + lifeIntTemp
                     + " \n p1LifeHisDriver: " + p1LifeHisDriver
-                    //+ " \n lifeDistance: " + lifeDistance
                     + " \n lifeDistInt: " + lifeDistInt
                     + " \n p1LifeList.size() " + p1LifeList.size()
                     + " \n lifeDistIntArr.size " + lifeDistIntArr.size());//テキストの編集
         }
         public void actionPointerUp(MotionEvent motionEvent, final String p){
             releaseX = motionEvent.getX();
-            releaseY = motionEvent.getY() + offsY;
+            releaseY = motionEvent.getY();
             //System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
             System.out.println("releaseX:" + releaseX + " releaseY:"+releaseY);
             System.out.println("p2Layout.getTop():" + p2Layout.getTop());
             System.out.println("clipRect.left:" + clipRect.left + " top:"+clipRect.top);
 
-
-            if(releaseX < p1minus1.getLeft()) releaseArea+=10;
-            else releaseArea+=20;
-            if(releaseY < p1minus1.getTop()) releaseArea+=1;
-            else if(releaseY >= p1minus1.getTop() && releaseY < p2plus1.getTop()) releaseArea+=2;
-            else if(releaseY >= p2plus1.getTop() && releaseY < p2minus1.getTop()) releaseArea+=3;
-            else releaseArea+=4;
+            //if(releaseX>clipRect.left && releaseX<clipRect.right && releaseY>clipRect.top && releaseY<clipRect.bottom) {
+            if(releaseX > 0 && releaseX < btnSizeX && releaseY > 0 && releaseY < btnSizeY ) {
+                AnimationEffectCircle animation = new AnimationEffectCircle(circP1Plus1, releaseX + clipRect.left, releaseY + clipRect.top, clipRect);
+                // アニメーションの起動期間を設定
+                animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+                animationPeriod = 800;
+                animation.setDuration(animationPeriod);
+                circP1Plus1.startAnimation(animation);
+                //fadeアニメーションはApplyChangesで初期化されてないっぽいか、初期化がうまくできてないか
+                Animator alpha = alphaAnimator(circP1Plus1, 400, "fadeout2");
+                alpha.start();
+            }
+            /*
             p2Life_txt_debug.setText(""
-                    +"p1minus1.getLeft() "+p1minus1.getLeft() + "\n"
-                    +"p1minus1.getTop() "+p1minus1.getTop() + "\n"
-                    +"p2plus1.getTop() "+p2plus1.getTop() + "\n"
-                    +"p2minus1.getTop() "+p2minus1.getTop() + "\n"
+                    +"clipRect left:"+clipRect.left +" right:"+clipRect.right +" top:"+clipRect.top +" bottom:"+clipRect.bottom + "\n"
+                    +"p1plus1 left:"+p1plus1.getLeft() +" right:"+p1plus1.getRight() +" top:"+p1plus1.getTop() +" bottom:"+p1plus1.getBottom() + "\n"
+                    +"p1plus5 left:"+p1plus5.getLeft() +" right:"+p1plus5.getRight() +" top:"+p1plus5.getTop() +" bottom:"+p1plus5.getBottom() + "\n"
+                    +"p1minus1 left:"+p1minus1.getLeft() +" right:"+p1minus1.getRight() +" top:"+p1minus1.getTop() +" bottom:"+p1minus1.getBottom() + "\n"
+                    +"p1minus5 left:"+p1minus5.getLeft() +" right:"+p1minus5.getRight() +" top:"+p1minus5.getTop() +" bottom:"+p1minus5.getBottom() + "\n"
+                    +"p2plus1 left:"+p2plus1.getLeft() +" right:"+p2plus1.getRight() +" top:"+p2plus1.getTop() +" bottom:"+p2plus1.getBottom() + "\n"
+                    +"p2plus5 left:"+p2plus5.getLeft() +" right:"+p2plus5.getRight() +" top:"+p2plus5.getTop() +" bottom:"+p2plus5.getBottom() + "\n"
+                    +"p2minus1 left:"+p2minus1.getLeft() +" right:"+p2minus1.getRight() +" top:"+p2minus1.getTop() +" bottom:"+p2minus1.getBottom() + "\n"
+                    +"p2minus5 left:"+p2minus5.getLeft() +" right:"+p2minus5.getRight() +" top:"+p2minus5.getTop() +" bottom:"+p2minus5.getBottom() + "\n"
+                    +"btnSizeX: "+btnSizeX+" btnSizeY: "+btnSizeY + "\n"
                     +"releaseX "+releaseX + "\n"
                     +"releaseY "+releaseY + "\n"
             );
-            switch(releaseArea) {
-                case 11: {
-                    System.out.println("case:11");
-                    clipRect = rectP1Plus1;
-                    break;
-                }
-                case 21:{
-                    System.out.println("case:21");
-                    clipRect = rectP1Plus5;
-                    break;
-                }
-                case 12: {
-                    System.out.println("case:12");
-                    clipRect = rectP1Minus1;
-                    break;
-                }
-                case 22: {
-                    System.out.println("case:22");
-                    clipRect = rectP1Minus5;
-                    break;
-                }
-
-                case 13: {
-                    System.out.println("case:13");
-                    clipRect = rectP2Plus1;
-                    break;
-                }
-                case 23: {
-                    System.out.println("case:23");
-                    clipRect = rectP2Plus5;
-                    break;
-                }
-                case 14: {
-                    System.out.println("case:14");
-                            clipRect = rectP2Minus1;
-                    break;
-                }
-                case 24: {
-                    System.out.println("case:24");
-                    clipRect = rectP2Minus5;
-                    break;
-                }
-                default:
-                    System.out.println("case:default");
-                    clipRect = rectP1Plus1;
-                    break;
-            }
-
-            mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
-            delayedUpdate = new Runnable() {
-                public void run() {
-                    //タッチが離れた場合の処理
-                    AnimationEffectCircle animation = new AnimationEffectCircle(circP1Plus1,releaseX+clipRect.left,releaseY+clipRect.top, clipRect);
-                    // アニメーションの起動期間を設定
-                    animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
-                    animationPeriod = 800;
-                    animation.setDuration(animationPeriod);
-                    circP1Plus1.startAnimation(animation);
-                    //fadeアニメーションはApplyChangesで初期化されてないっぽいか、初期化がうまくできてないか
-                    Animator alpha = alphaAnimator(circP1Plus1,400,"fadeout2");
-                    alpha.start();
-                }
-            };
+*/
             mHandler.postDelayed(delayedUpdate, 10);
 
             if (lifeDistIntArr.size() == 0) {
@@ -2225,6 +2055,8 @@ public class MainActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
+        btnSizeX = p1plus1.getRight();
+        btnSizeY = p1plus1.getBottom() - p1plus1.getTop();
         rectP1Plus1 = new RectF(p1plus1.getLeft(),p1plus1.getTop(),p1plus1.getRight(),p1plus1.getBottom());
         rectP1Plus5 = new RectF(p1plus5.getLeft(),p1plus5.getTop(),p1plus5.getRight(),p1plus5.getBottom());
         rectP1Minus1 = new RectF(p1minus1.getLeft(),p1minus1.getTop(),p1minus1.getRight(),p1minus1.getBottom());
