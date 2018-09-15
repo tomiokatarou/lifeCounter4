@@ -10,6 +10,8 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -89,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
 
     long lifeScaleDuration=200;
     long lifeHisTransDuration=700;
+
+    //se
+    private SoundPool soundPool;
+    private int btnSe;
     //----------------------------------------------------------------------------------------------
     private Circle circ;
     private effectCircle circP1Plus1;
@@ -230,6 +236,18 @@ public class MainActivity extends AppCompatActivity {
         rectP2EngMinus = new RectF(0,0,0,0);
         //リセット
         resetBtn = (Button) this.findViewById(R.id.resetBtn);
+
+        //se
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .setMaxStreams(2)
+                .build();
+        //ロードしておく
+        btnSe = soundPool.load(this,R.raw.btn_se,1);
         //デバッグ用
 
         //着色
@@ -1068,6 +1086,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
                 */
         }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //毒カウンターが変動した時の半透明な文字
     public void fn_p1PsnFade(int lifeIntTemp){
@@ -1086,6 +1106,8 @@ public class MainActivity extends AppCompatActivity {
                 p1Psn_txt3.setText(""+lifeIntTemp);
                 break;
         }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //エネルギーカウンターが変動した時の半透明な文字
     public void fn_p1EngFade(int lifeIntTemp){
@@ -1104,6 +1126,8 @@ public class MainActivity extends AppCompatActivity {
                 p1Eng_txt3.setText(""+lifeIntTemp);
                 break;
         }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //ライフが変動した時の半透明な文字
     public void fn_p2LifeFade(int lifeIntTemp){
@@ -1132,6 +1156,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
                 */
         }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //毒カウンターが変動した時の半透明な文字
     public void fn_p2PsnFade(int lifeIntTemp){
@@ -1150,6 +1176,8 @@ public class MainActivity extends AppCompatActivity {
                 p2Psn_txt3.setText(""+lifeIntTemp);
                 break;
         }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //エネルギーカウンターが変動した時の半透明な文字
     public void fn_p2EngFade(int lifeIntTemp){
@@ -1168,6 +1196,8 @@ public class MainActivity extends AppCompatActivity {
                 p2Eng_txt3.setText(""+lifeIntTemp);
                 break;
         }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //p1Life_txt p1LifeInt lifeDistInt plusminus p1LifeHisDriver isP1LifeHisMax
     public void fn_p1LifeDriver(int lifeDistInt) {
