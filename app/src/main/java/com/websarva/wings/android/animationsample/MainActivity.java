@@ -58,10 +58,11 @@ public class MainActivity extends AppCompatActivity {
     Button p2plus1,p2plus5,p2minus1,p2minus5,p2PsnPlus,p2PsnMinus,p2EngPlus,p2EngMinus;
     Button resetBtn;
 
+    final int initialLifeInt = 20;
     //p1
-    int p1LifeInt = 20,p1PsnInt = 0,p1EngInt = 0;
+    int p1LifeInt = initialLifeInt,p1PsnInt = 0,p1EngInt = 0;
     //p2
-    int p2LifeInt = 20,p2PsnInt = 0,p2EngInt = 0;
+    int p2LifeInt = initialLifeInt,p2PsnInt = 0,p2EngInt = 0;
 
     //lifeDriver
     int p1LifeDriver = 0,p1PsnDriver = 0,p1EngDriver = 0;//-1
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     //se
     private SoundPool soundPool;
-    private int btnSe;
+    private int btnSe,resetBtnSe;
     //----------------------------------------------------------------------------------------------
     private Circle circ;
     private effectCircle circP1Plus1;
@@ -120,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_animation_sample);//先においておかないとボタンがないのでリスナーも使えない
 
         //final ConstraintLayout relativeLayout_o = (ConstraintLayout) findViewById(R.id.fragment_animation_sample);
-        final ConstraintLayout p1Layout_o = (ConstraintLayout) findViewById(R.id.p1Layout);
-        final ConstraintLayout p2Layout_o = (ConstraintLayout) findViewById(R.id.p2Layout);
+        //final ConstraintLayout p1Layout_o = (ConstraintLayout) findViewById(R.id.p1Layout);
+        // ConstraintLayout p2Layout_o = (ConstraintLayout) findViewById(R.id.p2Layout);
         p2Layout = (ConstraintLayout) findViewById(R.id.p2Layout);
 
         //オブジェクトの生成
@@ -250,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
                 .setMaxStreams(2)
                 .build();
         //ロードしておく
-        btnSe = soundPool.load(this,R.raw.btn_se,1);
+        btnSe = soundPool.load(this,R.raw.btn_se,2);
+        resetBtnSe = soundPool.load(this,R.raw.resetbtn_se3,1);
         //デバッグ用
         p2Life_txt_debug = (TextView) this.findViewById(R.id.p2Life_txt_debug);
 
@@ -537,7 +539,7 @@ public class MainActivity extends AppCompatActivity {
         resetBtn.setOnTouchListener(new View.OnTouchListener(){
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                AnimationCircle animation = new AnimationCircle(circ, (float) 0.5);
+                AnimationCircle animation = new AnimationCircle(circ,resetBtn.getX()+resetBtn.getWidth()/2,resetBtn.getY()+resetBtn.getHeight()/2,(float) 0.5);
                 // アニメーションの起動期間を設定
                 animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
                 animationPeriod = 800;
@@ -554,7 +556,7 @@ public class MainActivity extends AppCompatActivity {
                         mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
                         delayedUpdate = new Runnable() {
                             public void run() {
-                                p1LifeInt = 20;
+                                p1LifeInt = initialLifeInt;
                                 p1LifeDriver = 0;
                                 p1LifeHisDriver = -1;
                                 isP1LifeHisMax = false;
@@ -575,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
                                 p1lifeHistory8.setText( "" );
                                 p1lifeHistory9.setText( "" );
                                 
-                                p2LifeInt = 20;
+                                p2LifeInt = initialLifeInt;
                                 p2LifeDriver = 0;
                                 p2LifeHisDriver = -1;
                                 isp2LifeHisMax = false;
@@ -598,6 +600,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
                         mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
+                        //se
+                        soundPool.play(resetBtnSe,1.0f,1.0f,0,0,1);
                         break;
                     }
                     case MotionEvent.ACTION_MOVE:
