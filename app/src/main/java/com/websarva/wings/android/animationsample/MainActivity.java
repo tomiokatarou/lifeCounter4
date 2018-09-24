@@ -27,7 +27,13 @@ import android.widget.Toast;
 
 import android.support.v7.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -106,6 +112,34 @@ public class MainActivity extends AppCompatActivity {
     public RectF rectP2Plus1,rectP2Plus5,rectP2Minus1,rectP2Minus5,rectP2PsnPlus,rectP2PsnMinus,rectP2EngPlus,rectP2EngMinus;
     //ボタンサイズを取得
     float btnSizeX,btnSizeY;
+
+    //timer----------------------------------------------------------------------------------------------
+    private Handler timerHandler = new Handler();
+    private String timerState = "pause";
+    private TextView timerTxt,timerTxt1;
+    private SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+    private int timerCnt,timerCntTmp,timerPeriod;
+    //なんども押すとカウントがおかしなことになるぞ
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            System.out.println("timerRunnable \n");
+            timerCnt--;
+            timerTxt.setText(dataFormat.
+                    format(timerCnt*timerPeriod));
+            timerHandler.postDelayed(this, timerPeriod);
+        }
+    };
+    private ScheduledExecutorService mScheduledExecutor;
+    private Handler alphaHandler = new Handler();
+    private Runnable alphaRunnable = new Runnable() {
+        @Override
+        public void run() {
+            animateAlpha();
+            //これやると間隔調整できる
+            alphaHandler.postDelayed(this, 1600);
+        }
+    };
     //debug----------------------------------------------------------------------------------------------
 
     TextView p1txt;
@@ -253,6 +287,47 @@ public class MainActivity extends AppCompatActivity {
         //ロードしておく
         btnSe = soundPool.load(this,R.raw.btn_se,2);
         resetBtnSe = soundPool.load(this,R.raw.resetbtn_se3,1);
+        //timer
+        //10m 6000
+        timerCnt = 30000;timerCntTmp = timerCnt; timerPeriod = 100;
+        timerTxt = (TextView) this.findViewById(R.id.timeCount_txt);
+        timerTxt1 = (TextView) this.findViewById(R.id.timeCount_txt1);
+        timerTxt.setText(dataFormat.
+                format(timerCnt*timerPeriod));
+        timerTxt.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View v) {
+                timerHandler.post(timerRunnable);
+
+                //初めて押す時　止まっているときに押す時
+                if (timerState == "pause") {
+                    timerCnt = timerCntTmp;
+                    timerState = "counting";
+                    System.out.println("timerState == pause \n");
+
+                    alphaHandler.removeCallbacks((alphaRunnable));
+                    fn_translation(timerTxt1, 0, 0, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                    timerTxt1.setText(dataFormat.
+                                        format(timerCnt*timerPeriod));
+                } else {
+                    //動いているときに押す時
+
+                    timerTxt.setText(dataFormat.
+                            format(timerCnt*timerPeriod));
+                    timerHandler.removeCallbacks(timerRunnable);
+                    //timerTxt.setText(dataFormat.format(0));
+                    timerCntTmp = timerCnt;
+                    fn_translation(timerTxt1, 0, 0, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+                    timerTxt1.setText(dataFormat.
+                                        format(timerCnt*timerPeriod));
+                    timerCnt = 0;
+
+                    timerState = "pause";
+                    System.out.println("timerState else \n");
+                    alphaHandler.post(alphaRunnable);
+                }
+            }
+        });
         //デバッグ用
         p2Life_txt_debug = (TextView) this.findViewById(R.id.p2Life_txt_debug);
 
@@ -358,6 +433,8 @@ public class MainActivity extends AppCompatActivity {
         fn_translation(p2Eng_txt1, 0, 0, 1, "invisible");
         fn_translation(p2Eng_txt2, 0, 0, 1, "invisible");
         fn_translation(p2Eng_txt3, 0, 0, 1, "invisible");
+
+        fn_translation(timerTxt1, 0, 0, 1, "invisible");
 
         p1LifeList = new ArrayList<>();
         p1LifeListTmp = new ArrayList<>();
@@ -2006,6 +2083,33 @@ public class MainActivity extends AppCompatActivity {
         set.playTogether(alpha,translate);
         set.start();
     }
+    private void animateAlpha () {
+
+        // 実行するAnimatorのリスト
+        List<Animator> animatorList = new ArrayList<Animator>();
+
+        // alpha値を0から1へ1000ミリ秒かけて変化させる。
+        ObjectAnimator animeFadeIn = ObjectAnimator.ofFloat(timerTxt, "alpha", 1f, 0.1f);
+        animeFadeIn.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+        animeFadeIn.setDuration(600);
+
+        // alpha値を1から0へ600ミリ秒かけて変化させる。
+        ObjectAnimator animeFadeOut = ObjectAnimator.ofFloat(timerTxt, "alpha", 0.1f, 1f);
+        animeFadeOut.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+        animeFadeOut.setDuration(600);
+
+        // 実行対象Animatorリストに追加。
+        animatorList.add(animeFadeIn);
+        animatorList.add(animeFadeOut);
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+
+        // リストの順番に実行
+        animatorSet.playSequentially(animatorList);
+
+        animatorSet.start();
+    }
+
 /*
 
                 AnimationCircle animation = new AnimationCircle(circ, 20,0);

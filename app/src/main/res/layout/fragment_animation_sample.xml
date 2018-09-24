@@ -29,8 +29,10 @@
         android:translationZ="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/circle"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/lifeHistoryGuideLineV"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/halfLine1"
@@ -1566,7 +1568,47 @@
         app:layout_constraintHorizontal_bias="0.968"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/halfLine2"
-        app:layout_constraintVertical_bias="0.94"></android.support.constraint.ConstraintLayout>
+        app:layout_constraintVertical_bias="0.94">
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/timeCount_txt"
+        fontPath="fonts/georgia.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#30000000"
+        android:shadowDx="15.0"
+        android:shadowDy="15.0"
+        android:shadowRadius="2.0"
+        android:text="TextView"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/circle"
+        app:layout_constraintTop_toTopOf="@+id/halfLine1"
+        tools:ignore="MissingPrefix" />
+    <TextView
+        android:id="@+id/timeCount_txt1"
+        fontPath="fonts/georgia.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="#30000000"
+        android:shadowDx="15.0"
+        android:shadowDy="15.0"
+        android:shadowRadius="2.0"
+        android:text="TextView"
+        android:textColor="@color/colorWhite"
+        android:textSize="30sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/circle"
+        app:layout_constraintTop_toTopOf="@+id/halfLine1"
+        tools:ignore="MissingPrefix" />
 
 
 </android.support.constraint.ConstraintLayout>
