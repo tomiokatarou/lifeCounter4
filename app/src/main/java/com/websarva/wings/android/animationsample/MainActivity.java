@@ -31,9 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -116,20 +114,62 @@ public class MainActivity extends AppCompatActivity {
     //timer----------------------------------------------------------------------------------------------
     private Handler timerHandler = new Handler();
     private String timerState = "pause";
-    private TextView timerTxt,timerTxt1;
+    private TextView timerTxt,timerTxt1;//timerTxt1は半透明用のやつ
     private SimpleDateFormat dataFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
     private int timerCnt,timerCntTmp,timerPeriod;
     //なんども押すとカウントがおかしなことになるぞ
     private Runnable timerRunnable = new Runnable() {
         @Override
         public void run() {
-            System.out.println("timerRunnable \n");
-            timerCnt--;
+            p1txt.setText("run");
+            if(timerCnt>-323999) {
+                timerCnt--;
+                p1txt.setText("timerCnt : " + timerCnt);
+            }else{
+                pauseTimer(-324000,true);//0
+                return;
+            }
+
             timerTxt.setText(dataFormat.
                     format(timerCnt*timerPeriod));
             timerHandler.postDelayed(this, timerPeriod);
         }
     };
+    //pause finish reset
+
+    public void pauseTimer(int num,boolean alpha){
+        //時間終了したら
+        //ここでほしい値は0
+        p1txt.setText("owari");
+
+        timerCntTmp = num;//timerCntTmpに現在の値を保存
+        timerCnt = num;
+        timerTxt.setText(dataFormat.
+                format(timerCntTmp*timerPeriod));
+        fn_translation(timerTxt1, 0, 0, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
+        timerTxt1.setText(dataFormat.
+                format(timerCntTmp*timerPeriod));
+        timerHandler.removeCallbacks(timerRunnable);
+        timerState = "pause";
+
+        if(alpha)alphaHandler.post(alphaRunnable);
+    }
+    /*
+    public void resetTimer(){
+        //時間終了したら
+        //ここでほしい値は0
+        p1txt.setText("owari");
+
+        timerCntTmp = -324000+30000;
+        timerCnt = -324000+30000;
+        timerTxt.setText(dataFormat.
+                format(timerCntTmp*timerPeriod));
+        timerHandler.removeCallbacks(timerRunnable);
+        timerState = "pause";
+
+        alphaHandler.post(alphaRunnable);
+    }
+    */
     private ScheduledExecutorService mScheduledExecutor;
     private Handler alphaHandler = new Handler();
     private Runnable alphaRunnable = new Runnable() {
@@ -289,7 +329,8 @@ public class MainActivity extends AppCompatActivity {
         resetBtnSe = soundPool.load(this,R.raw.resetbtn_se3,1);
         //timer
         //10m 6000
-        timerCnt = 30000;timerCntTmp = timerCnt; timerPeriod = 100;
+        timerCnt = -324000+100;//30000 9:50:00 -324000+30000謎の9時間をマイナスしている
+        timerCntTmp = timerCnt; timerPeriod = 100;
         timerTxt = (TextView) this.findViewById(R.id.timeCount_txt);
         timerTxt1 = (TextView) this.findViewById(R.id.timeCount_txt1);
         timerTxt.setText(dataFormat.
@@ -310,21 +351,23 @@ public class MainActivity extends AppCompatActivity {
                     timerTxt1.setText(dataFormat.
                                         format(timerCnt*timerPeriod));
                 } else {
+                    pauseTimer(timerCnt,true);//0
                     //動いているときに押す時
+                    //ここでほしい値は現在の値
 
+                    /*
+                    timerCntTmp = timerCnt;//timerCntTmpに現在の値を保存
+                    timerCnt = 0;
                     timerTxt.setText(dataFormat.
-                            format(timerCnt*timerPeriod));
-                    timerHandler.removeCallbacks(timerRunnable);
-                    //timerTxt.setText(dataFormat.format(0));
-                    timerCntTmp = timerCnt;
+                            format(timerCntTmp*timerPeriod));
                     fn_translation(timerTxt1, 0, 0, fadeFontScale, fadeFontScale, lifeScaleDuration, "fadeout2");
                     timerTxt1.setText(dataFormat.
-                                        format(timerCnt*timerPeriod));
-                    timerCnt = 0;
-
+                            format(timerCntTmp*timerPeriod));
+                    timerHandler.removeCallbacks(timerRunnable);
                     timerState = "pause";
                     System.out.println("timerState else \n");
                     alphaHandler.post(alphaRunnable);
+                    */
                 }
             }
         });
@@ -674,11 +717,18 @@ public class MainActivity extends AppCompatActivity {
                                 p2lifeHistory7.setText( "" );
                                 p2lifeHistory8.setText( "" );
                                 p2lifeHistory9.setText( "" );
+
+                                //ここでほしい値は初期値
+                                pauseTimer(-324000+30000,false);//0
                             }
                         };
                         mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
                         //se
                         soundPool.play(resetBtnSe,1.0f,1.0f,0,0,1);
+                        //timer
+
+                        timerHandler.removeCallbacks(timerRunnable);
+                        alphaHandler.removeCallbacks((alphaRunnable));
                         break;
                     }
                     case MotionEvent.ACTION_MOVE:
