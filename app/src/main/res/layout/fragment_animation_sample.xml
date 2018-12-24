@@ -83,6 +83,28 @@
         app:layout_constraintStart_toStartOf="@+id/resetBtn"
         app:layout_constraintTop_toTopOf="@+id/resetBtn" />
 
+    <Button
+        android:id="@+id/resetTimerBtn"
+        android:layout_width="76dp"
+        android:layout_height="0dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:background="#00ffffff"
+        app:layout_constraintBottom_toTopOf="@+id/halfLine2"
+        app:layout_constraintEnd_toEndOf="@+id/circP1Plus1"
+        app:layout_constraintTop_toTopOf="@+id/halfLine1" />
+
+    <ImageView
+        android:id="@+id/resetTimerBtnImg"
+        android:layout_width="108dp"
+        android:layout_height="108dp"
+        android:src="@drawable/ic_baseline_restore_24px"
+        android:translationZ="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/resetTimerBtn"
+        app:layout_constraintEnd_toEndOf="@id/resetTimerBtn"
+        app:layout_constraintStart_toStartOf="@id/resetTimerBtn"
+        app:layout_constraintTop_toTopOf="@id/resetTimerBtn" />
+
     <android.support.constraint.Guideline
         android:id="@+id/lifeHistoryGuideLineV"
         android:layout_width="wrap_content"
@@ -479,15 +501,24 @@
             app:layout_constraintTop_toBottomOf="@+id/p1EngPlus" />
 
         <Button
-            android:id="@+id/p1blank"
+            android:id="@+id/p1GameCntPlus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
-            android:clickable="false"
-            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
             app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/p1GameCntMinus"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP1main"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
         <TextView
             android:id="@+id/p1Psn_txt"
@@ -594,6 +625,25 @@
             app:layout_constraintStart_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1" />
+
+        <ImageView
+            android:id="@+id/p1GameCnt1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="50dp"
+            android:src="@drawable/ic_baseline_brightness_5_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3" />
+
+        <ImageView
+            android:id="@+id/p1GameCnt2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_7_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3" />
 
         <ImageView
             android:id="@+id/imageView"
