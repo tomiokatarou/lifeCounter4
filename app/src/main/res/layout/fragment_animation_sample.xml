@@ -96,8 +96,8 @@
 
     <ImageView
         android:id="@+id/resetTimerBtnImg"
-        android:layout_width="108dp"
-        android:layout_height="108dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:src="@drawable/ic_baseline_restore_24px"
         android:translationZ="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/resetTimerBtn"
@@ -409,7 +409,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/p1PsnUpArrow"
+            android:id="@+id/p1PhyUpArrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:adjustViewBounds="false"
@@ -448,7 +448,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <ImageView
-            android:id="@+id/p1PsnDownArrow"
+            android:id="@+id/p1PhyDownArrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:adjustViewBounds="false"
@@ -461,7 +461,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <Button
-            android:id="@+id/p1PsnPlus"
+            android:id="@+id/p1PhyPlus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
@@ -471,7 +471,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/p1PsnMinus"
+            android:id="@+id/p1PhyMinus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP1main"
@@ -502,26 +502,84 @@
 
         <Button
             android:id="@+id/p1GameCntPlus"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="0dp"
+            android:layout_marginLeft="0dp"
             android:background="@color/colorP1main"
             app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
-            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/p1GameCntMinus"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="0dp"
+            android:layout_marginLeft="0dp"
             android:background="@color/colorP1main"
             app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
-            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
+        <Button
+            android:id="@+id/p1Blank"
+            android:background="@color/colorP1main"
+            android:clickable="false"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3"
+            app:layout_constraintStart_toEndOf="@+id/p1GameCntPlus"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/p1GameCntImg1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_5_24px"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1GameCntPlus" />
+
+        <ImageView
+            android:id="@+id/p1GameCntImg2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_7_24px"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1GameCntPlus" />
+
+        <ImageView
+            android:id="@+id/p1GameCntFadeImg1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_5_24px"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:translationZ="11dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1GameCntPlus" />
+
+        <ImageView
+            android:id="@+id/p1GameCntFadeImg2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_7_24px"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:translationZ="11dp"
+            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p1GameCntPlus" />
         <TextView
-            android:id="@+id/p1Psn_txt"
+            android:id="@+id/p1Phy_txt"
             style="@style/counterTxt"
             android:text="TextView"
             android:translationZ="10dp"
@@ -531,7 +589,7 @@
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
         <TextView
-            android:id="@+id/p1Psn_txt1"
+            android:id="@+id/p1Phy_txt1"
             style="@style/counterTxt"
             android:text="TextView"
             android:translationZ="10dp"
@@ -541,7 +599,7 @@
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
         <TextView
-            android:id="@+id/p1Psn_txt2"
+            android:id="@+id/p1Phy_txt2"
             style="@style/counterTxt"
             android:text="TextView"
             android:translationZ="10dp"
@@ -551,7 +609,7 @@
             app:layout_constraintTop_toTopOf="@+id/p1plusminusBtnLine4" />
 
         <TextView
-            android:id="@+id/p1Psn_txt3"
+            android:id="@+id/p1Phy_txt3"
             style="@style/counterTxt"
             android:text="TextView"
             android:translationZ="10dp"
@@ -613,7 +671,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <ImageView
-            android:id="@+id/p1PsnImg"
+            android:id="@+id/p1PhyImg"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
@@ -626,24 +684,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1" />
 
-        <ImageView
-            android:id="@+id/p1GameCnt1"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="50dp"
-            android:src="@drawable/ic_baseline_brightness_5_24px"
-            android:translationZ="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
-            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3" />
-
-        <ImageView
-            android:id="@+id/p1GameCnt2"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/ic_baseline_brightness_7_24px"
-            android:translationZ="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/p1plusminusBtnLine"
-            app:layout_constraintEnd_toStartOf="@+id/p1plusminusBtnLine3" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -865,7 +905,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <ImageView
-            android:id="@+id/p2PsnImg"
+            android:id="@+id/p2PhyImg"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:src="@drawable/ic_baseline_phimark_24px"
@@ -876,6 +916,40 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1" />
 
+        <Button
+            android:id="@+id/p2blank"
+            android:background="@color/colorP2main"
+            android:clickable="false"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine"
+            app:layout_constraintEnd_toStartOf="@+id/p2plusminusBtnLine3"
+            app:layout_constraintStart_toEndOf="@+id/p2GameCntPlus"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/p2GameCntFadeImg1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_5_24px"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p2GameCntPlus" />
+
+        <ImageView
+            android:id="@+id/p2GameCntFadeImg2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_brightness_7_24px"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p2GameCntPlus" />
         <ImageView
             android:id="@+id/p2plus1UpArrow"
             android:layout_width="55dp"
@@ -1153,7 +1227,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/p2PsnUpArrow"
+            android:id="@+id/p2PhyUpArrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:adjustViewBounds="false"
@@ -1192,7 +1266,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <ImageView
-            android:id="@+id/p2PsnDownArrow"
+            android:id="@+id/p2PhyDownArrow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:adjustViewBounds="false"
@@ -1205,7 +1279,7 @@
             app:layout_constraintVertical_bias="1" />
 
         <Button
-            android:id="@+id/p2PsnPlus"
+            android:id="@+id/p2PhyPlus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP2main"
@@ -1215,7 +1289,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/p2PsnMinus"
+            android:id="@+id/p2PhyMinus"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorP2main"
@@ -1244,19 +1318,51 @@
             app:layout_constraintStart_toStartOf="@+id/p2plusminusBtnLine5"
             app:layout_constraintTop_toBottomOf="@+id/p2EngPlus" />
 
+
         <Button
-            android:id="@+id/p2blank"
-            android:layout_width="0dp"
+            android:id="@+id/p2GameCntPlus"
+            android:layout_width="50dp"
             android:layout_height="0dp"
             android:background="@color/colorP2main"
-            android:clickable="false"
-            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine"
-            app:layout_constraintEnd_toStartOf="@+id/p2plusminusBtnLine3"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/p2GameCntMinus"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:background="@color/colorP2main"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p2plusminusBtnLine4" />
+
+        <ImageView
+            android:id="@+id/p2GameCntImg2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_baseline_brightness_7_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p2GameCntPlus" />
+
+        <ImageView
+            android:id="@+id/p2GameCntImg1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_baseline_brightness_5_24px"
+            android:translationZ="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/p2plusminusBtnLine4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/p2GameCntPlus" />
+
         <TextView
-            android:id="@+id/p2Psn_txt"
+            android:id="@+id/p2Phy_txt"
             style="@style/counterTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -1268,7 +1374,7 @@
             app:layout_constraintTop_toTopOf="@+id/p2plusminusBtnLine4" />
 
         <TextView
-            android:id="@+id/p2Psn_txt1"
+            android:id="@+id/p2Phy_txt1"
             style="@style/counterTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -1280,7 +1386,7 @@
             app:layout_constraintTop_toTopOf="@+id/p2plusminusBtnLine4" />
 
         <TextView
-            android:id="@+id/p2Psn_txt2"
+            android:id="@+id/p2Phy_txt2"
             style="@style/counterTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -1292,7 +1398,7 @@
             app:layout_constraintTop_toTopOf="@+id/p2plusminusBtnLine4" />
 
         <TextView
-            android:id="@+id/p2Psn_txt3"
+            android:id="@+id/p2Phy_txt3"
             style="@style/counterTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -1539,8 +1645,8 @@
         android:id="@+id/p1textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:alpha="1"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"

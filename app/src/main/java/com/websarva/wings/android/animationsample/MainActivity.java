@@ -51,28 +51,31 @@ public class MainActivity extends AppCompatActivity {
     //p1
     TextView p1lifeHistory1,p1lifeHistory2,p1lifeHistory3,p1lifeHistory4,p1lifeHistory5,p1lifeHistory6,p1lifeHistory7,p1lifeHistory8,p1lifeHistory9;
     TextView p1Life_txt,p1Life_txt1,p1Life_txt2,p1Life_txt3,p1Life_txt4,p1Life_txt5;
-    TextView p1Psn_txt,p1Psn_txt1,p1Psn_txt2,p1Psn_txt3;
+    TextView p1Phy_txt,p1Phy_txt1,p1Phy_txt2,p1Phy_txt3;
     TextView p1Eng_txt,p1Eng_txt1,p1Eng_txt2,p1Eng_txt3;
-    Button p1plus1,p1plus5,p1minus1,p1minus5,p1PsnPlus,p1PsnMinus,p1EngPlus,p1EngMinus;
+    Button p1plus1,p1plus5,p1minus1,p1minus5,p1PhyPlus,p1PhyMinus,p1EngPlus,p1EngMinus,p1GameCntPlus,p1GameCntMinus;
     //p2
     TextView p2lifeHistory1,p2lifeHistory2,p2lifeHistory3,p2lifeHistory4,p2lifeHistory5,p2lifeHistory6,p2lifeHistory7,p2lifeHistory8,p2lifeHistory9;
     TextView p2Life_txt,p2Life_txt1,p2Life_txt2,p2Life_txt3,p2Life_txt4,p2Life_txt5;
-    TextView p2Psn_txt,p2Psn_txt1,p2Psn_txt2,p2Psn_txt3;
+    TextView p2Phy_txt,p2Phy_txt1,p2Phy_txt2,p2Phy_txt3;
     TextView p2Eng_txt,p2Eng_txt1,p2Eng_txt2,p2Eng_txt3;
-    Button p2plus1,p2plus5,p2minus1,p2minus5,p2PsnPlus,p2PsnMinus,p2EngPlus,p2EngMinus;
-    Button resetBtn;
+    Button p2plus1,p2plus5,p2minus1,p2minus5,p2PhyPlus,p2PhyMinus,p2EngPlus,p2EngMinus,p2GameCntPlus,p2GameCntMinus;
+    Button resetBtn,resetTimerBtn;
+
+    ImageView p1GameCntImg1,p1GameCntImg2,p1GameCntFadeImg1,p1GameCntFadeImg2;
+    ImageView p2GameCntImg1,p2GameCntImg2,p2GameCntFadeImg1,p2GameCntFadeImg2;
 
     final int initialLifeInt = 20;
     //p1
-    int p1LifeInt = initialLifeInt,p1PsnInt = 0,p1EngInt = 0;
+    int p1LifeInt = initialLifeInt,p1PhyInt = 0,p1EngInt = 0,p1GameInt = 0;
     //p2
-    int p2LifeInt = initialLifeInt,p2PsnInt = 0,p2EngInt = 0;
+    int p2LifeInt = initialLifeInt,p2PhyInt = 0,p2EngInt = 0,p2GameInt = 0;
 
     //lifeDriver
-    int p1LifeDriver = 0,p1PsnDriver = 0,p1EngDriver = 0;//-1
+    int p1LifeDriver = 0,p1PhyDriver = 0,p1EngDriver = 0,p1GameCntDriver = 0;//-1
     int p1LifeHisDriver = -1;//どのテキストを動かすかというためだけの循環する変数　にしたい
     boolean isP1LifeHisMax = false;//ヒストリーがマックスになってるかどうか
-    int p2LifeDriver = 0,p2PsnDriver = 0,p2EngDriver = 0;//-1
+    int p2LifeDriver = 0,p2PhyDriver = 0,p2EngDriver = 0,p2GameCntDriver = 0;//-1
     int p2LifeHisDriver = -1;//どのテキストを動かすかというためだけの循環する変数　にしたい
     boolean isp2LifeHisMax = false;//ヒストリーがマックスになってるかどうか
 
@@ -99,15 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
     //se
     private SoundPool soundPool;
-    private int btnSe,resetBtnSe;
+    private int btnSe,resetBtnSe,resetTimerBtnSe;
     //----------------------------------------------------------------------------------------------
     private Circle circ;
     private effectCircle circP1Plus1;
     private int animationPeriod = 2000;
 
     ConstraintLayout p2Layout;
-    public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1PsnPlus,rectP1PsnMinus,rectP1EngPlus,rectP1EngMinus;
-    public RectF rectP2Plus1,rectP2Plus5,rectP2Minus1,rectP2Minus5,rectP2PsnPlus,rectP2PsnMinus,rectP2EngPlus,rectP2EngMinus;
+    public RectF rectP1Plus1,rectP1Plus5,rectP1Minus1,rectP1Minus5,rectP1PhyPlus,rectP1PhyMinus,rectP1EngPlus,rectP1EngMinus,rectP1GameCntPlus,rectP1GameCntMinus;
+    public RectF rectP2Plus1,rectP2Plus5,rectP2Minus1,rectP2Minus5,rectP2PhyPlus,rectP2PhyMinus,rectP2EngPlus,rectP2EngMinus,rectP2GameCntPlus,rectP2GameCntMinus;
     //ボタンサイズを取得
     float btnSizeX,btnSizeY;
 
@@ -181,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     //debug----------------------------------------------------------------------------------------------
-
     TextView p1txt;
     TextView p2Life_txt_debug;
     //----------------------------------------------------------------------------------------------
@@ -219,11 +221,11 @@ public class MainActivity extends AppCompatActivity {
         p1lifeHistory9 = (TextView) this.findViewById(R.id.p1lifeHistory9);
 
         //カウンターのテキストとフェードテキスト
-        p1Psn_txt = (TextView) this.findViewById(R.id.p1Psn_txt);
-        p1Psn_txt.setText(p1PsnInt+"");
-        p1Psn_txt1 = (TextView) this.findViewById(R.id.p1Psn_txt1);
-        p1Psn_txt2 = (TextView) this.findViewById(R.id.p1Psn_txt2);
-        p1Psn_txt3 = (TextView) this.findViewById(R.id.p1Psn_txt3);
+        p1Phy_txt = (TextView) this.findViewById(R.id.p1Phy_txt);
+        p1Phy_txt.setText(p1PhyInt+"");
+        p1Phy_txt1 = (TextView) this.findViewById(R.id.p1Phy_txt1);
+        p1Phy_txt2 = (TextView) this.findViewById(R.id.p1Phy_txt2);
+        p1Phy_txt3 = (TextView) this.findViewById(R.id.p1Phy_txt3);
 
         p1Eng_txt = (TextView) this.findViewById(R.id.p1Eng_txt);
         p1Eng_txt.setText(p1EngInt+"");
@@ -237,20 +239,29 @@ public class MainActivity extends AppCompatActivity {
         p1minus1 = (Button) this.findViewById(R.id.p1minus1);
         p1minus5 = (Button) this.findViewById(R.id.p1minus5);
         //カウンターのボタン
-        p1PsnPlus = (Button) this.findViewById(R.id.p1PsnPlus);
-        p1PsnMinus = (Button) this.findViewById(R.id.p1PsnMinus);
+        p1PhyPlus = (Button) this.findViewById(R.id.p1PhyPlus);
+        p1PhyMinus = (Button) this.findViewById(R.id.p1PhyMinus);
         p1EngPlus = (Button) this.findViewById(R.id.p1EngPlus);
         p1EngMinus = (Button) this.findViewById(R.id.p1EngMinus);
+        //ゲームカウントのボタン
+        p1GameCntPlus = (Button) this.findViewById(R.id.p1GameCntPlus);
+        p1GameCntMinus = (Button) this.findViewById(R.id.p1GameCntMinus);
+        p1GameCntImg1 = (ImageView) findViewById(R.id.p1GameCntImg1);
+        p1GameCntImg2 = (ImageView) findViewById(R.id.p1GameCntImg2);
+        p1GameCntFadeImg1 = (ImageView) findViewById(R.id.p1GameCntFadeImg1);
+        p1GameCntFadeImg2 = (ImageView) findViewById(R.id.p1GameCntFadeImg2);
 
         //エフェクトクリップ用矩形
         rectP1Plus1 = new RectF(0,0,0,0);
         rectP1Plus5 = new RectF(0,0,0,0);
         rectP1Minus1 = new RectF(0,0,0,0);
         rectP1Minus5 = new RectF(0,0,0,0);
-        rectP1PsnPlus = new RectF(0,0,0,0);
-        rectP1PsnMinus = new RectF(0,0,0,0);
+        rectP1PhyPlus = new RectF(0,0,0,0);
+        rectP1PhyMinus = new RectF(0,0,0,0);
         rectP1EngPlus = new RectF(0,0,0,0);
         rectP1EngMinus = new RectF(0,0,0,0);
+        rectP1GameCntPlus = new RectF(0,0,0,0);
+        rectP1GameCntMinus = new RectF(0,0,0,0);
 
         //p2オブジェクトの生成
         p2Life_txt = (TextView) this.findViewById(R.id.p2Life_txt);
@@ -272,11 +283,11 @@ public class MainActivity extends AppCompatActivity {
         p2lifeHistory9 = (TextView) this.findViewById(R.id.p2lifeHistory9);
 
         //カウンターのテキストとフェードテキスト
-        p2Psn_txt = (TextView) this.findViewById(R.id.p2Psn_txt);
-        p2Psn_txt.setText(p2PsnInt+"");
-        p2Psn_txt1 = (TextView) this.findViewById(R.id.p2Psn_txt1);
-        p2Psn_txt2 = (TextView) this.findViewById(R.id.p2Psn_txt2);
-        p2Psn_txt3 = (TextView) this.findViewById(R.id.p2Psn_txt3);
+        p2Phy_txt = (TextView) this.findViewById(R.id.p2Phy_txt);
+        p2Phy_txt.setText(p2PhyInt+"");
+        p2Phy_txt1 = (TextView) this.findViewById(R.id.p2Phy_txt1);
+        p2Phy_txt2 = (TextView) this.findViewById(R.id.p2Phy_txt2);
+        p2Phy_txt3 = (TextView) this.findViewById(R.id.p2Phy_txt3);
 
         p2Eng_txt = (TextView) this.findViewById(R.id.p2Eng_txt);
         p2Eng_txt.setText(p2EngInt+"");
@@ -290,30 +301,34 @@ public class MainActivity extends AppCompatActivity {
         p2minus1 = (Button) this.findViewById(R.id.p2minus1);
         p2minus5 = (Button) this.findViewById(R.id.p2minus5);
         //カウンターのボタン
-        p2PsnPlus = (Button) this.findViewById(R.id.p2PsnPlus);
-        p2PsnMinus = (Button) this.findViewById(R.id.p2PsnMinus);
+        p2PhyPlus = (Button) this.findViewById(R.id.p2PhyPlus);
+        p2PhyMinus = (Button) this.findViewById(R.id.p2PhyMinus);
         p2EngPlus = (Button) this.findViewById(R.id.p2EngPlus);
         p2EngMinus = (Button) this.findViewById(R.id.p2EngMinus);
+        //ゲームカウントのボタン
+        p2GameCntPlus = (Button) this.findViewById(R.id.p2GameCntPlus);
+        p2GameCntMinus = (Button) this.findViewById(R.id.p2GameCntMinus);
+        p2GameCntImg1 = (ImageView) findViewById(R.id.p2GameCntImg1);
+        p2GameCntImg2 = (ImageView) findViewById(R.id.p2GameCntImg2);
+        p2GameCntFadeImg1 = (ImageView) findViewById(R.id.p2GameCntFadeImg1);
+        p2GameCntFadeImg2 = (ImageView) findViewById(R.id.p2GameCntFadeImg2);
 
         //エフェクトクリップ用矩形
-        rectP1Plus1 = new RectF(0,0,0,0);
-        rectP1Plus5 = new RectF(0,0,0,0);
-        rectP1Minus1 = new RectF(0,0,0,0);
-        rectP1Minus5 = new RectF(0,0,0,0);
-        rectP1PsnPlus = new RectF(0,0,0,0);
-        rectP1PsnMinus = new RectF(0,0,0,0);
-        rectP1EngPlus = new RectF(0,0,0,0);
-        rectP1EngMinus = new RectF(0,0,0,0);
         rectP2Plus1 = new RectF(0,0,0,0);
         rectP2Plus5 = new RectF(0,0,0,0);
         rectP2Minus1 = new RectF(0,0,0,0);
         rectP2Minus5 = new RectF(0,0,0,0);
-        rectP2PsnPlus = new RectF(0,0,0,0);
-        rectP2PsnMinus = new RectF(0,0,0,0);
+        rectP2PhyPlus = new RectF(0,0,0,0);
+        rectP2PhyMinus = new RectF(0,0,0,0);
         rectP2EngPlus = new RectF(0,0,0,0);
         rectP2EngMinus = new RectF(0,0,0,0);
+
+        rectP2GameCntPlus = new RectF(0,0,0,0);
+        rectP2GameCntMinus = new RectF(0,0,0,0);
+
         //リセット
         resetBtn = (Button) this.findViewById(R.id.resetBtn);
+        resetTimerBtn = (Button) this.findViewById(R.id.resetTimerBtn);
 
         //se
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -327,9 +342,10 @@ public class MainActivity extends AppCompatActivity {
         //ロードしておく
         btnSe = soundPool.load(this,R.raw.btn_se,2);
         resetBtnSe = soundPool.load(this,R.raw.resetbtn_se3,1);
+        resetTimerBtnSe = soundPool.load(this,R.raw.resettimerbtn,1);
         //timer
         //10m 6000
-        timerCnt = -324000+100;//30000 9:50:00 -324000+30000謎の9時間をマイナスしている
+        timerCnt = -324000+30000;//30000 9:50:00 -324000+30000謎の9時間をマイナスしている
         timerCntTmp = timerCnt; timerPeriod = 100;
         timerTxt = (TextView) this.findViewById(R.id.timeCount_txt);
         timerTxt1 = (TextView) this.findViewById(R.id.timeCount_txt1);
@@ -387,10 +403,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView p1minus5UpArrow = (ImageView) findViewById(R.id.p1minus5UpArrow);
         p1minus5UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
-        ImageView p1PsnUpArrow = (ImageView) findViewById(R.id.p1PsnUpArrow);
-        p1PsnUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        ImageView p1PsnDownArrow = (ImageView) findViewById(R.id.p1PsnDownArrow);
-        p1PsnDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p1PhyUpArrow = (ImageView) findViewById(R.id.p1PhyUpArrow);
+        p1PhyUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p1PhyDownArrow = (ImageView) findViewById(R.id.p1PhyDownArrow);
+        p1PhyDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p1EngUpArrow = (ImageView) findViewById(R.id.p1EngUpArrow);
         p1EngUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p1EngDownArrow = (ImageView) findViewById(R.id.p1EngDownArrow);
@@ -405,10 +421,10 @@ public class MainActivity extends AppCompatActivity {
         ImageView p2minus5UpArrow = (ImageView) findViewById(R.id.p2minus5UpArrow);
         p2minus5UpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
 
-        ImageView p2PsnUpArrow = (ImageView) findViewById(R.id.p2PsnUpArrow);
-        p2PsnUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        ImageView p2PsnDownArrow = (ImageView) findViewById(R.id.p2PsnDownArrow);
-        p2PsnDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2PhyUpArrow = (ImageView) findViewById(R.id.p2PhyUpArrow);
+        p2PhyUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        ImageView p2PhyDownArrow = (ImageView) findViewById(R.id.p2PhyDownArrow);
+        p2PhyDownArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p2EngUpArrow = (ImageView) findViewById(R.id.p2EngUpArrow);
         p2EngUpArrow.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         ImageView p2EngDownArrow = (ImageView) findViewById(R.id.p2EngDownArrow);
@@ -418,16 +434,30 @@ public class MainActivity extends AppCompatActivity {
         int colorWhite = getResources().getColor(R.color.colorWhite);
         ImageView p1EngImg = (ImageView) findViewById(R.id.p1EngImg);
         p1EngImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
-        ImageView p1PsnImg = (ImageView) findViewById(R.id.p1PsnImg);
-        p1PsnImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        ImageView p1PhyImg = (ImageView) findViewById(R.id.p1PhyImg);
+        p1PhyImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
         ImageView p2EngImg = (ImageView) findViewById(R.id.p2EngImg);
         p2EngImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
-        ImageView p2PsnImg = (ImageView) findViewById(R.id.p2PsnImg);
-        p2PsnImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        ImageView p2PhyImg = (ImageView) findViewById(R.id.p2PhyImg);
+        p2PhyImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p1GameCntImg1.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p1GameCntImg2.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p1GameCntFadeImg1.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p1GameCntFadeImg2.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p2GameCntImg1.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p2GameCntImg2.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p2GameCntFadeImg1.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p2GameCntFadeImg2.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        /*
+        p2GameCntImg1.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        p2GameCntImg2.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
+        */
         //リセットボタン
         int colorPink = getResources().getColor(R.color.colorPink);
         ImageView resetBtnImg = (ImageView) findViewById(R.id.resetBtnImg);
         resetBtnImg.setColorFilter(colorPink, PorterDuff.Mode.SRC_IN);
+        ImageView resetTimerBtnImg = (ImageView) findViewById(R.id.resetTimerBtnImg);
+        resetTimerBtnImg.setColorFilter(colorWhite, PorterDuff.Mode.SRC_IN);
 
         p1txt = (TextView) this.findViewById(R.id.p1textView);
         //初期配置
@@ -447,12 +477,18 @@ public class MainActivity extends AppCompatActivity {
         fn_translation(p1lifeHistory8, 0, 0, 0, "invisible");
         fn_translation(p1lifeHistory9, 0, 0, 0, "invisible");
 
-        fn_translation(p1Psn_txt1, 0, 0, 1, "invisible");
-        fn_translation(p1Psn_txt2, 0, 0, 1, "invisible");
-        fn_translation(p1Psn_txt3, 0, 0, 1, "invisible");
+        fn_translation(p1Phy_txt1, 0, 0, 1, "invisible");
+        fn_translation(p1Phy_txt2, 0, 0, 1, "invisible");
+        fn_translation(p1Phy_txt3, 0, 0, 1, "invisible");
         fn_translation(p1Eng_txt1, 0, 0, 1, "invisible");
         fn_translation(p1Eng_txt2, 0, 0, 1, "invisible");
         fn_translation(p1Eng_txt3, 0, 0, 1, "invisible");
+
+        fn_translation(p1GameCntImg1, 0, 0, 1, "alpha02");
+        fn_translation(p1GameCntImg2, 0, 0, 1, "invisible");
+        fn_translation(p1GameCntFadeImg1, 1, 1, 1, "invisible");
+        fn_translation(p1GameCntFadeImg2, 1, 1, 1, "invisible");
+        fn_translation(p1txt, 0, 0, 1, "invisible");
         //p2初期配置
         fn_translation(p2Life_txt1, 0, 0, 1, "invisible");
         fn_translation(p2Life_txt2, 0, 0, 1, "invisible");
@@ -470,12 +506,17 @@ public class MainActivity extends AppCompatActivity {
         fn_translation(p2lifeHistory8, 0, 0, 0, "invisible");
         fn_translation(p2lifeHistory9, 0, 0, 0, "invisible");
 
-        fn_translation(p2Psn_txt1, 0, 0, 1, "invisible");
-        fn_translation(p2Psn_txt2, 0, 0, 1, "invisible");
-        fn_translation(p2Psn_txt3, 0, 0, 1, "invisible");
+        fn_translation(p2Phy_txt1, 0, 0, 1, "invisible");
+        fn_translation(p2Phy_txt2, 0, 0, 1, "invisible");
+        fn_translation(p2Phy_txt3, 0, 0, 1, "invisible");
         fn_translation(p2Eng_txt1, 0, 0, 1, "invisible");
         fn_translation(p2Eng_txt2, 0, 0, 1, "invisible");
         fn_translation(p2Eng_txt3, 0, 0, 1, "invisible");
+
+        fn_translation(p2GameCntImg1, 0, 0, 1, "alpha02");
+        fn_translation(p2GameCntImg2, 0, 0, 1, "invisible");
+        fn_translation(p2GameCntFadeImg1, 1, 1, 1, "invisible");
+        fn_translation(p2GameCntFadeImg2, 1, 1, 1, "invisible");
 
         fn_translation(timerTxt1, 0, 0, 1, "invisible");
 
@@ -538,29 +579,29 @@ public class MainActivity extends AppCompatActivity {
         };
         p1minus5.setOnTouchListener(p1minus5TouchListener);
         //poison
-        buttonCounterListener p1PsnPlusTouchListener = new buttonCounterListener() {
+        buttonCounterListener p1PhyPlusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = 1;creaseEngNum = 0;
-                clipRect = rectP1PsnPlus;
+                creasePhyNum = 1;creaseEngNum = 0;creaseGameNum = 0;
+                clipRect = rectP1PhyPlus;
                 p="p1";
             }
         };
-        p1PsnPlus.setOnTouchListener(p1PsnPlusTouchListener);
-        buttonCounterListener p1PsnMinusTouchListener = new buttonCounterListener() {
+        p1PhyPlus.setOnTouchListener(p1PhyPlusTouchListener);
+        buttonCounterListener p1PhyMinusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = -1;creaseEngNum = 0;
-                clipRect = rectP1PsnMinus;
+                creasePhyNum = -1;creaseEngNum = 0;creaseGameNum = 0;
+                clipRect = rectP1PhyMinus;
                 p="p1";
             }
         };
-        p1PsnMinus.setOnTouchListener(p1PsnMinusTouchListener);
+        p1PhyMinus.setOnTouchListener(p1PhyMinusTouchListener);
         //energy
         buttonCounterListener p1EngPlusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = 0;creaseEngNum = 1;
+                creasePhyNum = 0;creaseEngNum = 1;creaseGameNum = 0;
                 clipRect = rectP1EngPlus;
                 p="p1";
             }
@@ -569,12 +610,31 @@ public class MainActivity extends AppCompatActivity {
         buttonCounterListener p1EngMinusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = 0;creaseEngNum = -1;
+                creasePhyNum = 0;creaseEngNum = -1;creaseGameNum = 0;
                 clipRect = rectP1EngMinus;
                 p="p1";
             }
         };
         p1EngMinus.setOnTouchListener(p1EngMinusTouchListener);
+        //gameCount
+        buttonCounterListener p1GameCntPlusTouchListener = new buttonCounterListener() {
+            @Override
+            public void setVariables(){
+                creasePhyNum = 0;creaseEngNum = 0;creaseGameNum = 1;
+                clipRect = rectP1GameCntPlus;
+                p="p1";
+            }
+        };
+        p1GameCntPlus.setOnTouchListener(p1GameCntPlusTouchListener);
+        buttonCounterListener p1GameCntTouchListener = new buttonCounterListener() {
+            @Override
+            public void setVariables(){
+                creasePhyNum = 0;creaseEngNum = 0;creaseGameNum = -1;
+                clipRect = rectP1GameCntMinus;
+                p="p1";
+            }
+        };
+        p1GameCntMinus.setOnTouchListener(p1GameCntTouchListener);
 
         //-----------------------------------
         buttonListener p2plus1TouchListener = new buttonListener() {
@@ -618,29 +678,29 @@ public class MainActivity extends AppCompatActivity {
         };
         p2minus5.setOnTouchListener(p2minus5TouchListener);
         //poison
-        buttonCounterListener p2PsnPlusTouchListener = new buttonCounterListener() {
+        buttonCounterListener p2PhyPlusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = 1;creaseEngNum = 0;
-                clipRect = rectP2PsnPlus;
+                creasePhyNum = 1;creaseEngNum = 0;creaseGameNum = 0;
+                clipRect = rectP2PhyPlus;
                 p="p2";
             }
         };
-        p2PsnPlus.setOnTouchListener(p2PsnPlusTouchListener);
-        buttonCounterListener p2PsnMinusTouchListener = new buttonCounterListener() {
+        p2PhyPlus.setOnTouchListener(p2PhyPlusTouchListener);
+        buttonCounterListener p2PhyMinusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = -1;creaseEngNum = 0;
-                clipRect = rectP2PsnMinus;
+                creasePhyNum = -1;creaseEngNum = 0;creaseGameNum = 0;
+                clipRect = rectP2PhyMinus;
                 p="p2";
             }
         };
-        p2PsnMinus.setOnTouchListener(p2PsnMinusTouchListener);
+        p2PhyMinus.setOnTouchListener(p2PhyMinusTouchListener);
         //energy
         buttonCounterListener p2EngPlusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = 0;creaseEngNum = 1;
+                creasePhyNum = 0;creaseEngNum = 1;creaseGameNum = 0;
                 clipRect = rectP2EngPlus;
                 p="p2";
             }
@@ -649,12 +709,31 @@ public class MainActivity extends AppCompatActivity {
         buttonCounterListener p2EngMinusTouchListener = new buttonCounterListener() {
             @Override
             public void setVariables(){
-                creasePsnNum = 0;creaseEngNum = -1;
+                creasePhyNum = 0;creaseEngNum = -1;creaseGameNum = 0;
                 clipRect = rectP2EngMinus;
                 p="p2";
             }
         };
         p2EngMinus.setOnTouchListener(p2EngMinusTouchListener);
+        //gameCount
+        buttonCounterListener p2GameCntPlusTouchListener = new buttonCounterListener() {
+            @Override
+            public void setVariables(){
+                creasePhyNum = 0;creaseEngNum = 0;creaseGameNum = 1;
+                clipRect = rectP2GameCntPlus;//rectP2GameCntPlus
+                p="p2";
+            }
+        };
+        p2GameCntPlus.setOnTouchListener(p2GameCntPlusTouchListener);
+        buttonCounterListener p2GameCntTouchListener = new buttonCounterListener() {
+            @Override
+            public void setVariables(){
+                creasePhyNum = 0;creaseEngNum = 0;creaseGameNum = -1;
+                clipRect = rectP2GameCntMinus;//rectP2GameCntMinus
+                p="p2";
+            }
+        };
+        p2GameCntMinus.setOnTouchListener(p2GameCntTouchListener);
 
         resetBtn.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -681,10 +760,14 @@ public class MainActivity extends AppCompatActivity {
                                 p1LifeHisDriver = -1;
                                 isP1LifeHisMax = false;
                                 p1LifeList = new ArrayList<>();
-                                p1PsnInt=0;p1EngInt=0;
-                                p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+                                p1PhyInt=0;p1EngInt=0;
+                                p1Phy_txt.setText(String.valueOf(p1PhyInt));//ライフ
                                 p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
-                                p1PsnDriver=0;p1EngDriver=0;
+                                p1PhyDriver=0;p1EngDriver=0;p1GameCntDriver=0;
+                                fn_translation(p1GameCntImg1, 0, 0, 1, "alpha02");
+                                fn_translation(p1GameCntImg2, 0, 0, 1, "invisible");
+                                fn_translation(p1GameCntFadeImg1, 1, 1, 1, "invisible");
+                                fn_translation(p1GameCntFadeImg2, 1, 1, 1, "invisible");
 
                                 p1Life_txt.setText(String.valueOf(p1LifeInt));//ライフ
                                 p1lifeHistory1.setText( "" );
@@ -702,10 +785,14 @@ public class MainActivity extends AppCompatActivity {
                                 p2LifeHisDriver = -1;
                                 isp2LifeHisMax = false;
                                 p2LifeList = new ArrayList<>();
-                                p2PsnInt=0;p2EngInt=0;
-                                p2Psn_txt.setText(String.valueOf(p2PsnInt));//ライフ
+                                p2PhyInt=0;p2EngInt=0;
+                                p2Phy_txt.setText(String.valueOf(p2PhyInt));//ライフ
                                 p2Eng_txt.setText(String.valueOf(p2EngInt));//ライフ
-                                p2PsnDriver=0;p2EngDriver=0;
+                                p2PhyDriver=0;p2EngDriver=0;p2GameCntDriver=0;
+                                fn_translation(p2GameCntImg1, 0, 0, 1, "alpha02");
+                                fn_translation(p2GameCntImg2, 0, 0, 1, "invisible");
+                                fn_translation(p2GameCntFadeImg1, 1, 1, 1, "invisible");
+                                fn_translation(p2GameCntFadeImg2, 1, 1, 1, "invisible");
 
                                 p2Life_txt.setText(String.valueOf(p2LifeInt));//ライフ
                                 p2lifeHistory1.setText( "" );
@@ -717,9 +804,11 @@ public class MainActivity extends AppCompatActivity {
                                 p2lifeHistory7.setText( "" );
                                 p2lifeHistory8.setText( "" );
                                 p2lifeHistory9.setText( "" );
+                                /*
 
                                 //ここでほしい値は初期値
                                 pauseTimer(-324000+30000,false);//0
+                                */
                             }
                         };
                         mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
@@ -727,8 +816,45 @@ public class MainActivity extends AppCompatActivity {
                         soundPool.play(resetBtnSe,1.0f,1.0f,0,0,1);
                         //timer
 
-                        timerHandler.removeCallbacks(timerRunnable);
                         alphaHandler.removeCallbacks((alphaRunnable));
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                }
+                return false;//trueの場合は処理を親要素に渡さない。falseの場合は処理を親要素に渡す。
+            }
+        });
+        resetTimerBtn.setOnTouchListener(new View.OnTouchListener(){
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                AnimationCircle animation = new AnimationCircle(circ,resetTimerBtn.getX()+resetTimerBtn.getWidth()/2,resetTimerBtn.getY()+resetTimerBtn.getHeight()/2,(float) 0.5);
+                // アニメーションの起動期間を設定
+                animation.setInterpolator(new DecelerateInterpolator());//OvershootInterpolator DecelerateInterpolator
+                animationPeriod = 800;
+                animation.setDuration(animationPeriod);
+
+                System.out.print("resetTimerBtn \n");
+                switch (motionEvent.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                    case MotionEvent.ACTION_POINTER_DOWN:
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_POINTER_UP:{
+                        circ.startAnimation(animation);
+                        mHandler.removeCallbacks(delayedUpdate);//一回実行してた場合それを破棄する
+                        delayedUpdate = new Runnable() {
+                            public void run() {
+                                //ここでほしい値は初期値
+                                pauseTimer(-324000+30000,false);//0
+                            }
+                        };
+                        mHandler.postDelayed(delayedUpdate, (long) (animationPeriod*0.3));
+                        //se
+                        soundPool.play(resetTimerBtnSe,1.0f,1.0f,0,0,1);
+                        //timer
+
+                        timerHandler.removeCallbacks(timerRunnable);
                         break;
                     }
                     case MotionEvent.ACTION_MOVE:
@@ -1006,7 +1132,7 @@ public class MainActivity extends AppCompatActivity {
         float releaseX,releaseY;
         float s = 3f;
 
-        int creasePsnNum,creaseEngNum;
+        int creasePhyNum,creaseEngNum,creaseGameNum;
         RectF clipRect;
         String p;
 
@@ -1025,13 +1151,12 @@ public class MainActivity extends AppCompatActivity {
         }
         public void actionPointerDown(){
             //画面がタッチされた場合の処理
-            p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+            p1Phy_txt.setText(String.valueOf(p1PhyInt));//ライフ
             p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
         }
         public void actionPointerUp(MotionEvent motionEvent,String p){
             releaseX = motionEvent.getX();
             releaseY = motionEvent.getY();
-            //System.out.println("actionPointerUp p1GlobalTmp " + p1GlobalTmp);
             System.out.println("releaseX:" + releaseX + " releaseY:"+releaseY);
             System.out.println("clipRect.left:" + clipRect.left + " clipRect.top:"+clipRect.top);
             //タッチが離れた場合の処理
@@ -1046,57 +1171,80 @@ public class MainActivity extends AppCompatActivity {
 
             if(p=="p1") {
                 //ライフ変動
-                p1PsnInt += creasePsnNum;
+                p1PhyInt += creasePhyNum;
                 p1EngInt += creaseEngNum;
-                p1Psn_txt.setText(String.valueOf(p1PsnInt));//ライフ
+                p1GameInt += creaseGameNum;
+                p1Phy_txt.setText(String.valueOf(p1PhyInt));//ライフ
                 p1Eng_txt.setText(String.valueOf(p1EngInt));//ライフ
-                if (p1PsnDriver < 2) {
-                    p1PsnDriver++;
+                if (p1PhyDriver < 2) {
+                    p1PhyDriver++;
                 } else {
-                    p1PsnDriver = 0;
+                    p1PhyDriver = 0;
                 }
                 if (p1EngDriver < 2) {
                     p1EngDriver++;
                 } else {
                     p1EngDriver = 0;
                 }
-                if (creasePsnNum != 0) {
-                    fn_p1PsnFade(p1PsnInt);
+                if (p1GameCntDriver < 2) {
+                    p1GameCntDriver++;
                 } else {
+                    p1GameCntDriver = 0;
+                }
+                if (creasePhyNum != 0) {
+                    fn_p1PhyFade(p1PhyInt);
+                } else if(creaseEngNum != 0){
                     fn_p1EngFade(p1EngInt);
+                } else{
+                    fn_p1GameCntFade(p1GameInt);
                 }
             }else{
                 //ライフ変動
-                p2PsnInt += creasePsnNum;
+                p2PhyInt += creasePhyNum;
                 p2EngInt += creaseEngNum;
-                p2Psn_txt.setText(String.valueOf(p2PsnInt));//ライフ
+                p2GameInt += creaseGameNum;
+                p2Phy_txt.setText(String.valueOf(p2PhyInt));//ライフ
                 p2Eng_txt.setText(String.valueOf(p2EngInt));//ライフ
-                if (p2PsnDriver < 2) {
-                    p2PsnDriver++;
+                if (p2PhyDriver < 2) {
+                    p2PhyDriver++;
                 } else {
-                    p2PsnDriver = 0;
+                    p2PhyDriver = 0;
                 }
                 if (p2EngDriver < 2) {
                     p2EngDriver++;
                 } else {
                     p2EngDriver = 0;
                 }
-                if (creasePsnNum != 0) {
-                    fn_p2PsnFade(p2PsnInt);
+                if (p2GameCntDriver < 2) {
+                    p2GameCntDriver++;
                 } else {
+                    p2GameCntDriver = 0;
+                }
+                if (creasePhyNum != 0) {
+                    fn_p2PhyFade(p2PhyInt);
+                } else if(creaseEngNum != 0){
                     fn_p2EngFade(p2EngInt);
-                }                
+                }else{
+                    fn_p2GameCntFade(p2GameInt);
+                }
             }
-
-            p1txt.setText("p1PsnDriver \n" + p1PsnDriver
-                    + " \n p1Psn1txt1: " + p1Psn_txt1.getText()
-                    + " \n p1Psn1txt2: " + p1Psn_txt2.getText()
-                    + " \n p1Psn1txt3: " + p1Psn_txt3.getText()
+            p1txt.setText("p1GameCntDriver \n" + p1GameCntDriver
+                    + " \n p2GameCntDriver: " + p2GameCntDriver
+                    + " \n p1Phy1txt2: " + p1Phy_txt2.getText()
+                    + " \n p1Phy1txt3: " + p1Phy_txt3.getText()
             );
+/*
+            p1txt.setText("p1PhyDriver \n" + p1PhyDriver
+                    + " \n p1Phy1txt1: " + p1Phy_txt1.getText()
+                    + " \n p1Phy1txt2: " + p1Phy_txt2.getText()
+                    + " \n p1Phy1txt3: " + p1Phy_txt3.getText()
+
+            );
+            */
 
         }
         public void setVariables(){
-            creasePsnNum = 1;creaseEngNum = 0;
+            creasePhyNum = 1;creaseEngNum = 0;creaseGameNum = 0;
         }
     }
     //ライフが変動した時の半透明な文字
@@ -1130,20 +1278,20 @@ public class MainActivity extends AppCompatActivity {
         soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //毒カウンターが変動した時の半透明な文字
-    public void fn_p1PsnFade(int lifeIntTemp){
+    public void fn_p1PhyFade(int lifeIntTemp){
         float toTY = -5;
-        switch (p1PsnDriver) {
+        switch (p1PhyDriver) {
             case 0:
-                fn_translation(p1Psn_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
-                p1Psn_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                fn_translation(p1Phy_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p1Phy_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
                 break;
             case 1:
-                fn_translation(p1Psn_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
-                p1Psn_txt2.setText(""+lifeIntTemp);//p1LifeInt + lifeDistIntArr.get(0)
+                fn_translation(p1Phy_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p1Phy_txt2.setText(""+lifeIntTemp);//p1LifeInt + lifeDistIntArr.get(0)
                 break;
             case 2:
-                fn_translation(p1Psn_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
-                p1Psn_txt3.setText(""+lifeIntTemp);
+                fn_translation(p1Phy_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p1Phy_txt3.setText(""+lifeIntTemp);
                 break;
         }
         //se
@@ -1169,6 +1317,31 @@ public class MainActivity extends AppCompatActivity {
         //se
         soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
+    //ゲームカウンターが変動した時の半透明な画像
+    public void fn_p1GameCntFade(int lifeIntTemp){
+        float toTY = -5;
+        switch (p1GameCntDriver) {
+            case 0:
+                fn_translation(p1GameCntImg1, 0, 0, 1, "alpha02");
+                fn_translation(p1GameCntImg2, 0, 0, 1, "invisible");
+                break;
+            case 1:
+                fn_translation(p1GameCntImg1, 0, 0, 1, "fadein3");
+                fn_translation(p1GameCntImg2, 0, 0, 1, "invisible");
+
+                fn_translation(p1GameCntFadeImg1, 0, toTY, fadeFontScale*1.5f, fadeFontScale*1.5f, lifeScaleDuration, "fadeout2");
+                break;
+            case 2:
+                fn_translation(p1GameCntImg1, 0, 0, 1, "invisible");
+                fn_translation(p1GameCntImg2, 0, 0, 1, "fadein3");
+
+                fn_translation(p1GameCntFadeImg2, 0, toTY, fadeFontScale*1.5f, fadeFontScale*1.5f, lifeScaleDuration, "fadeout2");
+                break;
+        }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
+    }
+
     //ライフが変動した時の半透明な文字
     public void fn_p2LifeFade(int lifeIntTemp){
         float toTY = -30;
@@ -1200,20 +1373,20 @@ public class MainActivity extends AppCompatActivity {
         soundPool.play(btnSe,1.0f,1.0f,0,0,1);
     }
     //毒カウンターが変動した時の半透明な文字
-    public void fn_p2PsnFade(int lifeIntTemp){
+    public void fn_p2PhyFade(int lifeIntTemp){
         float toTY = -5;
-        switch (p2PsnDriver) {
+        switch (p2PhyDriver) {
             case 0:
-                fn_translation(p2Psn_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
-                p2Psn_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
+                fn_translation(p2Phy_txt1, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Phy_txt1.setText(""+lifeIntTemp);//ここは関係ないはず
                 break;
             case 1:
-                fn_translation(p2Psn_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
-                p2Psn_txt2.setText(""+lifeIntTemp);//p2LifeInt + p2LifeDistIntArr.get(0)
+                fn_translation(p2Phy_txt2, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Phy_txt2.setText(""+lifeIntTemp);//p2LifeInt + p2LifeDistIntArr.get(0)
                 break;
             case 2:
-                fn_translation(p2Psn_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
-                p2Psn_txt3.setText(""+lifeIntTemp);
+                fn_translation(p2Phy_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
+                p2Phy_txt3.setText(""+lifeIntTemp);
                 break;
         }
         //se
@@ -1234,6 +1407,30 @@ public class MainActivity extends AppCompatActivity {
             case 2:
                 fn_translation(p2Eng_txt3, 0, toTY, fadeCounterFontScale, fadeCounterFontScale, lifeScaleDuration, "fadeout2");
                 p2Eng_txt3.setText(""+lifeIntTemp);
+                break;
+        }
+        //se
+        soundPool.play(btnSe,1.0f,1.0f,0,0,1);
+    }
+    //ゲームカウンターが変動した時の半透明な画像
+    public void fn_p2GameCntFade(int lifeIntTemp){
+        float toTY = -5;
+        switch (p2GameCntDriver) {
+            case 0:
+                fn_translation(p2GameCntImg1, 0, 0, 1, "alpha02");
+                fn_translation(p2GameCntImg2, 0, 0, 1, "invisible");
+                break;
+            case 1:
+                fn_translation(p2GameCntImg1, 0, 0, 1, "fadein3");
+                fn_translation(p2GameCntImg2, 0, 0, 1, "invisible");
+
+                fn_translation(p2GameCntFadeImg1, 0, toTY, fadeFontScale*1.5f, fadeFontScale*1.5f, lifeScaleDuration, "fadeout2");
+                break;
+            case 2:
+                fn_translation(p2GameCntImg1, 0, 0, 1, "invisible");
+                fn_translation(p2GameCntImg2, 0, 0, 1, "fadein3");
+
+                fn_translation(p2GameCntFadeImg2, 0, toTY, fadeFontScale*1.5f, fadeFontScale*1.5f, lifeScaleDuration, "fadeout2");
                 break;
         }
         //se
@@ -2113,6 +2310,15 @@ public class MainActivity extends AppCompatActivity {
         }else if(fade=="fadeout2"){
             fromAlpha = 0.6f;
             toAlpha = 0.0f;
+        }else if(fade=="fadein3"){
+            fromAlpha = 0.0f;
+            toAlpha = 1.0f;
+        }else if(fade=="fadeout3"){
+            fromAlpha = 1.0f;
+            toAlpha = 0.0f;
+        }else if(fade=="alpha02"){
+            fromAlpha = 0.2f;
+            toAlpha = 0.2f;
         }
         ObjectAnimator oa = ObjectAnimator.ofFloat(target,"alpha",fromAlpha,toAlpha);
         oa.setDuration(duration);
@@ -2220,19 +2426,23 @@ public class MainActivity extends AppCompatActivity {
         rectP1Minus1 = new RectF(p1minus1.getLeft(),p1minus1.getTop(),p1minus1.getRight(),p1minus1.getBottom());
         rectP1Minus5 = new RectF(p1minus5.getLeft(),p1minus5.getTop(),p1minus5.getRight(),p1minus5.getBottom());
 
-        rectP1PsnPlus = new RectF(p1PsnPlus.getLeft(),p1PsnPlus.getTop(),p1PsnPlus.getRight(),p1PsnPlus.getBottom());
-        rectP1PsnMinus = new RectF(p1PsnMinus.getLeft(),p1PsnMinus.getTop(),p1PsnMinus.getRight(),p1PsnMinus.getBottom());
+        rectP1PhyPlus = new RectF(p1PhyPlus.getLeft(),p1PhyPlus.getTop(),p1PhyPlus.getRight(),p1PhyPlus.getBottom());
+        rectP1PhyMinus = new RectF(p1PhyMinus.getLeft(),p1PhyMinus.getTop(),p1PhyMinus.getRight(),p1PhyMinus.getBottom());
         rectP1EngPlus = new RectF(p1EngPlus.getLeft(),p1EngPlus.getTop(),p1EngPlus.getRight(),p1EngPlus.getBottom());
         rectP1EngMinus = new RectF(p1EngMinus.getLeft(),p1EngMinus.getTop(),p1EngMinus.getRight(),p1EngMinus.getBottom());
+        rectP1GameCntPlus = new RectF(p1GameCntPlus.getLeft(),p1GameCntPlus.getTop(),p1GameCntPlus.getRight(),p1GameCntPlus.getBottom());
+        rectP1GameCntMinus = new RectF(p1GameCntMinus.getLeft(),p1GameCntMinus.getTop(),p1GameCntMinus.getRight(),p1GameCntMinus.getBottom());
 
         rectP2Plus1 = new RectF(p2plus1.getLeft(),p2plus1.getTop()+p2Layout.getTop(),p2plus1.getRight(),p2plus1.getBottom()+p2Layout.getTop());
         rectP2Plus5 = new RectF(p2plus5.getLeft(),p2plus5.getTop()+p2Layout.getTop(),p2plus5.getRight(),p2plus5.getBottom()+p2Layout.getTop());
         rectP2Minus1 = new RectF(p2minus1.getLeft(),p2minus1.getTop()+p2Layout.getTop(),p2minus1.getRight(),p2minus1.getBottom()+p2Layout.getTop());
         rectP2Minus5 = new RectF(p2minus5.getLeft(),p2minus5.getTop()+p2Layout.getTop(),p2minus5.getRight(),p2minus5.getBottom()+p2Layout.getTop());
 
-        rectP2PsnPlus = new RectF(p2PsnPlus.getLeft(),p2PsnPlus.getTop()+p2Layout.getTop(),p2PsnPlus.getRight(),p2PsnPlus.getBottom()+p2Layout.getTop());
-        rectP2PsnMinus = new RectF(p2PsnMinus.getLeft(),p2PsnMinus.getTop()+p2Layout.getTop(),p2PsnMinus.getRight(),p2PsnMinus.getBottom()+p2Layout.getTop());
+        rectP2PhyPlus = new RectF(p2PhyPlus.getLeft(),p2PhyPlus.getTop()+p2Layout.getTop(),p2PhyPlus.getRight(),p2PhyPlus.getBottom()+p2Layout.getTop());
+        rectP2PhyMinus = new RectF(p2PhyMinus.getLeft(),p2PhyMinus.getTop()+p2Layout.getTop(),p2PhyMinus.getRight(),p2PhyMinus.getBottom()+p2Layout.getTop());
         rectP2EngPlus = new RectF(p2EngPlus.getLeft(),p2EngPlus.getTop()+p2Layout.getTop(),p2EngPlus.getRight(),p2EngPlus.getBottom()+p2Layout.getTop());
         rectP2EngMinus = new RectF(p2EngMinus.getLeft(),p2EngMinus.getTop()+p2Layout.getTop(),p2EngMinus.getRight(),p2EngMinus.getBottom()+p2Layout.getTop());
+        rectP2GameCntPlus = new RectF(p2GameCntPlus.getLeft(),p2GameCntPlus.getTop()+p2Layout.getTop(),p2GameCntPlus.getRight(),p2GameCntPlus.getBottom()+p2Layout.getTop());
+        rectP2GameCntMinus = new RectF(p2GameCntMinus.getLeft(),p2GameCntMinus.getTop()+p2Layout.getTop(),p2GameCntMinus.getRight(),p2GameCntMinus.getBottom()+p2Layout.getTop());
     }
 }
